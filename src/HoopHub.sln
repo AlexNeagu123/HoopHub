@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.NBAData.App
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.NBAData.Infrastructure", "Modules\NBAData\HoopHub.Modules.NBAData.Infrastructure\HoopHub.Modules.NBAData.Infrastructure.csproj", "{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{F067FC72-5243-49CE-ACBB-85769F235895}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.API", "API\HoopHub.API\HoopHub.API.csproj", "{BFA38C1D-EA2D-47C7-8DF4-A4A807457052}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,10 @@ Global
 		{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFA38C1D-EA2D-47C7-8DF4-A4A807457052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFA38C1D-EA2D-47C7-8DF4-A4A807457052}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFA38C1D-EA2D-47C7-8DF4-A4A807457052}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFA38C1D-EA2D-47C7-8DF4-A4A807457052}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -40,6 +48,7 @@ Global
 		{00A3AA15-42BA-4DB9-B18F-4CBECA2C7386} = {6C1EB0BF-B450-42D3-B52F-CC428FB1C3C6}
 		{91E1BA18-EC83-42D6-9B5D-CE1993032897} = {6C1EB0BF-B450-42D3-B52F-CC428FB1C3C6}
 		{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F} = {6C1EB0BF-B450-42D3-B52F-CC428FB1C3C6}
+		{BFA38C1D-EA2D-47C7-8DF4-A4A807457052} = {F067FC72-5243-49CE-ACBB-85769F235895}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30301A2B-742A-41EE-97A7-8AAA199BE8F4}
