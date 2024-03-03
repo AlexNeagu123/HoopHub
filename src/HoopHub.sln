@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{C0F99C01-ECB8-4339-9B09-E9C4ABE7F501}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NBAData", "NBAData", "{6C1EB0BF-B450-42D3-B52F-CC428FB1C3C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.NBAData.Domain", "Modules\NBAData\HoopHub.Modules.NBAData.Domain\HoopHub.Modules.NBAData.Domain.csproj", "{00A3AA15-42BA-4DB9-B18F-4CBECA2C7386}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.NBAData.Application", "Modules\NBAData\HoopHub.Modules.NBAData.Application\HoopHub.Modules.NBAData.Application.csproj", "{91E1BA18-EC83-42D6-9B5D-CE1993032897}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.NBAData.Infrastructure", "Modules\NBAData\HoopHub.Modules.NBAData.Infrastructure\HoopHub.Modules.NBAData.Infrastructure.csproj", "{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00A3AA15-42BA-4DB9-B18F-4CBECA2C7386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00A3AA15-42BA-4DB9-B18F-4CBECA2C7386}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00A3AA15-42BA-4DB9-B18F-4CBECA2C7386}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00A3AA15-42BA-4DB9-B18F-4CBECA2C7386}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91E1BA18-EC83-42D6-9B5D-CE1993032897}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91E1BA18-EC83-42D6-9B5D-CE1993032897}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91E1BA18-EC83-42D6-9B5D-CE1993032897}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91E1BA18-EC83-42D6-9B5D-CE1993032897}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6C1EB0BF-B450-42D3-B52F-CC428FB1C3C6} = {C0F99C01-ECB8-4339-9B09-E9C4ABE7F501}
+		{00A3AA15-42BA-4DB9-B18F-4CBECA2C7386} = {6C1EB0BF-B450-42D3-B52F-CC428FB1C3C6}
+		{91E1BA18-EC83-42D6-9B5D-CE1993032897} = {6C1EB0BF-B450-42D3-B52F-CC428FB1C3C6}
+		{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F} = {6C1EB0BF-B450-42D3-B52F-CC428FB1C3C6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {30301A2B-742A-41EE-97A7-8AAA199BE8F4}
+	EndGlobalSection
+EndGlobal
