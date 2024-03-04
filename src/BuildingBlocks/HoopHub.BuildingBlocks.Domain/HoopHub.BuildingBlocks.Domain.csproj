@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\HoopHub.BuildingBlocks.Domain\HoopHub.BuildingBlocks.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

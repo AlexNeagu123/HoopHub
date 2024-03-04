@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\NBAData\HoopHub.Modules.NBAData.Infrastructure\HoopHub.Modules.NBAData.Infrastructure.csproj" />
+    <ProjectReference Include="..\HoopHub.BuildingBlocks.Application\HoopHub.BuildingBlocks.Application.csproj" />
+  </ItemGroup>
+
+</Project>

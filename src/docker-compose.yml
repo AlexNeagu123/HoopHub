@@ -9,7 +9,7 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001" 
-  db:
+  hoop_hub.database:
     image: postgres:latest
     container_name: postgres
     environment:
