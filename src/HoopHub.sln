@@ -7,15 +7,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{C0F9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NBAData", "NBAData", "{6C1EB0BF-B450-42D3-B52F-CC428FB1C3C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.NBAData.Domain", "Modules\NBAData\HoopHub.Modules.NBAData.Domain\HoopHub.Modules.NBAData.Domain.csproj", "{00A3AA15-42BA-4DB9-B18F-4CBECA2C7386}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.Modules.NBAData.Domain", "Modules\NBAData\HoopHub.Modules.NBAData.Domain\HoopHub.Modules.NBAData.Domain.csproj", "{00A3AA15-42BA-4DB9-B18F-4CBECA2C7386}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.NBAData.Application", "Modules\NBAData\HoopHub.Modules.NBAData.Application\HoopHub.Modules.NBAData.Application.csproj", "{91E1BA18-EC83-42D6-9B5D-CE1993032897}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.Modules.NBAData.Application", "Modules\NBAData\HoopHub.Modules.NBAData.Application\HoopHub.Modules.NBAData.Application.csproj", "{91E1BA18-EC83-42D6-9B5D-CE1993032897}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.NBAData.Infrastructure", "Modules\NBAData\HoopHub.Modules.NBAData.Infrastructure\HoopHub.Modules.NBAData.Infrastructure.csproj", "{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.Modules.NBAData.Infrastructure", "Modules\NBAData\HoopHub.Modules.NBAData.Infrastructure\HoopHub.Modules.NBAData.Infrastructure.csproj", "{EEF12B14-90D6-4AB0-A10A-0A123BF2B41F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{F067FC72-5243-49CE-ACBB-85769F235895}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.API", "API\HoopHub.API\HoopHub.API.csproj", "{BFA38C1D-EA2D-47C7-8DF4-A4A807457052}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.API", "API\HoopHub.API\HoopHub.API.csproj", "{BFA38C1D-EA2D-47C7-8DF4-A4A807457052}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{1EAE2EDD-1452-4069-BED5-DE824611B5A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{BFA38C1D-EA2D-47C7-8DF4-A4A807457052}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFA38C1D-EA2D-47C7-8DF4-A4A807457052}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFA38C1D-EA2D-47C7-8DF4-A4A807457052}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EAE2EDD-1452-4069-BED5-DE824611B5A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EAE2EDD-1452-4069-BED5-DE824611B5A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EAE2EDD-1452-4069-BED5-DE824611B5A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EAE2EDD-1452-4069-BED5-DE824611B5A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

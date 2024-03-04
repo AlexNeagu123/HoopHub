@@ -1,8 +1,5 @@
-#!/bin/bash
-echo "Waiting 60 seconds to start backend"
-
-sleep 60;
-
-echo "Backend starting..."
-
+#!/bin/bash 
+echo "Waiting 20 seconds to start backend"
+sleep 20;
+echo "Backend Starting.."
 dotnet HoopHub.API.dll

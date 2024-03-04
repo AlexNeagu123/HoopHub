@@ -1,12 +1,14 @@
-version: '1.0'
+version: '3.4'
+
 services:
-  web_api:
+  hoophub.api:
+    image: ${DOCKER_REGISTRY-}hoophubapi
     build:
-      context: ./src/
-    container_name: web_api_application 
+      context: .
+      dockerfile: API/HoopHub.API/Dockerfile
     ports:
-      - "5000:80" 
-    restart: on-failure  
+      - "5000:5000"
+      - "5001:5001" 
   db:
     image: postgres:latest
     container_name: postgres
@@ -24,4 +26,4 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: alex@gmail.com
       PGADMIN_DEFAULT_PASSWORD: dbpass
-  
+   
