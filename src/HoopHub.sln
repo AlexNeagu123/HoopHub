@@ -21,11 +21,13 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{A6A4DE24-C909-437C-9B97-1BFB7213A924}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.BuildingBlocks.Domain", "BuildingBlocks\HoopHub.BuildingBlocks.Domain\HoopHub.BuildingBlocks.Domain.csproj", "{21D910BB-E36F-47CA-A2C8-6751E6B5E020}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.BuildingBlocks.Domain", "BuildingBlocks\HoopHub.BuildingBlocks.Domain\HoopHub.BuildingBlocks.Domain.csproj", "{21D910BB-E36F-47CA-A2C8-6751E6B5E020}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.BuildingBlocks.Infrastructure", "BuildingBlocks\HoopHub.BuildingBlocks.Infrastructure\HoopHub.BuildingBlocks.Infrastructure.csproj", "{E1623659-2380-4234-9718-83EEFCD8A87D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.BuildingBlocks.Infrastructure", "BuildingBlocks\HoopHub.BuildingBlocks.Infrastructure\HoopHub.BuildingBlocks.Infrastructure.csproj", "{E1623659-2380-4234-9718-83EEFCD8A87D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.BuildingBlocks.Application", "BuildingBlocks\HoopHub.BuildingBlocks.Application\HoopHub.BuildingBlocks.Application.csproj", "{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.BuildingBlocks.Application", "BuildingBlocks\HoopHub.BuildingBlocks.Application\HoopHub.BuildingBlocks.Application.csproj", "{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.BuildingBlocks.API", "..\HoopHub.BuildingBlocks.API\HoopHub.BuildingBlocks.API.csproj", "{E6FDACE0-997C-4659-957D-9623FAEBD30A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6FDACE0-997C-4659-957D-9623FAEBD30A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6FDACE0-997C-4659-957D-9623FAEBD30A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6FDACE0-997C-4659-957D-9623FAEBD30A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6FDACE0-997C-4659-957D-9623FAEBD30A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{21D910BB-E36F-47CA-A2C8-6751E6B5E020} = {A6A4DE24-C909-437C-9B97-1BFB7213A924}
 		{E1623659-2380-4234-9718-83EEFCD8A87D} = {A6A4DE24-C909-437C-9B97-1BFB7213A924}
 		{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467} = {A6A4DE24-C909-437C-9B97-1BFB7213A924}
+		{E6FDACE0-997C-4659-957D-9623FAEBD30A} = {A6A4DE24-C909-437C-9B97-1BFB7213A924}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30301A2B-742A-41EE-97A7-8AAA199BE8F4}

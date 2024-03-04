@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Modules\NBAData\HoopHub.Modules.NBAData.Infrastructure\HoopHub.Modules.NBAData.Infrastructure.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HoopHub.BuildingBlocks.Application\HoopHub.BuildingBlocks.Application.csproj" />
   </ItemGroup>
 
