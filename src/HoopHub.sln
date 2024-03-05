@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.BuildingBlocks.Infr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.BuildingBlocks.Application", "BuildingBlocks\HoopHub.BuildingBlocks.Application\HoopHub.BuildingBlocks.Application.csproj", "{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.BuildingBlocks.API", "..\HoopHub.BuildingBlocks.API\HoopHub.BuildingBlocks.API.csproj", "{E6FDACE0-997C-4659-957D-9623FAEBD30A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.BuildingBlocks.API", "BuildingBlocks\HoopHub.BuildingBlocks.API\HoopHub.BuildingBlocks.API.csproj", "{B65FF259-3EF3-42FD-9528-1E2290E8D664}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +67,10 @@ Global
 		{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6FDACE0-997C-4659-957D-9623FAEBD30A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6FDACE0-997C-4659-957D-9623FAEBD30A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6FDACE0-997C-4659-957D-9623FAEBD30A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6FDACE0-997C-4659-957D-9623FAEBD30A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B65FF259-3EF3-42FD-9528-1E2290E8D664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B65FF259-3EF3-42FD-9528-1E2290E8D664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B65FF259-3EF3-42FD-9528-1E2290E8D664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B65FF259-3EF3-42FD-9528-1E2290E8D664}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,7 +84,7 @@ Global
 		{21D910BB-E36F-47CA-A2C8-6751E6B5E020} = {A6A4DE24-C909-437C-9B97-1BFB7213A924}
 		{E1623659-2380-4234-9718-83EEFCD8A87D} = {A6A4DE24-C909-437C-9B97-1BFB7213A924}
 		{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467} = {A6A4DE24-C909-437C-9B97-1BFB7213A924}
-		{E6FDACE0-997C-4659-957D-9623FAEBD30A} = {A6A4DE24-C909-437C-9B97-1BFB7213A924}
+		{B65FF259-3EF3-42FD-9528-1E2290E8D664} = {A6A4DE24-C909-437C-9B97-1BFB7213A924}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30301A2B-742A-41EE-97A7-8AAA199BE8F4}

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\HoopHub.BuildingBlocks.API\HoopHub.BuildingBlocks.API.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\HoopHub.BuildingBlocks.API\HoopHub.BuildingBlocks.API.csproj" />
     <ProjectReference Include="..\..\Modules\NBAData\HoopHub.Modules.NBAData.Infrastructure\HoopHub.Modules.NBAData.Infrastructure.csproj" />
   </ItemGroup>
 

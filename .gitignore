@@ -361,6 +361,8 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
+*.containers 
+
 # Visual Studio History (VSHistory) files
 .vshistory/
 

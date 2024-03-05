@@ -1,4 +1,5 @@
 using System.Reflection;
+using HoopHub.API.Extensions;
 using HoopHub.BuildingBlocks.Application.Persistence;
 using HoopHub.BuildingBlocks.Infrastructure;
 using HoopHub.Modules.NBAData.Application.Persistence;
@@ -16,15 +17,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connectionString = builder.Configuration.GetConnectionString("HoopHubContext");
+var connectionString = builder.Configuration.GetConnectionString("HoopHubConnection");
 builder.Services.AddDbContext<NBADataContext>(options =>
        options.UseNpgsql(
            connectionString,
-           o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "NBAData")));
+           o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "nba-data")));
 
 builder.Services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+{
+    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
+}
 
 var app = builder.Build();
 
@@ -34,6 +39,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();
