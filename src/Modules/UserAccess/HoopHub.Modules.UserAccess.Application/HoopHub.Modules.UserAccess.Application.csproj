@@ -7,13 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.2.0" />
-    <PackageReference Include="Riok.Mapperly" Version="3.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\HoopHub.BuildingBlocks.Application\HoopHub.BuildingBlocks.Application.csproj" />
-    <ProjectReference Include="..\HoopHub.Modules.NBAData.Domain\HoopHub.Modules.NBAData.Domain.csproj" />
+    <ProjectReference Include="..\HoopHub.Modules.UserAccess.Domain\HoopHub.Modules.UserAccess.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -27,7 +27,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.BuildingBlocks.Infr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.BuildingBlocks.Application", "BuildingBlocks\HoopHub.BuildingBlocks.Application\HoopHub.BuildingBlocks.Application.csproj", "{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.BuildingBlocks.API", "BuildingBlocks\HoopHub.BuildingBlocks.API\HoopHub.BuildingBlocks.API.csproj", "{B65FF259-3EF3-42FD-9528-1E2290E8D664}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.BuildingBlocks.API", "BuildingBlocks\HoopHub.BuildingBlocks.API\HoopHub.BuildingBlocks.API.csproj", "{B65FF259-3EF3-42FD-9528-1E2290E8D664}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserAccess", "UserAccess", "{6C943839-A4B8-4780-9E1B-E873ADAADC76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.UserAccess.Domain", "Modules\UserAccess\HoopHub.Modules.UserAccess.Domain\HoopHub.Modules.UserAccess.Domain.csproj", "{546B4124-834E-4D24-9578-47C18F919DC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.UserAccess.Application", "Modules\UserAccess\HoopHub.Modules.UserAccess.Application\HoopHub.Modules.UserAccess.Application.csproj", "{61EA6C74-392D-4E1C-9BD3-35E415459C18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.UserAccess.Infrastructure", "Modules\UserAccess\HoopHub.Modules.UserAccess.Infrastructure\HoopHub.Modules.UserAccess.Infrastructure.csproj", "{035639BD-3DD2-4BBD-834E-FA1D6E490735}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +79,18 @@ Global
 		{B65FF259-3EF3-42FD-9528-1E2290E8D664}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B65FF259-3EF3-42FD-9528-1E2290E8D664}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B65FF259-3EF3-42FD-9528-1E2290E8D664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{546B4124-834E-4D24-9578-47C18F919DC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{546B4124-834E-4D24-9578-47C18F919DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{546B4124-834E-4D24-9578-47C18F919DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{546B4124-834E-4D24-9578-47C18F919DC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61EA6C74-392D-4E1C-9BD3-35E415459C18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61EA6C74-392D-4E1C-9BD3-35E415459C18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61EA6C74-392D-4E1C-9BD3-35E415459C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61EA6C74-392D-4E1C-9BD3-35E415459C18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{035639BD-3DD2-4BBD-834E-FA1D6E490735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{035639BD-3DD2-4BBD-834E-FA1D6E490735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{035639BD-3DD2-4BBD-834E-FA1D6E490735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{035639BD-3DD2-4BBD-834E-FA1D6E490735}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +105,10 @@ Global
 		{E1623659-2380-4234-9718-83EEFCD8A87D} = {A6A4DE24-C909-437C-9B97-1BFB7213A924}
 		{3AD471DE-E3EE-4EBB-8422-E88DBD4A6467} = {A6A4DE24-C909-437C-9B97-1BFB7213A924}
 		{B65FF259-3EF3-42FD-9528-1E2290E8D664} = {A6A4DE24-C909-437C-9B97-1BFB7213A924}
+		{6C943839-A4B8-4780-9E1B-E873ADAADC76} = {C0F99C01-ECB8-4339-9B09-E9C4ABE7F501}
+		{546B4124-834E-4D24-9578-47C18F919DC7} = {6C943839-A4B8-4780-9E1B-E873ADAADC76}
+		{61EA6C74-392D-4E1C-9BD3-35E415459C18} = {6C943839-A4B8-4780-9E1B-E873ADAADC76}
+		{035639BD-3DD2-4BBD-834E-FA1D6E490735} = {6C943839-A4B8-4780-9E1B-E873ADAADC76}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30301A2B-742A-41EE-97A7-8AAA199BE8F4}

@@ -19,8 +19,10 @@ namespace HoopHub.Modules.NBAData.Infrastructure
                 .WithMany(t => t.Players)
                 .HasForeignKey(p => p.TeamId);
 
+            modelBuilder.Entity<Team>().HasKey(t => t.Id);
+            modelBuilder.Entity<Team>().ToTable("teams");
+
             modelBuilder.HasDefaultSchema("nba_data");
         }
     }
-
 }
