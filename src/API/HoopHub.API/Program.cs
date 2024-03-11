@@ -6,8 +6,12 @@ using HoopHub.BuildingBlocks.Infrastructure;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Infrastructure;
 using HoopHub.Modules.NBAData.Infrastructure.Persistence;
+using HoopHub.Modules.UserAccess.Application.Services.Login;
+using HoopHub.Modules.UserAccess.Application.Services.Registration;
 using HoopHub.Modules.UserAccess.Domain.Roles;
 using HoopHub.Modules.UserAccess.Infrastructure;
+using HoopHub.Modules.UserAccess.Infrastructure.Services.Login;
+using HoopHub.Modules.UserAccess.Infrastructure.Services.Registration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -107,6 +111,10 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"] ?? string.Empty))
     };
 });
+
+builder.Services.AddScoped<IRegistrationService, RegistrationService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+
 
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {

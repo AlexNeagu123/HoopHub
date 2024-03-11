@@ -14,11 +14,11 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration
         private readonly RegistrationMapper _userMapper = new();
         public async Task<Response<UserDto>> RegisterAsync(RegistrationModel request, string role)
         {
-            var validator = new RegistrationValidator();
+            var validator = new RegistrationValidator(_userManager);
             var validationResult = await validator.ValidateAsync(request);
             if (!validationResult.IsValid)
             {
-                var validationErrors = validationResult.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage);
+                var validationErrors = validationResult.Errors.Take(1).ToDictionary(error => error.PropertyName, error => error.ErrorMessage);
                 return new Response<UserDto>
                 {
                     Success = false,

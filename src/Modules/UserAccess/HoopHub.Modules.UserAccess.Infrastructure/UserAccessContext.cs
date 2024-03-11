@@ -11,6 +11,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure
         public UserAccessContext(DbContextOptions<UserAccessContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultSchema("user_access");
         }
     }

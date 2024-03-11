@@ -1,4 +1,5 @@
-﻿using HoopHub.Modules.NBAData.Infrastructure;
+﻿using HoopHub.Modules.UserAccess.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace HoopHub.API.Extensions
 {
@@ -7,10 +8,9 @@ namespace HoopHub.API.Extensions
         public static void ApplyMigrations(this IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<NBADataContext>();
-            //dbContext.Database.EnsureDeleted();
-            //dbContext.Database.EnsureCreated();
-            //dbContext.Database.Migrate();
+            var dbContext = scope.ServiceProvider.GetRequiredService<UserAccessContext>();
+            dbContext.Database.EnsureCreated();
+            dbContext.Database.Migrate();
         }
     }
 }
