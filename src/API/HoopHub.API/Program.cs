@@ -121,6 +121,13 @@ foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
 }
 
+builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", b =>
+{
+    b.WithOrigins("*")
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+}));
+
 var app = builder.Build();
 
 
@@ -137,5 +144,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("CorsPolicy");
 
 app.Run();
