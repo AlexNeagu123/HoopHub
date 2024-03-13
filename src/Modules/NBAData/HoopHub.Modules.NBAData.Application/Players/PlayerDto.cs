@@ -17,6 +17,6 @@
         public int? DraftNumber { get; set; }
         public bool IsActive { get; set; }
         public string? ImageUrl { get; set; }
-        public string? TeamId { get; set; }
+        public string? CurrentTeamId { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using HoopHub.Modules.NBAData.Domain.Teams;
 using System.ComponentModel.DataAnnotations.Schema;
+using HoopHub.Modules.NBAData.Domain.PlayerTeamSeasons;
 
 namespace HoopHub.Modules.NBAData.Domain.Players
 {
@@ -50,10 +51,10 @@ namespace HoopHub.Modules.NBAData.Domain.Players
         [Column("is_active")]
         public bool IsActive { get; private set; }
 
-        [Column("team_id")] 
-        public Guid TeamId { get; private set; } 
-
-        [ForeignKey("TeamId")] 
-        public Team Team { get; set; }
+        [Column("current_team_id")]
+        [ForeignKey("Team")]
+        public Guid? CurrentTeamId { get; private set; }
+        public Team? CurrentTeam { get; private set; }
+        public ICollection<PlayerTeamSeason> PlayerTeamSeasons { get; private set; }
     }
 }

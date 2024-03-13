@@ -1,5 +1,6 @@
 ﻿using HoopHub.Modules.NBAData.Domain.Players;
 using System.ComponentModel.DataAnnotations.Schema;
+using HoopHub.Modules.NBAData.Domain.PlayerTeamSeasons;
 
 namespace HoopHub.Modules.NBAData.Domain.Teams
 {
@@ -28,6 +29,7 @@ namespace HoopHub.Modules.NBAData.Domain.Teams
 
         [Column("image_url")]
         public string ImageUrl { get; private set; }
-        public ICollection<Player> Players { get; private set; } 
+        public ICollection<Player> Players { get; set; }
+        public ICollection<PlayerTeamSeason> PlayerTeamSeasons { get; private set; }
     }
 }

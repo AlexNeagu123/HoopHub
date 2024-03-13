@@ -83,6 +83,7 @@ builder.Services.AddDbContext<UserAccessContext>(options =>
 builder.Services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<IPlayerTeamSeasonRepository, PlayerTeamSeasonRepository>();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserAccessContext>()
     .AddDefaultTokenProviders();
