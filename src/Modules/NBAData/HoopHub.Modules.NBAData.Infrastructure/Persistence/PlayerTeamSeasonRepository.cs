@@ -11,7 +11,7 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
     {
         public async Task<Result<IReadOnlyList<PlayerTeamSeason>>> GetTeamHistoryByPlayerId(Guid playerId)
         {
-            var teamHistory = await context.Set<PlayerTeamSeason>()
+            var teamHistory = await Context.Set<PlayerTeamSeason>()
                 .Include(p => p.Team)
                 .Include(p => p.Season)
                 .Where(p => p.PlayerId == playerId)

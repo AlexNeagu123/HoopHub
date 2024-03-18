@@ -1,4 +1,6 @@
-﻿namespace HoopHub.Modules.NBAData.Application.Teams
+﻿using HoopHub.Modules.NBAData.Application.Players;
+
+namespace HoopHub.Modules.NBAData.Application.Teams
 {
     public class TeamDto
     {
@@ -10,5 +12,6 @@
         public string Conference { get; set; }
         public string Division { get; set; }
         public string ImageUrl { get; set; }
+        public IReadOnlyList<PlayerDto>? Players { get; set; } = null;
     }
 }
