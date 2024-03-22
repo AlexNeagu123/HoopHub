@@ -2,7 +2,7 @@
 using HoopHub.BuildingBlocks.Application.Responses;
 using HoopHub.Modules.UserAccess.Application.Services.Login;
 using HoopHub.Modules.UserAccess.Domain.Login;
-using HoopHub.Modules.UserAccess.Domain.Roles;
+using HoopHub.Modules.UserAccess.Domain.Users;
 using HoopHub.Modules.UserAccess.Infrastructure.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;

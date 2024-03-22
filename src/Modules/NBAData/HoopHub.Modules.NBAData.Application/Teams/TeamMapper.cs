@@ -12,8 +12,8 @@ namespace HoopHub.Modules.NBAData.Application.Teams {
 
         public TeamDto TeamToTeamDto(Team team)
         {
-            var playerDtoList = team.Players is not null ? team.Players.Select(_playerMapper.PlayerToPlayerDto).ToList() : null;
-            var teamBio = team.TeamBio is not null ? team.TeamBio.Select(_teamBioMapper.TeamBioToTeamBioDto).ToList() : null;
+            var playerDtoList = team.Players is not null ? team.Players.Select(_playerMapper.PlayerToPlayerDto).ToList() : [];
+            var teamBio = team.TeamBio is not null ? team.TeamBio.Select(_teamBioMapper.TeamBioToTeamBioDto).ToList() : [];
 
             return new TeamDto
             {

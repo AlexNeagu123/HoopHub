@@ -1,5 +1,5 @@
-﻿using HoopHub.Modules.UserAccess.Domain.Registration;
-using HoopHub.Modules.UserAccess.Domain.Roles;
+﻿using HoopHub.Modules.UserAccess.Application.Services.Registration;
+using HoopHub.Modules.UserAccess.Domain.Users;
 using Riok.Mapperly.Abstractions;
 
 namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration

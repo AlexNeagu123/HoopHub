@@ -6,7 +6,7 @@ namespace HoopHub.Modules.NBAData.Application.Teams.GetTeamById
     {
         public GetTeamByIdQueryValidator()
         {
-            RuleFor(x => x.TeamId).NotEmpty().NotNull().WithMessage("Id is required").WithName("Id");
+            RuleFor(x => x.TeamId).NotEmpty().NotNull().WithMessage("PlayerId is required").WithName("PlayerId");
         }
     }
 }

@@ -3,12 +3,14 @@ using HoopHub.API.Extensions;
 using HoopHub.API.Utility;
 using HoopHub.BuildingBlocks.Application.Persistence;
 using HoopHub.BuildingBlocks.Infrastructure;
+using HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Infrastructure;
+using HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices;
 using HoopHub.Modules.NBAData.Infrastructure.Persistence;
 using HoopHub.Modules.UserAccess.Application.Services.Login;
 using HoopHub.Modules.UserAccess.Application.Services.Registration;
-using HoopHub.Modules.UserAccess.Domain.Roles;
+using HoopHub.Modules.UserAccess.Domain.Users;
 using HoopHub.Modules.UserAccess.Infrastructure;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.Login;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.Registration;
@@ -115,7 +117,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
-
+builder.Services.AddScoped<ISeasonAverageStatsService, SeasonAverageStatsService>();
 
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {

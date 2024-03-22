@@ -24,7 +24,7 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Migrations
 
             modelBuilder.Entity("HoopHub.Modules.NBAData.Domain.Players.Player", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("PlayerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -36,7 +36,7 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("PlayerId");
 
                     b.ToTable("Players");
                 });

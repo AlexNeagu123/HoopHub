@@ -14,6 +14,7 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
             var teamHistory = await Context.Set<PlayerTeamSeason>()
                 .Include(p => p.Team)
                 .Include(p => p.Season)
+                .Include(p => p.Player)
                 .Where(p => p.PlayerId == playerId)
                 .ToListAsync();
 

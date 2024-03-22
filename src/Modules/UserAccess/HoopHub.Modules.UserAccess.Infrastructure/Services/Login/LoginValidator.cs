@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using HoopHub.Modules.UserAccess.Domain.Login;
-using HoopHub.Modules.UserAccess.Domain.Roles;
+using HoopHub.Modules.UserAccess.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 
 namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Login

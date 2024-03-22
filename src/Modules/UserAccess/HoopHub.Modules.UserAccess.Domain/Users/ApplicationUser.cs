@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace HoopHub.Modules.UserAccess.Domain.Roles
+namespace HoopHub.Modules.UserAccess.Domain.Users
 {
     public class ApplicationUser : IdentityUser
     {

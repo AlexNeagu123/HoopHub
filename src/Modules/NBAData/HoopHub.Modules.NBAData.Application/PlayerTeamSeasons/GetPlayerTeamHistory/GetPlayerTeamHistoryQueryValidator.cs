@@ -6,7 +6,7 @@ namespace HoopHub.Modules.NBAData.Application.PlayerTeamSeasons.GetPlayerTeamHis
     {
         public GetPlayerTeamHistoryQueryValidator()
         {
-            RuleFor(x => x.PlayerId).NotEmpty().WithMessage("Id is required").WithName("Id");
+            RuleFor(x => x.PlayerId).NotEmpty().WithMessage("PlayerId is required").WithName("PlayerId");
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace HoopHub.Modules.NBAData.Application.Players
+﻿using HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats;
+
+namespace HoopHub.Modules.NBAData.Application.Players
 {
     public class PlayerDto
     {
@@ -18,5 +20,7 @@
         public bool IsActive { get; set; }
         public string? ImageUrl { get; set; }
         public string? CurrentTeamId { get; set; }
+
+        public List<SeasonAverageStatsDto> SeasonAverageStats { get; set; } = [];
     }
 }

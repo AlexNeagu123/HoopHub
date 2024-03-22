@@ -1,4 +1,4 @@
-﻿namespace HoopHub.Modules.UserAccess.Domain.Registration
+﻿namespace HoopHub.Modules.UserAccess.Application.Services.Registration
 {
     public class UserDto
     {

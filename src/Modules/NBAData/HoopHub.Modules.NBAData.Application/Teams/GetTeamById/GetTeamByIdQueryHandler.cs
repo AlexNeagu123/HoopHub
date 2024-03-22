@@ -30,7 +30,7 @@ namespace HoopHub.Modules.NBAData.Application.Teams.GetTeamById
                 return new Response<TeamDto>
                 {
                     Success = false,
-                    ValidationErrors = new Dictionary<string, string> { { "Id", queryResult.ErrorMsg } }
+                    ValidationErrors = new Dictionary<string, string> { { "PlayerId", queryResult.ErrorMsg } }
                 };
             }
 

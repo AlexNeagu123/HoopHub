@@ -1,4 +1,4 @@
-﻿using HoopHub.Modules.UserAccess.Domain.Roles;
+﻿using HoopHub.Modules.UserAccess.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

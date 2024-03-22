@@ -13,7 +13,7 @@ namespace HoopHub.Modules.NBAData.Application.Teams
         public string Conference { get; set; }
         public string Division { get; set; }
         public string ImageUrl { get; set; }
-        public IReadOnlyList<PlayerDto>? Players { get; set; } = null;
-        public IReadOnlyList<TeamBioDto>? TeamBio { get; set; } = null;
+        public List<PlayerDto> Players { get; set; } = [];
+        public List<TeamBioDto> TeamBio { get; set; } = [];
     }
 }
