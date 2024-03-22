@@ -30,7 +30,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Login
                 };
             }
 
-            var user = (await _userManager.FindByNameAsync(request.Username))!;
+            var user = (await _userManager.FindByNameAsync(request.UserName))!;
             var userRoles = await _userManager.GetRolesAsync(user);
             var authClaims = new List<Claim>
             {
