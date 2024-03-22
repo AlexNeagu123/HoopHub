@@ -13,5 +13,13 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
             var result = await Context.Set<Team>().Include(t => t.Players).FirstOrDefaultAsync(t => t.Id == id);
             return result == null ? Result<Team>.Failure($"Entity with Id {id} not found") : Result<Team>.Success(result);
         }
+
+        public virtual async Task<Result<Team>> FindByIdAsyncIncludingBio(Guid id)
+        {
+            var result = await Context.Set<Team>().Include(t => t.TeamBio)
+                .ThenInclude(tb => tb.Season)
+                .FirstOrDefaultAsync(t => t.Id == id);
+            return result == null ? Result<Team>.Failure($"Entity with Id {id} not found") : Result<Team>.Success(result);
+        }
     }
 }

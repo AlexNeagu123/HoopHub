@@ -7,5 +7,6 @@ namespace HoopHub.Modules.NBAData.Application.Persistence
     public interface ITeamRepository : IAsyncRepository<Team>
     {
         Task<Result<Team>> FindByIdAsyncIncludingPlayers(Guid id);
+        Task<Result<Team>> FindByIdAsyncIncludingBio(Guid id);
     }
 }

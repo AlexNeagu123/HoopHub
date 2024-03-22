@@ -1,4 +1,5 @@
 ﻿using HoopHub.Modules.NBAData.Application.Players;
+using HoopHub.Modules.NBAData.Application.TeamBios;
 
 namespace HoopHub.Modules.NBAData.Application.Teams
 {
@@ -13,5 +14,6 @@ namespace HoopHub.Modules.NBAData.Application.Teams
         public string Division { get; set; }
         public string ImageUrl { get; set; }
         public IReadOnlyList<PlayerDto>? Players { get; set; } = null;
+        public IReadOnlyList<TeamBioDto>? TeamBio { get; set; } = null;
     }
 }
