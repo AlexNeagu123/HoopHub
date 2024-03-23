@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using HoopHub.Modules.NBAData.Application.Constants;
 
 namespace HoopHub.Modules.NBAData.Application.Teams.GetTeamById
 {
@@ -6,7 +7,7 @@ namespace HoopHub.Modules.NBAData.Application.Teams.GetTeamById
     {
         public GetTeamByIdQueryValidator()
         {
-            RuleFor(x => x.TeamId).NotEmpty().NotNull().WithMessage("PlayerId is required").WithName("PlayerId");
+            RuleFor(x => x.TeamId).NotEmpty().NotNull().WithMessage(ErrorMessages.TeamIdEmpty);
         }
     }
 }

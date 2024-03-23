@@ -1,4 +1,5 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
+using HoopHub.Modules.UserAccess.Application.Constants;
 using HoopHub.Modules.UserAccess.Application.Services.Registration;
 using HoopHub.Modules.UserAccess.Domain.Registration;
 using HoopHub.Modules.UserAccess.Domain.Users;
@@ -39,7 +40,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration
                 return new Response<UserDto>
                 {
                     Success = false,
-                    ValidationErrors = createResult.Errors.Take(1).ToDictionary(error => "Password", error => error.Description)
+                    ValidationErrors = createResult.Errors.Take(1).ToDictionary(error => ValidationKeys.Password, error => error.Description)
                 };
             }
 

@@ -14,7 +14,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Login
         : ILoginService
     {
         private readonly UserManager<ApplicationUser> _userManager = userManager;
-        private readonly JWTProvider _jwtProvider = new(configuration);
+        private readonly JwtProvider _jwtProvider = new(configuration);
 
         public async Task<Response<string>> LoginAsync(LoginModel request)
         {

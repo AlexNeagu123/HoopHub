@@ -1,4 +1,5 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
+using HoopHub.Modules.NBAData.Application.Constants;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Application.Teams;
@@ -33,7 +34,7 @@ namespace HoopHub.Modules.NBAData.Application.Players.GetBioByPlayerId
                 return new Response<PlayerDto>
                 {
                     Success = false,
-                    ValidationErrors = new Dictionary<string, string> { { "PlayerId", queryResult.ErrorMsg } }
+                    ValidationErrors = new Dictionary<string, string> { { ValidationKeys.PlayerId, queryResult.ErrorMsg } }
                 };
             }
 
@@ -43,20 +44,26 @@ namespace HoopHub.Modules.NBAData.Application.Players.GetBioByPlayerId
                 return new Response<PlayerDto>
                 {
                     Success = false,
-                    ValidationErrors = new Dictionary<string, string> { { "PlayerBio", "Player bio not found" } }
+                    ValidationErrors = new Dictionary<string, string> { { ValidationKeys.PlayerBio, ErrorMessages.PlayerBioNotFound } }
                 };
             }
 
             var playerDto = _playerMapper.PlayerToPlayerDto(playerHistory[0].Player);
             foreach (var seasonInfo in playerHistory)
             {
+                var intSeason = GetIntSeasonStart(seasonInfo.Season.SeasonPeriod);
+                if (intSeason < request.StartSeason || intSeason >= request.EndSeason)
+                {
+                    continue;
+                }
+
                 var statsResult = await _averageStatsService.GetAverageStatsBySeasonIdAndPlayerIdAsync(seasonInfo.Season.SeasonPeriod, playerDto.ApiId);
                 if (!statsResult.IsSuccess)
                 {
                     return new Response<PlayerDto>
                     {
                         Success = false,
-                        ValidationErrors = new Dictionary<string, string> { { "AverageStats", statsResult.ErrorMsg } }
+                        ValidationErrors = new Dictionary<string, string> { { ValidationKeys.AverageStats, statsResult.ErrorMsg } }
                     };
                 }
 
@@ -70,6 +77,12 @@ namespace HoopHub.Modules.NBAData.Application.Players.GetBioByPlayerId
                 Success = true,
                 Data = playerDto
             };
+        }
+
+        private static int GetIntSeasonStart(string seasonPeriod)
+        {
+            var parts = seasonPeriod.Split('-');
+            return parts.Length != 2 ? 0 : int.Parse(parts[0]);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
+using HoopHub.Modules.NBAData.Application.Constants;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using MediatR;
 
@@ -30,7 +31,7 @@ namespace HoopHub.Modules.NBAData.Application.Teams.GetTeamById
                 return new Response<TeamDto>
                 {
                     Success = false,
-                    ValidationErrors = new Dictionary<string, string> { { "PlayerId", queryResult.ErrorMsg } }
+                    ValidationErrors = new Dictionary<string, string> { { ValidationKeys.TeamId, queryResult.ErrorMsg } }
                 };
             }
 

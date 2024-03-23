@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using HoopHub.Modules.NBAData.Application.Constants;
 
 namespace HoopHub.Modules.NBAData.Application.PlayerTeamSeasons.GetPlayerTeamHistory
 {
@@ -6,7 +7,7 @@ namespace HoopHub.Modules.NBAData.Application.PlayerTeamSeasons.GetPlayerTeamHis
     {
         public GetPlayerTeamHistoryQueryValidator()
         {
-            RuleFor(x => x.PlayerId).NotEmpty().WithMessage("PlayerId is required").WithName("PlayerId");
+            RuleFor(x => x.PlayerId).NotEmpty().WithMessage(ErrorMessages.PlayerIdEmpty);
         }
     }
 }

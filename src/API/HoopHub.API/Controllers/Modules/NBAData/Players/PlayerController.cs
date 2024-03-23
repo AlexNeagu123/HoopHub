@@ -14,6 +14,10 @@ namespace HoopHub.API.Controllers.Modules.NBAData.Players
         public async Task<IActionResult> GetAllPlayersByTeam(Guid id)
         {
             var response = await Mediator.Send(new GetActivePlayersByTeamQuery { TeamId = id });
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
             return Ok(response);
         }
 
@@ -22,17 +26,21 @@ namespace HoopHub.API.Controllers.Modules.NBAData.Players
         public async Task<IActionResult> GetPlayerHistory(Guid id)
         {
             var response = await Mediator.Send(new GetPlayerTeamHistoryQuery { PlayerId = id });
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
             return Ok(response);
         }
 
         [HttpGet("bio/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetPlayerBio(Guid id)
+        public async Task<IActionResult> GetPlayerBio(Guid id, [FromQuery] int startSeason, [FromQuery] int endSeason)
         {
-            var response = await Mediator.Send(new GetBioByPlayerIdQuery{ PlayerId = id });
+            var response = await Mediator.Send(new GetBioByPlayerIdQuery(id, startSeason, endSeason));
             if (!response.Success)
             {
-                BadRequest(response);
+                return BadRequest(response);
             }
             return Ok(response);
         }

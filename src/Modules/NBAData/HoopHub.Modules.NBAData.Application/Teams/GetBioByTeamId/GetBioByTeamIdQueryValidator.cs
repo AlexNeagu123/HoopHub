@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using HoopHub.Modules.NBAData.Application.Constants;
 
 namespace HoopHub.Modules.NBAData.Application.Teams.GetBioByTeamId
 {
@@ -6,7 +7,7 @@ namespace HoopHub.Modules.NBAData.Application.Teams.GetBioByTeamId
     {
         public GetBioByTeamIdQueryValidator()
         {
-            RuleFor(x => x.TeamId).NotEmpty();
+            RuleFor(x => x.TeamId).NotEmpty().WithMessage(ErrorMessages.TeamIdEmpty);
         }
     }
 }
