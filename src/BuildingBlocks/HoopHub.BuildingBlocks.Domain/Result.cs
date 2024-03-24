@@ -12,7 +12,7 @@
         public bool IsSuccess { get; }
         public T Value { get; }
         public string ErrorMsg { get; }
-        public static Result<T> Success(T value) => new Result<T>(true, value, null);
-        public static Result<T> Failure(string errorMsg) => new Result<T>(false, null, errorMsg);
+        public static Result<T> Success(T value) => new(true, value, null);
+        public static Result<T> Failure(string errorMsg) => new(false, null, errorMsg);
     }
 }

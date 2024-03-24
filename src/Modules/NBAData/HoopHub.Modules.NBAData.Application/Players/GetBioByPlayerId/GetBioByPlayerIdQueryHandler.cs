@@ -20,54 +20,29 @@ namespace HoopHub.Modules.NBAData.Application.Players.GetBioByPlayerId
             var validator = new GetBioByPlayerIdQueryValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
-            {
-                return new Response<PlayerDto>
-                {
-                    Success = false,
-                    ValidationErrors = validationResult.Errors.Take(1).ToDictionary(error => error.PropertyName, error => error.ErrorMessage)
-                };
-            }
+                return Response<PlayerDto>.ErrorResponseFromFluentResult(validationResult);
 
             var queryResult = await _playerTeamSeasonRepository.GetTeamHistoryByPlayerId(request.PlayerId);
             if (!queryResult.IsSuccess)
-            {
-                return new Response<PlayerDto>
-                {
-                    Success = false,
-                    ValidationErrors = new Dictionary<string, string> { { ValidationKeys.PlayerId, queryResult.ErrorMsg } }
-                };
-            }
+                return Response<PlayerDto>.ErrorResponseFromKeyMessage(queryResult.ErrorMsg, ValidationKeys.PlayerId);
 
             var playerHistory = queryResult.Value;
             if (playerHistory.Count == 0)
-            {
-                return new Response<PlayerDto>
-                {
-                    Success = false,
-                    ValidationErrors = new Dictionary<string, string> { { ValidationKeys.PlayerBio, ErrorMessages.PlayerBioNotFound } }
-                };
-            }
+                return Response<PlayerDto>.ErrorResponseFromKeyMessage(ErrorMessages.PlayerBioNotFound, ValidationKeys.PlayerBio);
 
             var playerDto = _playerMapper.PlayerToPlayerDto(playerHistory[0].Player);
             foreach (var seasonInfo in playerHistory)
             {
                 var intSeason = GetIntSeasonStart(seasonInfo.Season.SeasonPeriod);
                 if (intSeason < request.StartSeason || intSeason >= request.EndSeason)
-                {
                     continue;
-                }
 
                 var statsResult = await _averageStatsService.GetAverageStatsBySeasonIdAndPlayerIdAsync(seasonInfo.Season.SeasonPeriod, playerDto.ApiId);
                 if (!statsResult.IsSuccess)
-                {
-                    return new Response<PlayerDto>
-                    {
-                        Success = false,
-                        ValidationErrors = new Dictionary<string, string> { { ValidationKeys.AverageStats, statsResult.ErrorMsg } }
-                    };
-                }
+                    return Response<PlayerDto>.ErrorResponseFromKeyMessage(statsResult.ErrorMsg, ValidationKeys.AverageStats);
 
                 var stats = statsResult.Value;
+                seasonInfo.Team.Players = null!;
                 stats.Team = _teamMapper.TeamToTeamDto(seasonInfo.Team);
                 playerDto.SeasonAverageStats.Add(stats);
             }

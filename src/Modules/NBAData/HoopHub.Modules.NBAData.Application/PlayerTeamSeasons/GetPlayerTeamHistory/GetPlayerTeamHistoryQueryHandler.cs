@@ -15,17 +15,12 @@ namespace HoopHub.Modules.NBAData.Application.PlayerTeamSeasons.GetPlayerTeamHis
             var validator = new GetPlayerTeamHistoryQueryValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
-            {
-                return new Response<IReadOnlyList<PlayerTeamSeasonDto>>
-                {
-                    Success = false,
-                    ValidationErrors = validationResult.Errors.Take(1).ToDictionary(error => error.PropertyName, error => error.ErrorMessage)
-                };
-            }
+                return Response<IReadOnlyList<PlayerTeamSeasonDto>>.ErrorResponseFromFluentResult(validationResult);
 
             var queryResult = await _playerTeamSeasonRepository.GetTeamHistoryByPlayerId(request.PlayerId);
             var playerTeamHistory = queryResult.Value;
             var playerTeamHistoryDtoList = playerTeamHistory.Select(p => _playerTeamSeasonMapper.PlayerTeamSeasonToPlayerTeamSeasonDto(p)).ToList();
+
             return new Response<IReadOnlyList<PlayerTeamSeasonDto>>
             {
                 Success = true,

@@ -18,14 +18,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration
             var validator = new RegistrationValidator(_userManager);
             var validationResult = await validator.ValidateAsync(request);
             if (!validationResult.IsValid)
-            {
-                var validationErrors = validationResult.Errors.Take(1).ToDictionary(error => error.PropertyName, error => error.ErrorMessage);
-                return new Response<UserDto>
-                {
-                    Success = false,
-                    ValidationErrors = validationErrors
-                };
-            }
+                return Response<UserDto>.ErrorResponseFromFluentResult(validationResult);
 
             ApplicationUser user = new()
             {
@@ -49,7 +42,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration
                 await _roleManager.CreateAsync(new IdentityRole(role));
             }
             await _userManager.AddToRoleAsync(user, role);
-            
+
             return new Response<UserDto>
             {
                 Success = true,

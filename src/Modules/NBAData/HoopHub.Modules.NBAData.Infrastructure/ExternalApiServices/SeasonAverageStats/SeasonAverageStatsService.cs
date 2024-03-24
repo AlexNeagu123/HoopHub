@@ -1,10 +1,11 @@
 ﻿using System.Net.Http.Headers;
 using HoopHub.BuildingBlocks.Domain;
+using HoopHub.Modules.NBAData.Application.ExternalApiServices;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
-namespace HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices
+namespace HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.SeasonAverageStats
 {
     public class SeasonAverageStatsService(IConfiguration configuration) : BaseExternalApiService(configuration), ISeasonAverageStatsService
     {
@@ -29,8 +30,8 @@ namespace HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var seasonAverageStats = JsonConvert.DeserializeObject<BaseExternalApiResponse<SeasonAverageStatsDto>>(responseBody);
 
-                return seasonAverageStats == null 
-                    ? Result<SeasonAverageStatsDto>.Failure("No data found") 
+                return seasonAverageStats == null
+                    ? Result<SeasonAverageStatsDto>.Failure("No data found")
                     : Result<SeasonAverageStatsDto>.Success(seasonAverageStats.Data[0]);
             }
             catch (Exception e)

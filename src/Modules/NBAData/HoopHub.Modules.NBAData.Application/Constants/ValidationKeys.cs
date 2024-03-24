@@ -6,5 +6,7 @@
         public const string PlayerId = "PlayerId";
         public const string TeamId = "TeamId";
         public const string AverageStats = "AverageStats";
+        public const string Games = "Games";
+        public const string TeamApiId = "TeamApiId";
     }
 }

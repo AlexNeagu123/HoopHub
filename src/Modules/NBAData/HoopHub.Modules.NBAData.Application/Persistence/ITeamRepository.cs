@@ -8,5 +8,6 @@ namespace HoopHub.Modules.NBAData.Application.Persistence
     {
         Task<Result<Team>> FindByIdAsyncIncludingPlayers(Guid id);
         Task<Result<Team>> FindByIdAsyncIncludingBio(Guid id);
+        Task<Result<Team>> FindByApiIdAsync(int apiId);
     }
 }

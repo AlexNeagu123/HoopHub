@@ -21,14 +21,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Login
             var validator = new LoginValidator(_userManager);
             var validationResult = await validator.ValidateAsync(request);
             if (!validationResult.IsValid)
-            {
-                var validationErrors = validationResult.Errors.Take(1).ToDictionary(error => error.PropertyName, error => error.ErrorMessage);
-                return new Response<string>
-                {
-                    Success = false,
-                    ValidationErrors = validationErrors
-                };
-            }
+                return Response<string>.ErrorResponseFromFluentResult(validationResult);
 
             var user = (await _userManager.FindByNameAsync(request.UserName))!;
             var userRoles = await _userManager.GetRolesAsync(user);
