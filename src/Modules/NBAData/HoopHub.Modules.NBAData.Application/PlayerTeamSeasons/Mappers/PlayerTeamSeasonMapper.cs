@@ -1,6 +1,6 @@
 ﻿using HoopHub.Modules.NBAData.Application.PlayerTeamSeasons.Dtos;
 using HoopHub.Modules.NBAData.Application.Seasons;
-using HoopHub.Modules.NBAData.Application.Teams;
+using HoopHub.Modules.NBAData.Application.Teams.Mappers;
 using HoopHub.Modules.NBAData.Domain.PlayerTeamSeasons;
 
 namespace HoopHub.Modules.NBAData.Application.PlayerTeamSeasons.Mappers

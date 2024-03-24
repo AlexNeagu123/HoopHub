@@ -52,6 +52,9 @@ namespace HoopHub.Modules.NBAData.Application.Games.GetBoxScoreByGame
                 
                 foreach(var apiPlayer in boxScore.HomeTeam.Players)
                 {
+                    if(apiPlayer.Player == null) 
+                        continue;
+
                     var boxScorePlayerDto = _boxScorePlayerMapper.BoxScoreApiPlayerDtoToBoxScorePlayerDto(apiPlayer);
                     var player = await _playerRepository.FindByApiIdAsync(apiPlayer.Player.Id);
                     if (player.IsSuccess == false)
@@ -63,6 +66,9 @@ namespace HoopHub.Modules.NBAData.Application.Games.GetBoxScoreByGame
 
                 foreach (var apiPlayer in boxScore.VisitorTeam.Players)
                 {
+                    if(apiPlayer.Player == null) 
+                        continue;
+
                     var boxScorePlayerDto = _boxScorePlayerMapper.BoxScoreApiPlayerDtoToBoxScorePlayerDto(apiPlayer);
                     var player = await _playerRepository.FindByApiIdAsync(apiPlayer.Player.Id);
                     if (player.IsSuccess == false)

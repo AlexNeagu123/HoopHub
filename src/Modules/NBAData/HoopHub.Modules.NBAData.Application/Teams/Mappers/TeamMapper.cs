@@ -4,7 +4,7 @@ using HoopHub.Modules.NBAData.Application.Teams.Dtos;
 using HoopHub.Modules.NBAData.Domain.Teams;
 
 
-namespace HoopHub.Modules.NBAData.Application.Teams
+namespace HoopHub.Modules.NBAData.Application.Teams.Mappers
 {
 
     public class TeamMapper

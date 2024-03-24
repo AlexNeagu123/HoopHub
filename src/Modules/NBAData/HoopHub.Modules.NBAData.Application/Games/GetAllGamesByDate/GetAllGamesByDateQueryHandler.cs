@@ -4,7 +4,7 @@ using HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData;
 using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using HoopHub.Modules.NBAData.Application.Games.Mappers;
 using HoopHub.Modules.NBAData.Application.Persistence;
-using HoopHub.Modules.NBAData.Application.Teams;
+using HoopHub.Modules.NBAData.Application.Teams.Mappers;
 using MediatR;
 
 namespace HoopHub.Modules.NBAData.Application.Games.GetAllGamesByDate
