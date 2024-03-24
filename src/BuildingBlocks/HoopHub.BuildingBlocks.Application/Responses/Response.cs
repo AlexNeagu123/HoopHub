@@ -1,5 +1,4 @@
 ﻿using FluentValidation.Results;
-using HoopHub.BuildingBlocks.Domain;
 
 namespace HoopHub.BuildingBlocks.Application.Responses
 {

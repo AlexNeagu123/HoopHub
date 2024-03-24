@@ -15,5 +15,12 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
                 .ToListAsync();
             return Result<IReadOnlyList<Player>>.Success(players);
         }
+
+        public async Task<Result<Player>> FindByApiIdAsync(int apiId)
+        {
+            var player = await context.Set<Player>()
+                .FirstOrDefaultAsync(p => p.ApiId == apiId);
+            return player == null ? Result<Player>.Failure($"Entity with ApiId {apiId} not found") : Result<Player>.Success(player);
+        }
     }
 }

@@ -18,9 +18,9 @@ namespace HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData
         public int VisitorTeamScore { get; set; }
 
         [JsonProperty("home_team")]
-        public BoxScoreTeamApiDto? HomeTeam { get; set; }
+        public BoxScoreTeamApiDto HomeTeam { get; set; }
 
         [JsonProperty("visitor_team")]
-        public BoxScoreTeamApiDto? VisitorTeam { get; set; }
+        public BoxScoreTeamApiDto VisitorTeam { get; set; }
     }
 }

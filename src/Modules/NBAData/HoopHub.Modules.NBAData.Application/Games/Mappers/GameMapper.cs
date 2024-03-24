@@ -2,7 +2,7 @@
 using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using HoopHub.Modules.NBAData.Application.Teams.Dtos;
 
-namespace HoopHub.Modules.NBAData.Application.Games
+namespace HoopHub.Modules.NBAData.Application.Games.Mappers
 {
     public class GameMapper
     {

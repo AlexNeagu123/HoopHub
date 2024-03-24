@@ -1,7 +1,6 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
-using HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -10,7 +9,7 @@ namespace HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.BoxScoresDa
 {
     public class BoxScoresDataService(IConfiguration configuration) : BaseExternalApiService(configuration), IBoxScoresDataService
     {
-        public async Task<Result<IReadOnlyList<BoxScoreApiDto>>> GetBoxScoresAsyncByDate(DateTime date)
+        public async Task<Result<IReadOnlyList<BoxScoreApiDto>>> GetBoxScoresAsyncByDate(string date)
         {
             using var client = new HttpClient();
             client.BaseAddress = new Uri(BallDontLieBaseUrl);
@@ -18,7 +17,7 @@ namespace HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.BoxScoresDa
 
             try
             {
-                var response = await client.GetAsync($"{BoxScores}?dates[]={date}");
+                var response = await client.GetAsync($"{BoxScores}?date={date}");
                 response.EnsureSuccessStatusCode();
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var boxScores = JsonConvert.DeserializeObject<BaseExternalApiResponse<BoxScoreApiDto>>(responseBody);

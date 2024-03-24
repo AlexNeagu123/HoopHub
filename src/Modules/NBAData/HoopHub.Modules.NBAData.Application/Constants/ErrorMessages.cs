@@ -8,5 +8,8 @@
         public const string TeamIdEmpty = "Team id is required";
         public const string DateEmpty = "Date is required";
         public const string DateInvalidFormat = "Date must be in valid format (YYYY-MM-DD)";
+        public const string HomeTeamApiIdEmpty = "Home team api id is required";
+        public const string VisitorTeamApiIdEmpty = "Visitor team api id is required";
+        public const string BoxScoreNotFound = "Box score not found";
     }
 }

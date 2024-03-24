@@ -3,10 +3,12 @@ using HoopHub.API.Extensions;
 using HoopHub.API.Utility;
 using HoopHub.BuildingBlocks.Application.Persistence;
 using HoopHub.BuildingBlocks.Infrastructure;
+using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Infrastructure;
+using HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.BoxScoresData;
 using HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.GamesData;
 using HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.SeasonAverageStats;
 using HoopHub.Modules.NBAData.Infrastructure.Persistence;
@@ -121,6 +123,7 @@ builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<ISeasonAverageStatsService, SeasonAverageStatsService>();
 builder.Services.AddScoped<IGamesDataService, GamesDataService>();
+builder.Services.AddScoped<IBoxScoresDataService, BoxScoresDataService>();
 
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {

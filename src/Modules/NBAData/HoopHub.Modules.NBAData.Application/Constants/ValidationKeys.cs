@@ -8,5 +8,7 @@
         public const string AverageStats = "AverageStats";
         public const string Games = "Games";
         public const string TeamApiId = "TeamApiId";
+        public const string BoxScores = "BoxScores";
+        public const string PlayerApiId = "PlayerApiId";
     }
 }

@@ -12,7 +12,7 @@ namespace HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData
         public string? FullName { get; set; }
         public string? Abbreviation { get; set; }
 
-        [JsonProperty("players")] 
+        [JsonProperty("players")]
         public List<BoxScorePlayerApiDto> Players { get; set; } = [];
     }
 }
