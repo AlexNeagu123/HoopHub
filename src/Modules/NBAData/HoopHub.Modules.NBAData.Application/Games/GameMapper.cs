@@ -1,5 +1,6 @@
 ﻿using HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData;
-using HoopHub.Modules.NBAData.Application.Teams;
+using HoopHub.Modules.NBAData.Application.Games.Dtos;
+using HoopHub.Modules.NBAData.Application.Teams.Dtos;
 
 namespace HoopHub.Modules.NBAData.Application.Games
 {

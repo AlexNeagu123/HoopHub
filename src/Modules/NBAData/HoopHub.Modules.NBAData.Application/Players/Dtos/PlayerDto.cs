@@ -1,6 +1,6 @@
 ﻿using HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats;
 
-namespace HoopHub.Modules.NBAData.Application.Players
+namespace HoopHub.Modules.NBAData.Application.Players.Dtos
 {
     public class PlayerDto
     {

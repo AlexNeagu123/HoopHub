@@ -1,4 +1,4 @@
-﻿namespace HoopHub.Modules.NBAData.Application.Seasons
+﻿namespace HoopHub.Modules.NBAData.Application.Seasons.Dtos
 {
     public class SeasonDto
     {

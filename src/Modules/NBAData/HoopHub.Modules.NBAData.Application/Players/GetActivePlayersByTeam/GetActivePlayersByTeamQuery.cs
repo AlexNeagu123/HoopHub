@@ -1,4 +1,5 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
+using HoopHub.Modules.NBAData.Application.Players.Dtos;
 using MediatR;
 
 namespace HoopHub.Modules.NBAData.Application.Players.GetActivePlayersByTeam

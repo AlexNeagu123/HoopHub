@@ -1,4 +1,5 @@
-﻿using HoopHub.Modules.NBAData.Domain.Seasons;
+﻿using HoopHub.Modules.NBAData.Application.Seasons.Dtos;
+using HoopHub.Modules.NBAData.Domain.Seasons;
 using Riok.Mapperly.Abstractions;
 
 namespace HoopHub.Modules.NBAData.Application.Seasons

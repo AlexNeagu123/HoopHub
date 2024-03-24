@@ -1,4 +1,5 @@
 ﻿using HoopHub.Modules.NBAData.Application.Seasons;
+using HoopHub.Modules.NBAData.Application.TeamBios.Dtos;
 using HoopHub.Modules.NBAData.Domain.TeamBios;
 
 namespace HoopHub.Modules.NBAData.Application.TeamBios

@@ -2,6 +2,7 @@
 using HoopHub.Modules.NBAData.Application.Constants;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats;
 using HoopHub.Modules.NBAData.Application.Persistence;
+using HoopHub.Modules.NBAData.Application.Players.Dtos;
 using HoopHub.Modules.NBAData.Application.Teams;
 using MediatR;
 

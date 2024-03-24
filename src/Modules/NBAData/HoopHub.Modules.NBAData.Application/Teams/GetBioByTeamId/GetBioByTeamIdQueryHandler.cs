@@ -1,6 +1,7 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
 using HoopHub.Modules.NBAData.Application.Constants;
 using HoopHub.Modules.NBAData.Application.Persistence;
+using HoopHub.Modules.NBAData.Application.Teams.Dtos;
 using MediatR;
 
 namespace HoopHub.Modules.NBAData.Application.Teams.GetBioByTeamId

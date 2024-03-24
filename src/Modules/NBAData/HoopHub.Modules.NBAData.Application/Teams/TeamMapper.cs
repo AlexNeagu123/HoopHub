@@ -1,9 +1,11 @@
 ﻿using HoopHub.Modules.NBAData.Application.Players;
 using HoopHub.Modules.NBAData.Application.TeamBios;
+using HoopHub.Modules.NBAData.Application.Teams.Dtos;
 using HoopHub.Modules.NBAData.Domain.Teams;
 
 
-namespace HoopHub.Modules.NBAData.Application.Teams {
+namespace HoopHub.Modules.NBAData.Application.Teams
+{
 
     public class TeamMapper
     {

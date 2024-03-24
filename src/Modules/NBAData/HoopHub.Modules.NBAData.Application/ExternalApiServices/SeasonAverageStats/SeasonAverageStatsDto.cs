@@ -1,4 +1,4 @@
-﻿using HoopHub.Modules.NBAData.Application.Teams;
+﻿using HoopHub.Modules.NBAData.Application.Teams.Dtos;
 
 namespace HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats
 {

@@ -1,5 +1,4 @@
-﻿using HoopHub.Modules.NBAData.Application.Seasons;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData
 {

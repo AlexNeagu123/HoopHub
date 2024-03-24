@@ -1,6 +1,7 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
 using HoopHub.Modules.NBAData.Application.Constants;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData;
+using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Application.Teams;
 using MediatR;

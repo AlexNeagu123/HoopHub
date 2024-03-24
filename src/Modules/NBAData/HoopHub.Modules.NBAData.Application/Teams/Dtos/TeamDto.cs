@@ -1,7 +1,7 @@
-﻿using HoopHub.Modules.NBAData.Application.Players;
-using HoopHub.Modules.NBAData.Application.TeamBios;
+﻿using HoopHub.Modules.NBAData.Application.Players.Dtos;
+using HoopHub.Modules.NBAData.Application.TeamBios.Dtos;
 
-namespace HoopHub.Modules.NBAData.Application.Teams
+namespace HoopHub.Modules.NBAData.Application.Teams.Dtos
 {
     public class TeamDto
     {

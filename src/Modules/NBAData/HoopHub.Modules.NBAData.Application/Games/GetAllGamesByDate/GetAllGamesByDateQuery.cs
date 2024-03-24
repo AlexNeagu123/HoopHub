@@ -1,4 +1,5 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
+using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using MediatR;
 
 namespace HoopHub.Modules.NBAData.Application.Games.GetAllGamesByDate

@@ -1,4 +1,5 @@
-﻿using HoopHub.Modules.NBAData.Domain.Players;
+﻿using HoopHub.Modules.NBAData.Application.Players.Dtos;
+using HoopHub.Modules.NBAData.Domain.Players;
 using Riok.Mapperly.Abstractions;
 
 namespace HoopHub.Modules.NBAData.Application.Players
