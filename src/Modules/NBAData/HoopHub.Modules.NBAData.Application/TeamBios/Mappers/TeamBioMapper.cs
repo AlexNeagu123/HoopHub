@@ -2,7 +2,7 @@
 using HoopHub.Modules.NBAData.Application.TeamBios.Dtos;
 using HoopHub.Modules.NBAData.Domain.TeamBios;
 
-namespace HoopHub.Modules.NBAData.Application.TeamBios
+namespace HoopHub.Modules.NBAData.Application.TeamBios.Mappers
 {
     public class TeamBioMapper
     {

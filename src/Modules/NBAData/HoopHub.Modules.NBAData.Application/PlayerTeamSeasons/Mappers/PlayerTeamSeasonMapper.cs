@@ -3,7 +3,7 @@ using HoopHub.Modules.NBAData.Application.Seasons;
 using HoopHub.Modules.NBAData.Application.Teams;
 using HoopHub.Modules.NBAData.Domain.PlayerTeamSeasons;
 
-namespace HoopHub.Modules.NBAData.Application.PlayerTeamSeasons
+namespace HoopHub.Modules.NBAData.Application.PlayerTeamSeasons.Mappers
 {
     public class PlayerTeamSeasonMapper
     {

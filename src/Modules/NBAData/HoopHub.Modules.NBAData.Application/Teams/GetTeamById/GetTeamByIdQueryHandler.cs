@@ -6,7 +6,7 @@ using MediatR;
 
 namespace HoopHub.Modules.NBAData.Application.Teams.GetTeamById
 {
-    public class GetTeamByIdQueryHandler(ITeamRepository teamRepository, IPlayerRepository playerRepository)
+    public class GetTeamByIdQueryHandler(ITeamRepository teamRepository)
         : IRequestHandler<GetTeamByIdQuery, Response<TeamDto>>
     {
         private readonly ITeamRepository _teamRepository = teamRepository;

@@ -34,6 +34,8 @@ namespace HoopHub.Modules.NBAData.Application.Games.GetBoxScoreByGame
             var apiBoxScores = apiBoxScoresResult.Value;
             foreach (var boxScore in apiBoxScores)
             {
+                if (boxScore.HomeTeam == null || boxScore.VisitorTeam == null) continue;
+                
                 if (boxScore.HomeTeam.Id != request.HomeTeamApiId || boxScore.VisitorTeam.Id != request.VisitorTeamApiId)
                     continue;
 

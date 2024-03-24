@@ -1,6 +1,7 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Application.PlayerTeamSeasons.Dtos;
+using HoopHub.Modules.NBAData.Application.PlayerTeamSeasons.Mappers;
 using MediatR;
 
 namespace HoopHub.Modules.NBAData.Application.PlayerTeamSeasons.GetPlayerTeamHistory
