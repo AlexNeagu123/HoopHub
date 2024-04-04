@@ -1,4 +1,5 @@
 ﻿using HoopHub.Modules.NBAData.Application.Teams.Dtos;
+using Newtonsoft.Json;
 
 namespace HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats
 {
@@ -34,15 +35,25 @@ namespace HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageS
 
         public double Blk { get; set; }
 
+        [JsonProperty("fg_pct")]
+
         public double FgPct { get; set; }
 
+        [JsonProperty("fg3_pct")]
+
         public double Fg3Pct { get; set; }
+
+        [JsonProperty("ft_pct")]
 
         public double FtPct { get; set; }
 
         public string Min { get; set; }
 
+        [JsonProperty("games_played")]
+
         public int GamesPlayed { get; set; }
+
+        [JsonProperty("player_id")]
 
         public int PlayerId { get; set; }
 

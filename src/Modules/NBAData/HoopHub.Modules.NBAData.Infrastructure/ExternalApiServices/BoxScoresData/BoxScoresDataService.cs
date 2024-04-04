@@ -31,5 +31,18 @@ namespace HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.BoxScoresDa
                 return Result<IReadOnlyList<BoxScoreApiDto>>.Failure(e.Message);
             }
         }
+
+        public async Task<Result<BoxScoreApiDto>> GetBoxScoresAsyncByTeamAndDate(string date, int teamId)
+        {
+            var boxScores = await GetBoxScoresAsyncByDate(date);
+            foreach (var boxScore in boxScores.Value)
+            {
+                if (boxScore.HomeTeam?.Id == teamId || boxScore.VisitorTeam?.Id == teamId)
+                {
+                    return Result<BoxScoreApiDto>.Success(boxScore);
+                }
+            }
+            return Result<BoxScoreApiDto>.Failure("No data found");
+        }
     }
 }
