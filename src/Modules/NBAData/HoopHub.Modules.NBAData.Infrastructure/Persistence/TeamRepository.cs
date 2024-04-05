@@ -8,6 +8,13 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
 {
     public class TeamRepository(NBADataContext context) : BaseRepository<Team>(context), ITeamRepository
     {
+
+        public virtual async Task<Result<IReadOnlyList<Team>>> FindAllActive()
+        {
+            var result = await Context.Set<Team>().Where(t => t.IsActive).ToListAsync();
+            return Result<IReadOnlyList<Team>>.Success(result);
+        }
+
         public virtual async Task<Result<Team>> FindByIdAsyncIncludingPlayers(Guid id)
         {
             var result = await Context.Set<Team>().Include(t => t.Players).FirstOrDefaultAsync(t => t.Id == id);

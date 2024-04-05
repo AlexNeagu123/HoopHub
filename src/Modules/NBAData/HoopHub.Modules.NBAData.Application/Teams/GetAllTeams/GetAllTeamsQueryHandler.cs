@@ -12,16 +12,16 @@ namespace HoopHub.Modules.NBAData.Application.Teams.GetAllTeams
         private readonly ITeamRepository _teamRepository = teamRepository;
         private readonly TeamMapper _teamMapper = new();
 
-        public Task<Response<IReadOnlyList<TeamDto>>> Handle(GetAllTeamsQuery request, CancellationToken cancellationToken)
+        public async Task<Response<IReadOnlyList<TeamDto>>> Handle(GetAllTeamsQuery request, CancellationToken cancellationToken)
         {
-            var queryResult = _teamRepository.GetAll();
+            var queryResult = await _teamRepository.FindAllActive();
             var teams = queryResult.Value;
             var teamDtoList = teams.Select(t => _teamMapper.TeamToTeamDto(t)).ToList();
-            return Task.FromResult(new Response<IReadOnlyList<TeamDto>>
+            return new Response<IReadOnlyList<TeamDto>>
             {
                 Success = true,
                 Data = teamDtoList
-            });
+            };
         }
     }
 }

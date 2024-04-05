@@ -20,16 +20,20 @@ namespace HoopHub.Modules.NBAData.Domain.Teams
         public string Abbreviation { get; private set; }
 
         [Column("city")]
-        public string City { get; private set; }
+        public string? City { get; private set; }
 
         [Column("conference")]
-        public string Conference { get; private set; }
+        public string? Conference { get; private set; }
 
         [Column("division")]
-        public string Division { get; private set; }
+        public string? Division { get; private set; }
 
         [Column("image_url")]
-        public string ImageUrl { get; private set; }
+        public string? ImageUrl { get; private set; }
+
+        [Column("is_active")]
+        public bool IsActive { get; private set; }
+
         public ICollection<Player> Players { get; set; }
         public ICollection<PlayerTeamSeason> PlayerTeamSeasons { get; private set; }
         public ICollection<TeamBio> TeamBio { get; private set; }
