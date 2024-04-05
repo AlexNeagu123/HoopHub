@@ -8,6 +8,7 @@ namespace HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData
         public string Date { get; set; }
         public int Season { get; set; }
         public int Period { get; set; }
+        public string Status { get; set; } = string.Empty;
         public string Time { get; set; } = string.Empty;
         public bool Postseason { get; set; }
 

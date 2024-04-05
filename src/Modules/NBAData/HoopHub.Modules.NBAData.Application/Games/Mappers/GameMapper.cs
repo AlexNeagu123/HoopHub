@@ -16,6 +16,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.Mappers
                 Time = gameApiDto.Time,
                 HomeTeamScore = gameApiDto.HomeTeamScore,
                 VisitorTeamScore = gameApiDto.VisitorTeamScore,
+                Status = gameApiDto.Status,
                 Period = gameApiDto.Period,
                 Postseason = gameApiDto.Postseason,
                 HomeTeam = homeTeam,
