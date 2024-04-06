@@ -6,11 +6,10 @@ using HoopHub.Modules.NBAData.Application.Games.Mappers;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Application.Players;
 
-namespace HoopHub.Modules.NBAData.Application.Games.BoxScoreas
+namespace HoopHub.Modules.NBAData.Application.Games.BoxScores
 {
-    public class BoxScoreProcessor(IBoxScoresDataService boxScoresDataService, ITeamRepository teamRepository, IPlayerRepository playerRepository)
+    public class BoxScoreProcessor(ITeamRepository teamRepository, IPlayerRepository playerRepository)
     {
-        private readonly IBoxScoresDataService _boxScoresDataService = boxScoresDataService;
         private readonly ITeamRepository _teamRepository = teamRepository;
         private readonly IPlayerRepository _playerRepository = playerRepository;
         private readonly BoxScoreTeamMapper _boxScoreTeamMapper = new();

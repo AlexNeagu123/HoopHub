@@ -1,7 +1,7 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
 using HoopHub.Modules.NBAData.Application.Constants;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
-using HoopHub.Modules.NBAData.Application.Games.BoxScoreas;
+using HoopHub.Modules.NBAData.Application.Games.BoxScores;
 using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using HoopHub.Modules.NBAData.Application.Games.Mappers;
 using HoopHub.Modules.NBAData.Application.Persistence;
@@ -40,7 +40,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.GetBoxScoreByGame
                 if (boxScore.HomeTeam.Id != request.HomeTeamApiId || boxScore.VisitorTeam.Id != request.VisitorTeamApiId)
                     continue;
 
-                BoxScoreProcessor boxScoreProcessor = new(_boxScoresDataService, _teamRepository, _playerRepository);
+                BoxScoreProcessor boxScoreProcessor = new(_teamRepository, _playerRepository);
                 return await boxScoreProcessor.ProcessApiBoxScoreAndConvert(boxScore);
             }
 

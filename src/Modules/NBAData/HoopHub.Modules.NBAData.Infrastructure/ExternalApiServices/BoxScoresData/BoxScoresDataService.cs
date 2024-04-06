@@ -32,6 +32,29 @@ namespace HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.BoxScoresDa
             }
         }
 
+        public async Task<Result<IReadOnlyList<BoxScoreApiDto>>> GetLiveBoxScores()
+        {
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri(BallDontLieBaseUrl);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(BallDontLieKey);
+
+            try
+            {
+                var response = await client.GetAsync($"{BoxScores}/live");
+                response.EnsureSuccessStatusCode();
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var boxScores = JsonConvert.DeserializeObject<BaseExternalApiResponse<BoxScoreApiDto>>(responseBody);
+
+                return boxScores == null
+                    ? Result<IReadOnlyList<BoxScoreApiDto>>.Failure("No data found")
+                    : Result<IReadOnlyList<BoxScoreApiDto>>.Success(boxScores.Data);
+            }
+            catch (Exception e)
+            {
+                return Result<IReadOnlyList<BoxScoreApiDto>>.Failure(e.Message);
+            }
+        }
+
         public async Task<Result<BoxScoreApiDto>> GetBoxScoresAsyncByTeamAndDate(string date, int teamId)
         {
             var boxScores = await GetBoxScoresAsyncByDate(date);

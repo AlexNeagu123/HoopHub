@@ -1,5 +1,6 @@
 using System.Text;
 using HoopHub.API.Extensions;
+using HoopHub.API.Hubs;
 using HoopHub.API.Utility;
 using HoopHub.BuildingBlocks.Application.Persistence;
 using HoopHub.BuildingBlocks.Infrastructure;
@@ -137,6 +138,15 @@ builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", b =>
         .AllowAnyHeader();
 }));
 
+
+builder.Services.AddSignalR(options =>
+{
+    options.DisableImplicitFromServicesParameters = true;
+});
+
+builder.Services.AddHostedService<LiveBoxScoreBackgroundService>();
+
+
 var app = builder.Build();
 
 
@@ -153,6 +163,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<LiveBoxScoreHub>("box-scores-live");
 
 app.UseCors("CorsPolicy");
 

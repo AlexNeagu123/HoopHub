@@ -1,11 +1,11 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
-using HoopHub.Modules.NBAData.Application.Games.BoxScoreas;
 using HoopHub.Modules.NBAData.Application.Games.Dtos;
+using HoopHub.Modules.NBAData.Application.Games.GetGamesByTeam;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using MediatR;
 
-namespace HoopHub.Modules.NBAData.Application.Games.GetGamesByTeam
+namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByTeam
 {
     public class GetBoxScoresByTeamQueryHandler(IBoxScoresDataService boxScoresDataService, ITeamRepository teamRepository, IPlayerRepository playerRepository) : IRequestHandler<GetBoxScoresByTeamQuery, Response<IReadOnlyList<GameWithBoxScoreDto>>>
     {
@@ -30,7 +30,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.GetGamesByTeam
                 if(!boxScoreByTeam.IsSuccess)
                     continue;
 
-                BoxScoreProcessor boxScoreProcessor = new(_boxScoresDataService, _teamRepository, _playerRepository);
+                BoxScoreProcessor boxScoreProcessor = new(_teamRepository, _playerRepository);
                 var processResponse = await boxScoreProcessor.ProcessApiBoxScoreAndConvert(boxScoreByTeam.Value);
                 if(processResponse.Success)
                 {
