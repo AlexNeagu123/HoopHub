@@ -9,14 +9,11 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace HoopHub.API.Hubs;
 
-public class LiveBoxScoreBackgroundService(IHubContext<LiveBoxScoreHub, ILiveBoxScoreClient> hubContext, IBoxScoresDataService boxScoresDataService,
-    ITeamRepository teamRepository, IPlayerRepository playerRepository)
+public class LiveBoxScoreBackgroundService(IServiceScopeFactory serviceScopeFactory, IHubContext<LiveBoxScoreHub, ILiveBoxScoreClient> hubContext)
     : BackgroundService
 {
+    private readonly IServiceScopeFactory _serviceScopeFactory = serviceScopeFactory;
     private readonly IHubContext<LiveBoxScoreHub, ILiveBoxScoreClient> _hubContext = hubContext;
-    private readonly IBoxScoresDataService _boxScoresDataService = boxScoresDataService;
-    private readonly ITeamRepository _teamRepository = teamRepository;
-    private readonly IPlayerRepository _playerRepository = playerRepository;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -31,8 +28,13 @@ public class LiveBoxScoreBackgroundService(IHubContext<LiveBoxScoreHub, ILiveBox
 
     private async Task SendLiveBoxScores()
     {
+        using var scope = _serviceScopeFactory.CreateScope();
+        
+        var teamRepository = scope.ServiceProvider.GetRequiredService<ITeamRepository>();
+        var playerRepository = scope.ServiceProvider.GetRequiredService<IPlayerRepository>();
+        var boxScoresDataService = scope.ServiceProvider.GetRequiredService<IBoxScoresDataService>();
 
-        var boxScores = await _boxScoresDataService.GetLiveBoxScores();
+        var boxScores = await boxScoresDataService.GetLiveBoxScores();
         if (!boxScores.IsSuccess)
         {
             var failureResponse = new Response<IReadOnlyList<GameWithBoxScoreDto>>
@@ -43,7 +45,7 @@ public class LiveBoxScoreBackgroundService(IHubContext<LiveBoxScoreHub, ILiveBox
             await _hubContext.Clients.All.ReceiveLiveBoxScores(failureResponse);
         }
 
-        var boxScoreProcessor = new BoxScoreProcessor(_teamRepository, _playerRepository);
+        var boxScoreProcessor = new BoxScoreProcessor(teamRepository, playerRepository);
         var liveBoxScores = boxScores.Value;
 
         List<GameWithBoxScoreDto> liveProcessedBoxScores = [];
