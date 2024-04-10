@@ -19,4 +19,8 @@
     <ProjectReference Include="..\HoopHub.Modules.NBAData.Domain\HoopHub.Modules.NBAData.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Standings\NewFolder\" />
+  </ItemGroup>
+
 </Project>

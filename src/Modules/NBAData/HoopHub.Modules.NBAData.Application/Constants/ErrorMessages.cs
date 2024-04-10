@@ -12,5 +12,7 @@
         public const string VisitorTeamApiIdEmpty = "Visitor team api id is required";
         public const string BoxScoreNotFound = "Box score not found";
         public const string GameCountInvalid = "Game count must be greater than 0";
+        public static readonly string InvalidStandingsSeason =
+            $"Season should be between {Config.MinStandingsSeason} and {Config.CurrentSeason}";
     }
 }

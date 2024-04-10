@@ -10,5 +10,6 @@
         public const string TeamApiId = "TeamApiId";
         public const string BoxScores = "BoxScores";
         public const string PlayerApiId = "PlayerApiId";
+        public const string SeasonPeriod = "SeasonPeriod";
     }
 }

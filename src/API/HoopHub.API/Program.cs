@@ -125,6 +125,7 @@ builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<ISeasonAverageStatsService, SeasonAverageStatsService>();
 builder.Services.AddScoped<IGamesDataService, GamesDataService>();
 builder.Services.AddScoped<IBoxScoresDataService, BoxScoresDataService>();
+builder.Services.AddScoped<IStandingsRepository, StandingsRepository>();
 
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {

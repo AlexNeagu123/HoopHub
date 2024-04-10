@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using HoopHub.Modules.NBAData.Domain.PlayerTeamSeasons;
+using HoopHub.Modules.NBAData.Domain.Standings;
 using HoopHub.Modules.NBAData.Domain.TeamBios;
 
 namespace HoopHub.Modules.NBAData.Domain.Seasons
@@ -14,5 +15,6 @@ namespace HoopHub.Modules.NBAData.Domain.Seasons
 
         public ICollection<PlayerTeamSeason> PlayerTeamSeasons { get; private set; }
         public ICollection<TeamBio> TeamBio { get; private set; }
+        public ICollection<StandingsEntry> Standings { get; private set; }
     }
 }

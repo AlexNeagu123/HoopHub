@@ -1,6 +1,7 @@
 ﻿using HoopHub.Modules.NBAData.Domain.Players;
 using HoopHub.Modules.NBAData.Domain.PlayerTeamSeasons;
 using HoopHub.Modules.NBAData.Domain.Seasons;
+using HoopHub.Modules.NBAData.Domain.Standings;
 using HoopHub.Modules.NBAData.Domain.TeamBios;
 using HoopHub.Modules.NBAData.Domain.Teams;
 using Microsoft.EntityFrameworkCore;
@@ -23,11 +24,26 @@ namespace HoopHub.Modules.NBAData.Infrastructure
             ModelPlayerTeamSeasonTable(modelBuilder);
             ModelSeasonTable(modelBuilder);
             ModelTeamBioTable(modelBuilder);
-           
+            ModelStandingsTable(modelBuilder);
 
             modelBuilder.HasDefaultSchema("nba_data");
         }
 
+        private static void ModelStandingsTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StandingsEntry>().HasKey(se => new { se.SeasonId, se.TeamId });
+            modelBuilder.Entity<StandingsEntry>()
+                .HasOne(se => se.Season)
+                .WithMany(s => s.Standings)
+                .HasForeignKey(se => se.SeasonId);
+
+            modelBuilder.Entity<StandingsEntry>()
+                .HasOne(se => se.Team)
+                .WithMany(t => t.Standings)
+                .HasForeignKey(se => se.TeamId);
+
+            modelBuilder.Entity<StandingsEntry>().ToTable("standings");
+        }
         private static void ModelTeamBioTable(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TeamBio>().HasKey(tb => tb.Id);
