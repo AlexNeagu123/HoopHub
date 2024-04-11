@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\HoopHub.BuildingBlocks.Application\HoopHub.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\..\UserAccess\HoopHub.Modules.UserAccess.IntegrationEvents\HoopHub.Modules.UserAccess.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\HoopHub.Modules.UserFeatures.Domain\HoopHub.Modules.UserFeatures.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -21,6 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\HoopHub.BuildingBlocks.Infrastructure\HoopHub.BuildingBlocks.Infrastructure.csproj" />
+    <ProjectReference Include="..\HoopHub.Modules.UserFeatures.Application\HoopHub.Modules.UserFeatures.Application.csproj" />
     <ProjectReference Include="..\HoopHub.Modules.UserFeatures.Domain\HoopHub.Modules.UserFeatures.Domain.csproj" />
   </ItemGroup>
 

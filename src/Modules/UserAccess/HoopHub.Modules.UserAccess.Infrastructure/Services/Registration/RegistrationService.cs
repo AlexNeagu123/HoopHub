@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration
 {
-    public class RegistrationService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    public class RegistrationService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IPublisher publisher)
         : IRegistrationService
     {
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+        private readonly IPublisher _publisher = publisher;
         private readonly RegistrationMapper _userMapper = new();
         public async Task<Response<UserDto>> RegisterAsync(RegistrationModel request, string role)
         {
@@ -44,6 +45,8 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration
             }
 
             await _userManager.AddToRoleAsync(user, role);
+
+            await _publisher.Publish(new UserRegisteredDomainEvent(new Guid(), user.Id, user.UserName, user.Email));
 
             return new Response<UserDto>
             {

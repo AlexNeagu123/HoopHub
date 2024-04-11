@@ -19,15 +19,17 @@ using HoopHub.Modules.UserAccess.Domain.Users;
 using HoopHub.Modules.UserAccess.Infrastructure;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.Login;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.Registration;
+using HoopHub.Modules.UserFeatures.Application.Events;
+using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Infrastructure;
+using HoopHub.Modules.UserFeatures.Infrastructure.Persistence;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Rebus.Config;
-using Rebus.Transport.InMem;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,11 +97,16 @@ builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IPlayerTeamSeasonRepository, PlayerTeamSeasonRepository>();
 builder.Services.AddScoped<ITeamBioRepository, TeamBioRepository>();
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserAccessContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddScoped<ISeasonAverageStatsService, SeasonAverageStatsService>();
+builder.Services.AddScoped<IGamesDataService, GamesDataService>();
+builder.Services.AddScoped<IBoxScoresDataService, BoxScoresDataService>();
+builder.Services.AddScoped<IStandingsRepository, StandingsRepository>();
 
 
 // UserAccess STUFF
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserAccessContext>()
+    .AddDefaultTokenProviders();
+
 builder.Services.AddIdentityCore<ApplicationUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<UserAccessContext>()
@@ -125,10 +132,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
-builder.Services.AddScoped<ISeasonAverageStatsService, SeasonAverageStatsService>();
-builder.Services.AddScoped<IGamesDataService, GamesDataService>();
-builder.Services.AddScoped<IBoxScoresDataService, BoxScoresDataService>();
-builder.Services.AddScoped<IStandingsRepository, StandingsRepository>();
+
 
 
 // UserFeatures STUFF
@@ -136,6 +140,10 @@ builder.Services.AddDbContext<UserFeaturesContext>(options =>
     options.UseNpgsql(
         connectionString,
         o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "user_features")));
+
+
+builder.Services.AddScoped<IFanRepository, FanRepository>();
+
 
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {
@@ -155,9 +163,15 @@ builder.Services.AddSignalR(options =>
     options.DisableImplicitFromServicesParameters = true;
 });
 
-//builder.Services.AddRebus(configure => configure
-//        .Transport(t => t.UseRabbitMq(new InMemNetwork()))
-//);
+builder.Services.AddMassTransit(busConfigurator =>
+{
+    busConfigurator.SetKebabCaseEndpointNameFormatter();
+    busConfigurator.AddConsumer<UserRegisteredIntegrationEventHandler>();
+    busConfigurator.UsingInMemory((context, config) =>
+    {
+        config.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddHostedService<LiveBoxScoreBackgroundService>();
 
