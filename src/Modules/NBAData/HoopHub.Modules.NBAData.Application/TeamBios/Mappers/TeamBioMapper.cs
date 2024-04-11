@@ -1,6 +1,6 @@
-﻿using HoopHub.Modules.NBAData.Application.Seasons;
-using HoopHub.Modules.NBAData.Application.TeamBios.Dtos;
+﻿using HoopHub.Modules.NBAData.Application.TeamBios.Dtos;
 using HoopHub.Modules.NBAData.Domain.TeamBios;
+using SeasonMapper = HoopHub.Modules.NBAData.Application.Seasons.Mappers.SeasonMapper;
 
 namespace HoopHub.Modules.NBAData.Application.TeamBios.Mappers
 {

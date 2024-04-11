@@ -9,6 +9,12 @@ namespace HoopHub.BuildingBlocks.Infrastructure
     {
         protected readonly DbContext Context = context;
 
+        public async Task<Result<T>> FindByIdAsync(string id)
+        {
+            var result = await Context.Set<T>().FindAsync(id);
+            return result == null ? Result<T>.Failure($"Entity with Id {id} not found") : Result<T>.Success(result);
+        }
+
         public async Task<Result<T>> AddAsync(T entity)
         {
             await Context.Set<T>().AddAsync(entity);

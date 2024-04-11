@@ -2,7 +2,7 @@
 using HoopHub.Modules.NBAData.Domain.Seasons;
 using Riok.Mapperly.Abstractions;
 
-namespace HoopHub.Modules.NBAData.Application.Seasons
+namespace HoopHub.Modules.NBAData.Application.Seasons.Mappers
 {
     [Mapper]
     public partial class SeasonMapper

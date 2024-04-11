@@ -3,7 +3,7 @@
     public class Config
     {
         public const string JwtSecretKey = "JWT:Secret";
-        public const string JwtIssuerKey = "JWT:Issuer";
-        public const string JwtAudienceKey = "JWT:Audience";
+        public const string JwtIssuerKey = "JWT:ValidIssuer";
+        public const string JwtAudienceKey = "JWT:ValidAudience";
     }
 }

@@ -1,8 +1,10 @@
 using System.Text;
 using HoopHub.API.Extensions;
 using HoopHub.API.Hubs;
+using HoopHub.API.Services;
 using HoopHub.API.Utility;
 using HoopHub.BuildingBlocks.Application.Persistence;
+using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.BuildingBlocks.Infrastructure;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData;
@@ -20,8 +22,10 @@ using HoopHub.Modules.UserAccess.Infrastructure;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.Login;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.Registration;
 using HoopHub.Modules.UserFeatures.Application.Events;
+using HoopHub.Modules.UserFeatures.Application.ExternalServices.AzureBlobStorage;
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Infrastructure;
+using HoopHub.Modules.UserFeatures.Infrastructure.ExternalServices.AzureBlobStorage;
 using HoopHub.Modules.UserFeatures.Infrastructure.Persistence;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -132,6 +136,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 
 
@@ -143,7 +148,7 @@ builder.Services.AddDbContext<UserFeaturesContext>(options =>
 
 
 builder.Services.AddScoped<IFanRepository, FanRepository>();
-
+builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
 
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {

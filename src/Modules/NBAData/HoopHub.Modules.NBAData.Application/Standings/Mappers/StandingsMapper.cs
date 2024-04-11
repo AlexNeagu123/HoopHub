@@ -1,7 +1,7 @@
-﻿using HoopHub.Modules.NBAData.Application.Seasons;
-using HoopHub.Modules.NBAData.Application.Standings.Dtos;
+﻿using HoopHub.Modules.NBAData.Application.Standings.Dtos;
 using HoopHub.Modules.NBAData.Application.Teams.Mappers;
 using HoopHub.Modules.NBAData.Domain.Standings;
+using SeasonMapper = HoopHub.Modules.NBAData.Application.Seasons.Mappers.SeasonMapper;
 
 namespace HoopHub.Modules.NBAData.Application.Standings.Mappers
 {
