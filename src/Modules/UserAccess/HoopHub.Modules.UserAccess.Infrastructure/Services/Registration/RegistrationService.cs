@@ -3,6 +3,7 @@ using HoopHub.Modules.UserAccess.Application.Constants;
 using HoopHub.Modules.UserAccess.Application.Services.Registration;
 using HoopHub.Modules.UserAccess.Domain.Registration;
 using HoopHub.Modules.UserAccess.Domain.Users;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration
@@ -41,6 +42,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration
             {
                 await _roleManager.CreateAsync(new IdentityRole(role));
             }
+
             await _userManager.AddToRoleAsync(user, role);
 
             return new Response<UserDto>

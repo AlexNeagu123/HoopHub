@@ -19,12 +19,15 @@ using HoopHub.Modules.UserAccess.Domain.Users;
 using HoopHub.Modules.UserAccess.Infrastructure;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.Login;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.Registration;
+using HoopHub.Modules.UserFeatures.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Rebus.Config;
+using Rebus.Transport.InMem;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -127,6 +130,13 @@ builder.Services.AddScoped<IGamesDataService, GamesDataService>();
 builder.Services.AddScoped<IBoxScoresDataService, BoxScoresDataService>();
 builder.Services.AddScoped<IStandingsRepository, StandingsRepository>();
 
+
+// UserFeatures STUFF
+builder.Services.AddDbContext<UserFeaturesContext>(options =>
+    options.UseNpgsql(
+        connectionString,
+        o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "user_features")));
+
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
@@ -144,6 +154,10 @@ builder.Services.AddSignalR(options =>
 {
     options.DisableImplicitFromServicesParameters = true;
 });
+
+//builder.Services.AddRebus(configure => configure
+//        .Transport(t => t.UseRabbitMq(new InMemNetwork()))
+//);
 
 builder.Services.AddHostedService<LiveBoxScoreBackgroundService>();
 

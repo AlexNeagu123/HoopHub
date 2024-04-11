@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\BuildingBlocks\HoopHub.BuildingBlocks.API\HoopHub.BuildingBlocks.API.csproj" />
     <ProjectReference Include="..\..\Modules\NBAData\HoopHub.Modules.NBAData.Infrastructure\HoopHub.Modules.NBAData.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\UserAccess\HoopHub.Modules.UserAccess.Infrastructure\HoopHub.Modules.UserAccess.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\UserFeatures\HoopHub.Modules.UserFeatures.Infrastructure\HoopHub.Modules.UserFeatures.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
