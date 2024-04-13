@@ -15,6 +15,8 @@ namespace HoopHub.Modules.NBAData.Infrastructure
         public DbSet<PlayerTeamSeason> PlayerTeamSeasons { get; set; }
         public DbSet<Season> Seasons { get; set; }
         public DbSet<TeamBio> TeamBios { get; set; }
+        public DbSet<PlayoffSeries> PlayoffSeries { get; set; }
+
         public NBADataContext(DbContextOptions<NBADataContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,10 +27,26 @@ namespace HoopHub.Modules.NBAData.Infrastructure
             ModelSeasonTable(modelBuilder);
             ModelTeamBioTable(modelBuilder);
             ModelStandingsTable(modelBuilder);
-
+            ModelPlayoffSeriesTable(modelBuilder);
             modelBuilder.HasDefaultSchema("nba_data");
         }
 
+        private static void ModelPlayoffSeriesTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PlayoffSeries>().HasKey(ps => new { ps.SeasonId, ps.WinningTeamId, ps.LosingTeamId });
+            modelBuilder.Entity<PlayoffSeries>()
+                .HasOne(ps => ps.Season)
+                .WithMany(s => s.PlayoffSeries)
+                .HasForeignKey(ps => ps.SeasonId);
+
+            modelBuilder.Entity<PlayoffSeries>()
+                .HasOne(ps => ps.WinningTeam)
+                .WithMany(t => t.PlayoffSeries)
+                .HasForeignKey(ps => ps.WinningTeamId);
+
+            
+            modelBuilder.Entity<PlayoffSeries>().ToTable("playoff_series");
+        }
         private static void ModelStandingsTable(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StandingsEntry>().HasKey(se => new { se.SeasonId, se.TeamId });

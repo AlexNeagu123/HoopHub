@@ -39,5 +39,7 @@ namespace HoopHub.Modules.NBAData.Domain.Teams
         public ICollection<PlayerTeamSeason> PlayerTeamSeasons { get; private set; }
         public ICollection<TeamBio> TeamBio { get; private set; }
         public ICollection<StandingsEntry> Standings { get; private set; }
+        public ICollection<PlayoffSeries> PlayoffSeries { get; private set; }
+
     }
 }

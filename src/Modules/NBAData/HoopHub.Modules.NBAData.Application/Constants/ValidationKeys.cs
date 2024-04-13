@@ -11,5 +11,6 @@
         public const string BoxScores = "BoxScores";
         public const string PlayerApiId = "PlayerApiId";
         public const string SeasonPeriod = "SeasonPeriod";
+        public const string PlayoffSeries = "PlayoffSeries";
     }
 }

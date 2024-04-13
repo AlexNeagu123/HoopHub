@@ -105,7 +105,7 @@ builder.Services.AddScoped<ISeasonAverageStatsService, SeasonAverageStatsService
 builder.Services.AddScoped<IGamesDataService, GamesDataService>();
 builder.Services.AddScoped<IBoxScoresDataService, BoxScoresDataService>();
 builder.Services.AddScoped<IStandingsRepository, StandingsRepository>();
-
+builder.Services.AddScoped<IPlayoffSeriesRepository, PlayoffSeriesRepository>();
 
 // UserAccess STUFF
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserAccessContext>()
