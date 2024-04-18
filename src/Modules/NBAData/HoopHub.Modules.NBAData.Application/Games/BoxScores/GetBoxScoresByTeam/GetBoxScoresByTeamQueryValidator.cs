@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using HoopHub.Modules.NBAData.Application.Constants;
+using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByTeam;
 
 namespace HoopHub.Modules.NBAData.Application.Games.GetGamesByTeam
 {
@@ -7,8 +8,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.GetGamesByTeam
     {
         public GetBoxScoresByTeamQueryValidator()
         {
-            RuleFor(x => x.ApiId).NotEmpty().WithMessage(ErrorMessages.TeamIdEmpty);
-            RuleFor(x => x.GameCount).GreaterThan(0).WithMessage(ErrorMessages.GameCountInvalid);
+            RuleFor(x => x.TeamId).NotEmpty().WithMessage(ErrorMessages.TeamIdEmpty);
         }
     }
 }

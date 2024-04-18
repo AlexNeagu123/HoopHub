@@ -106,6 +106,7 @@ builder.Services.AddScoped<IGamesDataService, GamesDataService>();
 builder.Services.AddScoped<IBoxScoresDataService, BoxScoresDataService>();
 builder.Services.AddScoped<IStandingsRepository, StandingsRepository>();
 builder.Services.AddScoped<IPlayoffSeriesRepository, PlayoffSeriesRepository>();
+builder.Services.AddScoped<ITeamLatestRepository, TeamLatestRepository>();
 
 // UserAccess STUFF
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserAccessContext>()

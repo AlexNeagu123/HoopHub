@@ -2,11 +2,10 @@
 using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using MediatR;
 
-namespace HoopHub.Modules.NBAData.Application.Games.GetGamesByTeam
+namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByTeam
 {
     public class GetBoxScoresByTeamQuery : IRequest<Response<IReadOnlyList<GameWithBoxScoreDto>>>
     {
-        public int ApiId { get; set; }
-        public int GameCount { get; set; }
+        public Guid TeamId { get; set; }
     }
 }

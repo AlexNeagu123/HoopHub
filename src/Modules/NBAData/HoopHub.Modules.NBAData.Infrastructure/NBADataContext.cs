@@ -4,6 +4,7 @@ using HoopHub.Modules.NBAData.Domain.Seasons;
 using HoopHub.Modules.NBAData.Domain.Standings;
 using HoopHub.Modules.NBAData.Domain.TeamBios;
 using HoopHub.Modules.NBAData.Domain.Teams;
+using HoopHub.Modules.NBAData.Domain.TeamsLatest;
 using Microsoft.EntityFrameworkCore;
 
 namespace HoopHub.Modules.NBAData.Infrastructure
@@ -16,6 +17,7 @@ namespace HoopHub.Modules.NBAData.Infrastructure
         public DbSet<Season> Seasons { get; set; }
         public DbSet<TeamBio> TeamBios { get; set; }
         public DbSet<PlayoffSeries> PlayoffSeries { get; set; }
+        public DbSet<TeamLatest> TeamsLatest { get; set; }
 
         public NBADataContext(DbContextOptions<NBADataContext> options) : base(options) { }
 
@@ -28,7 +30,19 @@ namespace HoopHub.Modules.NBAData.Infrastructure
             ModelTeamBioTable(modelBuilder);
             ModelStandingsTable(modelBuilder);
             ModelPlayoffSeriesTable(modelBuilder);
+            ModelTeamLatestTable(modelBuilder);
             modelBuilder.HasDefaultSchema("nba_data");
+        }
+
+        private static void ModelTeamLatestTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TeamLatest>().HasKey(tl => new { tl.TeamId, tl.LatestIndex });
+            modelBuilder.Entity<TeamLatest>()
+                .HasOne(tl => tl.Team)
+                .WithMany(t => t.TeamLatest)
+                .HasForeignKey(tl => tl.TeamId);
+
+            modelBuilder.Entity<TeamLatest>().ToTable("team_latest");
         }
 
         private static void ModelPlayoffSeriesTable(ModelBuilder modelBuilder)

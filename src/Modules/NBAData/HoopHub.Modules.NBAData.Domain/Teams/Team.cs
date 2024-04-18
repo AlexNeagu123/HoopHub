@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using HoopHub.Modules.NBAData.Domain.PlayerTeamSeasons;
 using HoopHub.Modules.NBAData.Domain.Standings;
 using HoopHub.Modules.NBAData.Domain.TeamBios;
+using HoopHub.Modules.NBAData.Domain.TeamsLatest;
 
 namespace HoopHub.Modules.NBAData.Domain.Teams
 {
@@ -40,6 +41,6 @@ namespace HoopHub.Modules.NBAData.Domain.Teams
         public ICollection<TeamBio> TeamBio { get; private set; }
         public ICollection<StandingsEntry> Standings { get; private set; }
         public ICollection<PlayoffSeries> PlayoffSeries { get; private set; }
-
+        public ICollection<TeamLatest> TeamLatest { get; private set; }
     }
 }
