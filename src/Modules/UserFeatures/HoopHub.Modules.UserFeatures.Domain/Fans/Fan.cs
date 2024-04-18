@@ -1,5 +1,7 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
+using HoopHub.Modules.UserFeatures.Domain.Comments;
 using HoopHub.Modules.UserFeatures.Domain.Constants;
+using HoopHub.Modules.UserFeatures.Domain.Threads;
 
 namespace HoopHub.Modules.UserFeatures.Domain.Fans
 {
@@ -9,6 +11,10 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
         public string Username { get; private set; }
         public string Email { get; private set; }
         public string? AvatarPhotoUrl { get; private set; }
+        public ICollection<TeamThread> TeamThreads { get; private set; } = null!;
+        public ICollection<ThreadComment> Comments { get; private set; } = [];
+        public ICollection<CommentVote> Votes { get; private set; } = [];
+
         private Fan(string id, string username, string email)
         {
             Id = id;

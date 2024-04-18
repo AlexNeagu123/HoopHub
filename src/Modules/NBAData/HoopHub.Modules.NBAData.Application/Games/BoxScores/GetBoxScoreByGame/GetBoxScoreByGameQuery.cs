@@ -2,7 +2,7 @@
 using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using MediatR;
 
-namespace HoopHub.Modules.NBAData.Application.Games.GetBoxScoreByGame
+namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoreByGame
 {
     public class GetBoxScoreByGameQuery : IRequest<Response<GameWithBoxScoreDto>>
     {

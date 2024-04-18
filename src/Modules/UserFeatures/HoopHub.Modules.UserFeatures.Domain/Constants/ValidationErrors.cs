@@ -5,5 +5,6 @@
         public const string InvalidFanId = "Fan Id cannot be empty";
         public const string InvalidUsername = "Username cannot be empty";
         public const string InvalidEmail = "Email cannot be empty";
+        public const string InvalidContent = "Content cannot be empty";
     }
 }

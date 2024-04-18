@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using HoopHub.Modules.NBAData.Application.Constants;
 
-namespace HoopHub.Modules.NBAData.Application.Games.GetBoxScoreByGame
+namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoreByGame
 {
     public class GetBoxScoreByGameQueryValidator : AbstractValidator<GetBoxScoreByGameQuery>
     {

@@ -1,7 +1,7 @@
 ﻿using HoopHub.BuildingBlocks.API;
+using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoreByGame;
 using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByTeam;
 using HoopHub.Modules.NBAData.Application.Games.GetAllGamesByDate;
-using HoopHub.Modules.NBAData.Application.Games.GetBoxScoreByGame;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HoopHub.API.Controllers.Modules.NBAData.Games
