@@ -24,7 +24,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Fans.UpdateFan
                 return Response<FanDto>.ErrorResponseFromFluentResult(validationResult);
 
             var currentUserId = _currentUserService.GetUserId;
-            if (currentUserId is null)
+            if (string.IsNullOrEmpty(currentUserId))
                 return Response<FanDto>.ErrorResponseFromKeyMessage(ValidationErrors.InvalidFanId, ValidationKeys.FanId);
 
             var fanResult = await _fanRepository.FindByIdAsync(currentUserId);

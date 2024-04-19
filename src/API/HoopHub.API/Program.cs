@@ -152,6 +152,7 @@ builder.Services.AddDbContext<UserFeaturesContext>((sp, options) =>
     .AddInterceptors(sp.GetRequiredService<SoftDeleteInterceptor>()));
 
 builder.Services.AddScoped<IFanRepository, FanRepository>();
+builder.Services.AddScoped<ITeamThreadRepository, TeamThreadRepository>();
 builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
 
 

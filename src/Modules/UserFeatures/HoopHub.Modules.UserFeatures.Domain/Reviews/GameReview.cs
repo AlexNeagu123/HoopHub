@@ -31,6 +31,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Reviews
                 CheckRule(new BothTeamIdsAreRequired(visitorTeamId));
                 CheckRule(new FanIdCannotBeEmpty(fanId));
                 CheckRule(new DateMustBeValid(date));
+                CheckRule(new GameRatingShouldBeDecimalBetween0And5(rating));
             }
             catch (BusinessRuleValidationException e)
             {

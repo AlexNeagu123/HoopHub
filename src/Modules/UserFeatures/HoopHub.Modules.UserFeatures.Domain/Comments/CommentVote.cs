@@ -4,13 +4,15 @@ using HoopHub.Modules.UserFeatures.Domain.Rules;
 
 namespace HoopHub.Modules.UserFeatures.Domain.Comments
 {
-    public class CommentVote : AuditableEntity
+    public class CommentVote : AuditableEntity, ISoftDeletable
     {
         public Guid CommentId { get; private set; }
         public ThreadComment ThreadComment { get; private set; } = null!;
         public string FanId { get; private set; }
         public Fan Fan { get; private set; } = null!;
         public bool IsUpVote { get; private set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedOnUtc { get; set; }
 
         private CommentVote(Guid commentId, string fanId, bool isUpVote)
         {
