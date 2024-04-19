@@ -62,27 +62,18 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
             {
                 CheckRule(new ParentCommentIdCannotBeEmpty(parentId));
                 ParentId = parentId;
-            } catch(BusinessRuleValidationException) { }
-        }
-
-        public void AttachTeamThread(Guid teamThreadId)
-        {
-            try
-            {
-                CheckRule(new ThreadIdCannotBeEmpty(teamThreadId));
-                TeamThreadId = teamThreadId;
-            }
-            catch (BusinessRuleValidationException) {}
-        }
-
-        public void AttachGameThread(Guid gameThreadId)
-        {
-            try
-            {
-                CheckRule(new ThreadIdCannotBeEmpty(gameThreadId));
-                GameThreadId = gameThreadId;
             }
             catch (BusinessRuleValidationException) { }
+        }
+
+        public void AttachTeamThread(Guid? teamThreadId)
+        {
+            TeamThreadId = teamThreadId;
+        }
+
+        public void AttachGameThread(Guid? gameThreadId)
+        {
+            GameThreadId = gameThreadId;
         }
     }
 }

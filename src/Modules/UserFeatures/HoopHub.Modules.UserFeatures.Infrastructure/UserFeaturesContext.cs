@@ -112,6 +112,8 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
             modelBuilder.Entity<TeamThread>().HasKey(tt => tt.Id);
             modelBuilder.Entity<TeamThread>().HasOne(tt => tt.Fan).WithMany(f => f.TeamThreads).HasForeignKey(tt => tt.FanId);
             modelBuilder.Entity<TeamThread>().HasMany(tt => tt.Comments).WithOne(c => c.TeamThread).HasForeignKey(c => c.TeamThreadId);
+            modelBuilder.Entity<TeamThread>().HasQueryFilter(t => !t.IsDeleted);
+
             modelBuilder.Entity<TeamThread>().ToTable("team_threads");
         }
 

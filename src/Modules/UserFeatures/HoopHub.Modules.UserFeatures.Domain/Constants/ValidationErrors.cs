@@ -22,5 +22,8 @@
         public const string InvalidGameRating = "Game rating should be a decimal between 0 and 5";
         public const string InvalidPage = "Page shoukd be greater than 0";
         public const string InvalidPageSize = "Page size should be greater than 0";
+        public const string ThreadUpdateNotAuthorized = "Only the creator of the thread can update it";
+        public const string ThreadDeleteNotAuthorized = "Only the creator of the thread can delete it";
+        public const string ShouldBeExactlyOneThreadNonNull = "Exactly one of TeamThreadId and GameThreadId should be non-null";
     }
 }

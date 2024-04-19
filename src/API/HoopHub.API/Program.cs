@@ -93,7 +93,7 @@ builder.Services.AddDbContext<NBADataContext>(options =>
            connectionString,
            o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "nba_data")));
 
-builder.Services.AddDbContext<UserAccessContext>(options => 
+builder.Services.AddDbContext<UserAccessContext>(options =>
     options.UseNpgsql(connectionString,
     o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "user_access")));
 
@@ -123,7 +123,8 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => {
+}).AddJwtBearer(options =>
+{
     options.SaveToken = true;
     options.RequireHttpsMetadata = false;
     options.TokenValidationParameters = new TokenValidationParameters()
@@ -153,6 +154,7 @@ builder.Services.AddDbContext<UserFeaturesContext>((sp, options) =>
 
 builder.Services.AddScoped<IFanRepository, FanRepository>();
 builder.Services.AddScoped<ITeamThreadRepository, TeamThreadRepository>();
+builder.Services.AddScoped<IThreadCommentRepository, ThreadCommentRepository>();
 builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
 
 

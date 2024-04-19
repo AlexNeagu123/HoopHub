@@ -9,5 +9,6 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.GetTeamThreadsPaged
         public int Page { get; set; }
         public int PageSize { get; set; }
         public Guid TeamId { get; set; }
+        public bool AreOwn { get; set; } = false;
     }
 }

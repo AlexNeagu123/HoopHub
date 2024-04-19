@@ -16,6 +16,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.Mappers
                 Fan = _fanMapper.FanToFanDto(teamThread.Fan),
                 Title = teamThread.Title,
                 Content = teamThread.Content,
+                CreatedDate = teamThread.CreatedDate
             };
         }
     }
