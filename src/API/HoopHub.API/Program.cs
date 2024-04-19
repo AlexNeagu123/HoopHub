@@ -26,6 +26,7 @@ using HoopHub.Modules.UserFeatures.Application.ExternalServices.AzureBlobStorage
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Infrastructure;
 using HoopHub.Modules.UserFeatures.Infrastructure.ExternalServices.AzureBlobStorage;
+using HoopHub.Modules.UserFeatures.Infrastructure.Interceptors;
 using HoopHub.Modules.UserFeatures.Infrastructure.Persistence;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -142,14 +143,17 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 
 // UserFeatures STUFF
-builder.Services.AddDbContext<UserFeaturesContext>(options =>
+builder.Services.AddSingleton<SoftDeleteInterceptor>();
+
+builder.Services.AddDbContext<UserFeaturesContext>((sp, options) =>
     options.UseNpgsql(
         connectionString,
-        o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "user_features")));
-
+        o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "user_features"))
+    .AddInterceptors(sp.GetRequiredService<SoftDeleteInterceptor>()));
 
 builder.Services.AddScoped<IFanRepository, FanRepository>();
 builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
+
 
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {

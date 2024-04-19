@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\HoopHub.BuildingBlocks.Domain\HoopHub.BuildingBlocks.Domain.csproj" />
+    <ProjectReference Include="..\..\NBAData\HoopHub.Modules.NBAData.Domain\HoopHub.Modules.NBAData.Domain.csproj" />
   </ItemGroup>
 
 </Project>

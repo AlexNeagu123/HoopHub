@@ -1,7 +1,10 @@
 ﻿using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.BuildingBlocks.Domain;
 using HoopHub.Modules.UserFeatures.Domain.Comments;
+using HoopHub.Modules.UserFeatures.Domain.FanNotifications;
 using HoopHub.Modules.UserFeatures.Domain.Fans;
+using HoopHub.Modules.UserFeatures.Domain.Follows;
+using HoopHub.Modules.UserFeatures.Domain.Reviews;
 using HoopHub.Modules.UserFeatures.Domain.Threads;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +18,11 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
         public DbSet<GameThread> GameThreads { get; set; }
         public DbSet<ThreadComment> Comments { get; set; }
         public DbSet<CommentVote> CommentVotes { get; set; }
+        public DbSet<GameReview> GameReviews { get; set; }
+        public DbSet<PlayerPerformanceReview> PlayerPerformanceReviews { get; set; }
+        public DbSet<TeamFollowEntry> TeamFollowEntries { get; set; }
+        public DbSet<PlayerFollowEntry> PlayerFollowEntries { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         public UserFeaturesContext(DbContextOptions<UserFeaturesContext> options, ICurrentUserService userService) :
             base(options)
@@ -49,6 +57,47 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
             ModelGameThreadsTable(modelBuilder);
             ModelCommentsTable(modelBuilder);
             ModelCommentVotesTable(modelBuilder);
+            ModelGameReviewsTable(modelBuilder);
+            ModelPlayerPerformanceReviewsTable(modelBuilder);
+            ModelTeamFollowEntriesTable(modelBuilder);
+            ModelPlayerFollowEntriesTable(modelBuilder);
+            ModelNotificationsTable(modelBuilder);
+        }
+
+        private static void ModelTeamFollowEntriesTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TeamFollowEntry>().HasKey(tfe => new { tfe.FanId, tfe.TeamId });
+            modelBuilder.Entity<TeamFollowEntry>().HasOne(tfe => tfe.Fan).WithMany(f => f.TeamFollowEntries).HasForeignKey(tfe => tfe.FanId);
+            modelBuilder.Entity<TeamFollowEntry>().ToTable("team_follow_entries");
+        }
+
+        private static void ModelPlayerFollowEntriesTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PlayerFollowEntry>().HasKey(pfe => new { pfe.FanId, pfe.PlayerId });
+            modelBuilder.Entity<PlayerFollowEntry>().HasOne(pfe => pfe.Fan).WithMany(f => f.PlayerFollowEntries).HasForeignKey(pfe => pfe.FanId);
+            modelBuilder.Entity<PlayerFollowEntry>().ToTable("player_follow_entries");
+        }
+
+        private static void ModelNotificationsTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Notification>().HasKey(n => n.Id);
+            modelBuilder.Entity<Notification>().HasOne(n => n.Recipient).WithMany(f => f.NotificationsReceived).HasForeignKey(n => n.RecipientId);
+            modelBuilder.Entity<Notification>().HasOne(n => n.Sender).WithMany(f => f.NotificationsSent).HasForeignKey(n => n.SenderId);
+            modelBuilder.Entity<Notification>().ToTable("notifications");
+        }
+
+        private static void ModelGameReviewsTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<GameReview>().HasKey(gr => new { gr.HomeTeamId, gr.VisitorTeamId, gr.Date });
+            modelBuilder.Entity<GameReview>().HasOne(gr => gr.Fan).WithMany(f => f.GameReviews).HasForeignKey(gr => gr.FanId);
+            modelBuilder.Entity<GameReview>().ToTable("game_reviews");
+        }
+
+        private static void ModelPlayerPerformanceReviewsTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PlayerPerformanceReview>().HasKey(ppr => new { ppr.HomeTeamId, ppr.VisitorTeamId, ppr.Date });
+            modelBuilder.Entity<PlayerPerformanceReview>().HasOne(ppr => ppr.Fan).WithMany(f => f.PlayerPerformanceReviews).HasForeignKey(ppr => ppr.FanId);
+            modelBuilder.Entity<PlayerPerformanceReview>().ToTable("player_performance_reviews");
         }
 
         private static void ModelFansTable(ModelBuilder modelBuilder)
@@ -82,6 +131,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
             modelBuilder.Entity<ThreadComment>().HasOne(c => c.GameThread).WithMany(gt => gt.Comments).HasForeignKey(c => c.GameThreadId);
             modelBuilder.Entity<ThreadComment>().HasOne(c => c.Fan).WithMany(f => f.Comments).HasForeignKey(c => c.FanId);
             modelBuilder.Entity<ThreadComment>().HasMany(c => c.Votes).WithOne(v => v.ThreadComment).HasForeignKey(v => v.CommentId);
+            modelBuilder.Entity<ThreadComment>().HasQueryFilter(r => !r.IsDeleted);
             modelBuilder.Entity<ThreadComment>().ToTable("comments");
         }
 

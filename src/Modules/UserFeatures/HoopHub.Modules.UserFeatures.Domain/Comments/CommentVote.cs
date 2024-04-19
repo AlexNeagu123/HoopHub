@@ -1,5 +1,6 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
 using HoopHub.Modules.UserFeatures.Domain.Fans;
+using HoopHub.Modules.UserFeatures.Domain.Rules;
 
 namespace HoopHub.Modules.UserFeatures.Domain.Comments
 {
@@ -18,14 +19,27 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
             IsUpVote = isUpVote;
         }
 
+        private static Result<CommentVote> Create(Guid commentId, string fanId, bool isUpVote)
+        {
+            try
+            {
+                CheckRule(new CommentIdCannotBeEmpty(commentId));
+                CheckRule(new FanIdCannotBeEmpty(fanId));
+            }
+            catch (BusinessRuleValidationException e)
+            {
+                return Result<CommentVote>.Failure(e.Details);
+            }
+            return Result<CommentVote>.Success(new CommentVote(commentId, fanId, isUpVote));
+        }
         public static Result<CommentVote> UpVote(Guid commentId, string fanId)
         {
-            return Result<CommentVote>.Success(new CommentVote(commentId, fanId, true));
+            return Create(commentId, fanId, true);
         }
 
         public static Result<CommentVote> DownVote(Guid commentId, string fanId)
         {
-            return Result<CommentVote>.Success(new CommentVote(commentId, fanId, false));
+            return Create(commentId, fanId, false);
         }
     }
 }

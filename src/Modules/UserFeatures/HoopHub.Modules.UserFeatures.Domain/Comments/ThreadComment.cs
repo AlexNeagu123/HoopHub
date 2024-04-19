@@ -1,11 +1,11 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
-using HoopHub.Modules.UserFeatures.Domain.Constants;
 using HoopHub.Modules.UserFeatures.Domain.Fans;
+using HoopHub.Modules.UserFeatures.Domain.Rules;
 using HoopHub.Modules.UserFeatures.Domain.Threads;
 
 namespace HoopHub.Modules.UserFeatures.Domain.Comments
 {
-    public class ThreadComment : AuditableEntity
+    public class ThreadComment : AuditableEntity, ISoftDeletable
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
         public Guid? ParentId { get; private set; }
@@ -22,18 +22,27 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
         public int DownVotes { get; private set; }
         public ICollection<CommentVote> Votes { get; private set; } = [];
 
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedOnUtc { get; set; }
 
         private ThreadComment(string content, string fanId)
         {
             Content = content;
             FanId = fanId;
+            IsDeleted = false;
         }
 
         public static Result<ThreadComment> Create(string content, string fanId)
         {
-            if (string.IsNullOrWhiteSpace(content))
-                return Result<ThreadComment>.Failure(ValidationErrors.InvalidContent);
-
+            try
+            {
+                CheckRule(new CommentContentMustBeValid(content));
+                CheckRule(new FanIdCannotBeEmpty(fanId));
+            }
+            catch (BusinessRuleValidationException e)
+            {
+                return Result<ThreadComment>.Failure(e.Details);
+            }
             return Result<ThreadComment>.Success(new ThreadComment(content, fanId));
         }
 
@@ -49,17 +58,31 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
 
         public void AttachParentId(Guid parentId)
         {
-            ParentId = parentId;
+            try
+            {
+                CheckRule(new ParentCommentIdCannotBeEmpty(parentId));
+                ParentId = parentId;
+            } catch(BusinessRuleValidationException) { }
         }
 
         public void AttachTeamThread(Guid teamThreadId)
         {
-            TeamThreadId = teamThreadId;
+            try
+            {
+                CheckRule(new ThreadIdCannotBeEmpty(teamThreadId));
+                TeamThreadId = teamThreadId;
+            }
+            catch (BusinessRuleValidationException) {}
         }
 
         public void AttachGameThread(Guid gameThreadId)
         {
-            GameThreadId = gameThreadId;
+            try
+            {
+                CheckRule(new ThreadIdCannotBeEmpty(gameThreadId));
+                GameThreadId = gameThreadId;
+            }
+            catch (BusinessRuleValidationException) { }
         }
     }
 }

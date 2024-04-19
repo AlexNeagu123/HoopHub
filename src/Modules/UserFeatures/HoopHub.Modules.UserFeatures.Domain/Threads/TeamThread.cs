@@ -1,5 +1,6 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
 using HoopHub.Modules.UserFeatures.Domain.Fans;
+using HoopHub.Modules.UserFeatures.Domain.Rules;
 
 namespace HoopHub.Modules.UserFeatures.Domain.Threads
 {
@@ -20,6 +21,17 @@ namespace HoopHub.Modules.UserFeatures.Domain.Threads
 
         public static Result<TeamThread> Create(string fanId, Guid teamId, string title, string content)
         {
+            try
+            {
+                CheckRule(new FanIdCannotBeEmpty(fanId));
+                CheckRule(new BothTeamIdsAreRequired(teamId));
+                CheckRule(new TitleMustBeValid(title));
+                CheckRule(new ThreadContentMustBeValid(content));
+            }
+            catch (BusinessRuleValidationException e)
+            {
+                return Result<TeamThread>.Failure(e.Details);
+            }
             return Result<TeamThread>.Success(new TeamThread(fanId, teamId, title, content));
         }
     }

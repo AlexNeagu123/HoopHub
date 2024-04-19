@@ -3,6 +3,7 @@ using System;
 using HoopHub.Modules.UserFeatures.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 {
     [DbContext(typeof(UserFeaturesContext))]
-    partial class UserFeaturesContextModelSnapshot : ModelSnapshot
+    [Migration("20240419073357_AddedReviews")]
+    partial class AddedReviews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,9 +72,6 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("DownVotes")
                         .HasColumnType("integer");
 
@@ -81,9 +81,6 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 
                     b.Property<Guid?>("GameThreadId")
                         .HasColumnType("uuid");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
@@ -111,57 +108,6 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.ToTable("comments", "user_features");
                 });
 
-            modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.FanNotifications.Notification", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("AttachedImageUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("RecipientId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SenderId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipientId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("notifications", "user_features");
-                });
-
             modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Fans.Fan", b =>
                 {
                     b.Property<string>("Id")
@@ -170,24 +116,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<string>("AvatarPhotoUrl")
                         .HasColumnType("text");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid?>("FavouriteTeamId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -196,56 +127,6 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("fans", "user_features");
-                });
-
-            modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Follows.PlayerFollowEntry", b =>
-                {
-                    b.Property<string>("FanId")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("PlayerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("FanId", "PlayerId");
-
-                    b.ToTable("player_follow_entries", "user_features");
-                });
-
-            modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Follows.TeamFollowEntry", b =>
-                {
-                    b.Property<string>("FanId")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("FanId", "TeamId");
-
-                    b.ToTable("team_follow_entries", "user_features");
                 });
 
             modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Reviews.GameReview", b =>
@@ -259,21 +140,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<string>("Date")
                         .HasColumnType("text");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("FanId")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("Rating")
                         .HasColumnType("numeric");
@@ -296,21 +165,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<string>("Date")
                         .HasColumnType("text");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("FanId")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
@@ -440,45 +297,6 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Navigation("TeamThread");
                 });
 
-            modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.FanNotifications.Notification", b =>
-                {
-                    b.HasOne("HoopHub.Modules.UserFeatures.Domain.Fans.Fan", "Recipient")
-                        .WithMany("NotificationsReceived")
-                        .HasForeignKey("RecipientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HoopHub.Modules.UserFeatures.Domain.Fans.Fan", "Sender")
-                        .WithMany("NotificationsSent")
-                        .HasForeignKey("SenderId");
-
-                    b.Navigation("Recipient");
-
-                    b.Navigation("Sender");
-                });
-
-            modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Follows.PlayerFollowEntry", b =>
-                {
-                    b.HasOne("HoopHub.Modules.UserFeatures.Domain.Fans.Fan", "Fan")
-                        .WithMany("PlayerFollowEntries")
-                        .HasForeignKey("FanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Fan");
-                });
-
-            modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Follows.TeamFollowEntry", b =>
-                {
-                    b.HasOne("HoopHub.Modules.UserFeatures.Domain.Fans.Fan", "Fan")
-                        .WithMany("TeamFollowEntries")
-                        .HasForeignKey("FanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Fan");
-                });
-
             modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Reviews.GameReview", b =>
                 {
                     b.HasOne("HoopHub.Modules.UserFeatures.Domain.Fans.Fan", "Fan")
@@ -523,15 +341,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 
                     b.Navigation("GameReviews");
 
-                    b.Navigation("NotificationsReceived");
-
-                    b.Navigation("NotificationsSent");
-
-                    b.Navigation("PlayerFollowEntries");
-
                     b.Navigation("PlayerPerformanceReviews");
-
-                    b.Navigation("TeamFollowEntries");
 
                     b.Navigation("TeamThreads");
 

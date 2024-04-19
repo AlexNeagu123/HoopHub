@@ -3,6 +3,7 @@ using System;
 using HoopHub.Modules.UserFeatures.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 {
     [DbContext(typeof(UserFeaturesContext))]
-    partial class UserFeaturesContextModelSnapshot : ModelSnapshot
+    [Migration("20240419085656_AddedSoftDelete")]
+    partial class AddedSoftDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,24 +173,12 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<string>("AvatarPhotoUrl")
                         .HasColumnType("text");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid?>("FavouriteTeamId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -259,21 +250,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<string>("Date")
                         .HasColumnType("text");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("FanId")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("Rating")
                         .HasColumnType("numeric");
@@ -296,21 +275,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<string>("Date")
                         .HasColumnType("text");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("FanId")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");
