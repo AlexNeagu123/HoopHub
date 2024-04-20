@@ -21,10 +21,4 @@
     <ProjectReference Include="..\HoopHub.Modules.UserFeatures.Domain\HoopHub.Modules.UserFeatures.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Comments\DeleteThreadComment\" />
-    <Folder Include="Comments\UpdateThreadCommentVote\" />
-    <Folder Include="Comments\UpdateThreadComment\" />
-  </ItemGroup>
-
 </Project>

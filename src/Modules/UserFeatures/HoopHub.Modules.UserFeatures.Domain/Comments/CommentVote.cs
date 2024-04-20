@@ -5,15 +5,13 @@ using HoopHub.Modules.UserFeatures.Domain.Rules;
 
 namespace HoopHub.Modules.UserFeatures.Domain.Comments
 {
-    public class CommentVote : AuditableEntity, ISoftDeletable
+    public class CommentVote : AuditableEntity
     {
         public Guid CommentId { get; private set; }
         public ThreadComment ThreadComment { get; private set; } = null!;
         public string FanId { get; private set; }
         public Fan Fan { get; private set; } = null!;
         public bool IsUpVote { get; private set; }
-        public bool IsDeleted { get; set; }
-        public DateTime? DeletedOnUtc { get; set; }
 
         private CommentVote(Guid commentId, string fanId, bool isUpVote)
         {
@@ -22,6 +20,21 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
             IsUpVote = isUpVote;
 
             AddDomainEvent(new CommentVoteAddedDomainEvent(CommentId, FanId, IsUpVote));
+        }
+
+        public void Update(bool isUpVote)
+        {
+            if (IsUpVote == isUpVote)
+                return;
+
+            IsUpVote = isUpVote;
+
+            AddDomainEvent(new CommentVoteUpdatedDomainEvent(CommentId, FanId, IsUpVote));
+        }
+
+        public void MarkAsDeleted()
+        {
+            AddDomainEvent(new CommentVoteDeletedDomainEvent(CommentId, FanId, IsUpVote));
         }
 
         public static Result<CommentVote> Create(Guid commentId, string fanId, bool isUpVote)

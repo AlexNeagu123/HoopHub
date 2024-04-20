@@ -5,7 +5,8 @@ using Microsoft.Extensions.Logging;
 
 namespace HoopHub.Modules.UserFeatures.Application.Comments
 {
-    public class CommentVoteAddedDomainEventHandler(ILogger<CommentVoteAddedDomainEventHandler> logger, IThreadCommentRepository threadCommentRepository) : INotificationHandler<CommentVoteAddedDomainEvent>
+    public class CommentVoteAddedDomainEventHandler(ILogger<CommentVoteAddedDomainEventHandler> logger,
+        IThreadCommentRepository threadCommentRepository) : INotificationHandler<CommentVoteAddedDomainEvent>
     {
         private readonly ILogger<CommentVoteAddedDomainEventHandler> _logger = logger;
         private readonly IThreadCommentRepository _threadCommentRepository = threadCommentRepository;
@@ -15,7 +16,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments
             var commentResult = await _threadCommentRepository.FindByIdAsync(notification.CommentId);
             if (!commentResult.IsSuccess)
             {
-                _logger.LogWarning("Comment {CommentId} not found", notification.CommentId);
+                _logger.LogError("Comment {CommentId} not found", notification.CommentId);
                 return;
             }
 
@@ -28,6 +29,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments
             var updateResult = await _threadCommentRepository.UpdateAsync(comment);
             if (!updateResult.IsSuccess)
                 _logger.LogError("Failed to update comment {CommentId}", notification.CommentId);
+
+            _logger.LogInformation("Comment {CommentId} updated", notification.CommentId);
         }
     }
 }

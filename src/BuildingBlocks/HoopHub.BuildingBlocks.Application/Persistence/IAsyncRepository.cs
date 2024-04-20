@@ -8,6 +8,7 @@ namespace HoopHub.BuildingBlocks.Application.Persistence
         Task<Result<T>> FindByIdAsync(string id);
         Task<Result<T>> AddAsync(T entity);
         Task<Result<T>> UpdateAsync(T entity);
+        Task<Result<T>> RemoveAsync(T entity);
         Task<Result<T>> DeleteAsync(Guid id);
         Result<IReadOnlyList<T>> GetAll();
     }

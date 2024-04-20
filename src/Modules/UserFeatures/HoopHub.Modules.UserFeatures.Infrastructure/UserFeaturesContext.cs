@@ -148,7 +148,6 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
             modelBuilder.Entity<CommentVote>().HasKey(v => new { v.CommentId, v.FanId });
             modelBuilder.Entity<CommentVote>().HasOne(v => v.ThreadComment).WithMany(tc => tc.Votes).HasForeignKey(v => v.CommentId);
             modelBuilder.Entity<CommentVote>().HasOne(v => v.Fan).WithMany(f => f.Votes).HasForeignKey(v => v.FanId);
-            modelBuilder.Entity<CommentVote>().HasQueryFilter(r => !r.IsDeleted);
             modelBuilder.Entity<CommentVote>().ToTable("comment_votes");
         }
     }

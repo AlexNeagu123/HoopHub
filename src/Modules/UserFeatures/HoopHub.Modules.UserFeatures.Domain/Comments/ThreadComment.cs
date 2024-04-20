@@ -56,6 +56,32 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
             DownVotes++;
         }
 
+        public void UpdateVoteCount(bool isUpVote)
+        {
+            if (isUpVote)
+            {
+                UpVotes++;
+                DownVotes--;
+            }
+            else
+            {
+                UpVotes--;
+                DownVotes++;
+            }
+        }
+
+        public void RemoveVote(bool isUpVote)
+        {
+            if (isUpVote)
+                UpVotes--;
+            else
+                DownVotes--;
+        }
+        public void Update(string content)
+        {
+            Content = content;
+        }
+
         public void AttachParentId(Guid parentId)
         {
             try

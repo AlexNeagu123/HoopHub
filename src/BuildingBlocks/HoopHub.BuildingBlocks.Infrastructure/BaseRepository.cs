@@ -22,6 +22,13 @@ namespace HoopHub.BuildingBlocks.Infrastructure
             return Result<T>.Success(entity);
         }
 
+        public async Task<Result<T>> RemoveAsync(T entity)
+        {
+            Context.Set<T>().Remove(entity);
+            await Context.SaveChangesAsync();
+            return Result<T>.Success(entity);
+        }
+
         public async Task<Result<T>> DeleteAsync(Guid id)
         {
             var result = await FindByIdAsync(id);
@@ -29,9 +36,7 @@ namespace HoopHub.BuildingBlocks.Infrastructure
             {
                 return Result<T>.Failure($"Entity with Id {id} not found");
             }
-            Context.Set<T>().Remove(result.Value);
-            await Context.SaveChangesAsync();
-            return Result<T>.Success(result.Value);
+            return await RemoveAsync(result.Value);
         }
 
         public virtual Result<IReadOnlyList<T>> GetAll()
