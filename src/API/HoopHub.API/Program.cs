@@ -1,4 +1,5 @@
 using System.Text;
+using HoopHub.API.BackgroundJobs;
 using HoopHub.API.Extensions;
 using HoopHub.API.Hubs;
 using HoopHub.API.Services;
@@ -25,6 +26,7 @@ using HoopHub.Modules.UserFeatures.Application.Events;
 using HoopHub.Modules.UserFeatures.Application.ExternalServices.AzureBlobStorage;
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Infrastructure;
+using HoopHub.Modules.UserFeatures.Infrastructure.BackgroundJobs;
 using HoopHub.Modules.UserFeatures.Infrastructure.ExternalServices.AzureBlobStorage;
 using HoopHub.Modules.UserFeatures.Infrastructure.Interceptors;
 using HoopHub.Modules.UserFeatures.Infrastructure.Persistence;
@@ -35,6 +37,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -145,16 +148,19 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 // UserFeatures STUFF
 builder.Services.AddSingleton<SoftDeleteInterceptor>();
+builder.Services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
 builder.Services.AddDbContext<UserFeaturesContext>((sp, options) =>
     options.UseNpgsql(
         connectionString,
         o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "user_features"))
-    .AddInterceptors(sp.GetRequiredService<SoftDeleteInterceptor>()));
+    .AddInterceptors([sp.GetRequiredService<SoftDeleteInterceptor>(), sp.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptor>()]));
+
 
 builder.Services.AddScoped<IFanRepository, FanRepository>();
 builder.Services.AddScoped<ITeamThreadRepository, TeamThreadRepository>();
 builder.Services.AddScoped<IThreadCommentRepository, ThreadCommentRepository>();
+builder.Services.AddScoped<IThreadCommentVoteRepository, ThreadCommentVoteRepository>();
 builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
 
 
@@ -186,7 +192,27 @@ builder.Services.AddMassTransit(busConfigurator =>
     });
 });
 
-builder.Services.AddHostedService<LiveBoxScoreBackgroundService>();
+builder.Services.AddQuartz(configure =>
+{
+    var outboxJobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+    var liveBoxScoresJobKey = new JobKey(nameof(LiveBoxScoreJob));
+
+    configure.AddJob<ProcessOutboxMessagesJob>(outboxJobKey)
+        .AddTrigger(trigger => trigger
+            .ForJob(outboxJobKey)
+            .WithSimpleSchedule(schedule => schedule
+                .WithIntervalInSeconds(int.Parse(builder.Configuration["BackgroundJobTimes:OutBoxProcessor"] ?? "5"))
+                .RepeatForever()));
+
+    configure.AddJob<LiveBoxScoreJob>(liveBoxScoresJobKey)
+        .AddTrigger(trigger => trigger
+            .ForJob(liveBoxScoresJobKey)
+            .WithSimpleSchedule(schedule => schedule
+                .WithIntervalInSeconds(int.Parse(builder.Configuration["BackgroundJobTimes:LiveBoxScores"] ?? "10"))
+                .RepeatForever()));
+});
+
+builder.Services.AddQuartzHostedService();
 
 
 var app = builder.Build();

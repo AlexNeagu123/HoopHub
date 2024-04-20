@@ -18,6 +18,7 @@
         public const string InvalidCommentContent = "Comment content should have at least 10 characters and at most 500";
         public const string InvalidThreadId = "Thread Id cannot be empty";
         public const string InvalidParentCommentId = "Parent comment id cannot be empty";
+        public const string CommentDoNotExist = "Comment with this ParentId does not exist";
         public const string InvalidCommentId = "Comment Id cannot be empty";
         public const string InvalidGameRating = "Game rating should be a decimal between 0 and 5";
         public const string InvalidPage = "Page shoukd be greater than 0";
@@ -25,5 +26,6 @@
         public const string ThreadUpdateNotAuthorized = "Only the creator of the thread can update it";
         public const string ThreadDeleteNotAuthorized = "Only the creator of the thread can delete it";
         public const string ShouldBeExactlyOneThreadNonNull = "Exactly one of TeamThreadId and GameThreadId should be non-null";
+        public const string VoteAlreadyGiven = "Vote already given";
     }
 }

@@ -46,7 +46,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration
 
             await _userManager.AddToRoleAsync(user, role);
 
-            await _publisher.Publish(new UserRegisteredDomainEvent(new Guid(), user.Id, user.UserName, user.Email));
+            await _publisher.Publish(new UserRegisteredDomainEvent(user.Id, user.UserName, user.Email));
 
             return new Response<UserDto>
             {

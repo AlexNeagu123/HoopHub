@@ -6,6 +6,7 @@ using HoopHub.Modules.UserFeatures.Domain.Fans;
 using HoopHub.Modules.UserFeatures.Domain.Follows;
 using HoopHub.Modules.UserFeatures.Domain.Reviews;
 using HoopHub.Modules.UserFeatures.Domain.Threads;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace HoopHub.Modules.UserFeatures.Infrastructure
@@ -13,6 +14,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
     public class UserFeaturesContext : DbContext
     {
         private readonly ICurrentUserService _currentUserService;
+        private readonly IPublisher _publisher;
         public DbSet<Fan> Fans { get; set; }
         public DbSet<TeamThread> TeamThreads { get; set; }
         public DbSet<GameThread> GameThreads { get; set; }
@@ -23,14 +25,16 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
         public DbSet<TeamFollowEntry> TeamFollowEntries { get; set; }
         public DbSet<PlayerFollowEntry> PlayerFollowEntries { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<OutboxMessage> OutboxMessages { get; set; }
 
-        public UserFeaturesContext(DbContextOptions<UserFeaturesContext> options, ICurrentUserService userService) :
+        public UserFeaturesContext(DbContextOptions<UserFeaturesContext> options, ICurrentUserService userService, IPublisher publisher) :
             base(options)
         {
             _currentUserService = userService;
+            _publisher = publisher;
         }
 
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
             {
@@ -44,7 +48,11 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
                     entry.Entity.LastModifiedDate = DateTime.UtcNow;
                 }
             }
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+
+
+            var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+
+            return result;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

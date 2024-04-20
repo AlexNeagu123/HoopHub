@@ -1,7 +1,11 @@
-﻿using HoopHub.Modules.UserAccess.Domain.Primitives;
+﻿using HoopHub.BuildingBlocks.Domain;
 
 namespace HoopHub.Modules.UserAccess.Domain.Registration
 {
-    public record UserRegisteredDomainEvent(Guid Id, string UserId, string UserName, string UserEmail)
-        : DomainEvent(Id);
+    public class UserRegisteredDomainEvent(string userId, string userName, string userEmail) : DomainEventBase
+    {
+        public string UserId { get; } = userId;
+        public string UserName { get; } = userName;
+        public string UserEmail { get; } = userEmail;
+    }
 }

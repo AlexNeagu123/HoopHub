@@ -7,5 +7,6 @@
         public const string FanUpdate = "FanUpdate";
         public const string TeamThread = "TeamThread";
         public const string ThreadComment = "ThreadComment";
+        public const string ThreadCommentVote = "ThreadCommentVote";
     }
 }

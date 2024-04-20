@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Comments\DeleteThreadComment\" />
-    <Folder Include="Comments\CreateThreadCommentVote\" />
     <Folder Include="Comments\UpdateThreadCommentVote\" />
     <Folder Include="Comments\UpdateThreadComment\" />
   </ItemGroup>

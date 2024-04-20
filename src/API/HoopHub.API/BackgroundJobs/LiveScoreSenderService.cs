@@ -4,7 +4,7 @@ using HoopHub.Modules.NBAData.Application.Games.BoxScores;
 using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using HoopHub.Modules.NBAData.Application.Persistence;
 
-namespace HoopHub.API.Hubs
+namespace HoopHub.API.BackgroundJobs
 {
     public class LiveScoreGetterService
     {

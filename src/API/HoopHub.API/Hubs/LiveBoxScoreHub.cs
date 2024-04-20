@@ -1,4 +1,5 @@
-﻿using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
+﻿using HoopHub.API.BackgroundJobs;
+using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using Microsoft.AspNetCore.SignalR;
 
