@@ -29,6 +29,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadCommentV
                 return Response<ThreadCommentVoteDto>.ErrorResponseFromKeyMessage(threadCommentVoteResult.ErrorMsg, ValidationKeys.ThreadCommentVote);
 
             var threadCommentVote = threadCommentVoteResult.Value;
+            threadCommentVote.MarkAsAdded();
+
             var addThreadCommentVoteResult = await _threadCommentVoteRepository.AddAsync(threadCommentVote);
             if (!addThreadCommentVoteResult.IsSuccess)
                 return Response<ThreadCommentVoteDto>.ErrorResponseFromKeyMessage(addThreadCommentVoteResult.ErrorMsg, ValidationKeys.ThreadCommentVote);

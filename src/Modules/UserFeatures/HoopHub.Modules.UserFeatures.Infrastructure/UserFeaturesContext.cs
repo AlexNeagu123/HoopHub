@@ -34,7 +34,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
             _publisher = publisher;
         }
 
-        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
             {
@@ -49,10 +49,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
                 }
             }
 
-
-            var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-
-            return result;
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -138,16 +135,19 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
             modelBuilder.Entity<ThreadComment>().HasOne(c => c.TeamThread).WithMany(tt => tt.Comments).HasForeignKey(c => c.TeamThreadId);
             modelBuilder.Entity<ThreadComment>().HasOne(c => c.GameThread).WithMany(gt => gt.Comments).HasForeignKey(c => c.GameThreadId);
             modelBuilder.Entity<ThreadComment>().HasOne(c => c.Fan).WithMany(f => f.Comments).HasForeignKey(c => c.FanId);
-            modelBuilder.Entity<ThreadComment>().HasMany(c => c.Votes).WithOne(v => v.ThreadComment).HasForeignKey(v => v.CommentId);
+            modelBuilder.Entity<ThreadComment>().HasMany(c => c.Votes).WithOne(v => v.ThreadComment)
+                .HasForeignKey(v => v.CommentId).OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<ThreadComment>().HasQueryFilter(r => !r.IsDeleted);
             modelBuilder.Entity<ThreadComment>().ToTable("comments");
         }
 
         private static void ModelCommentVotesTable(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CommentVote>().HasKey(v => new { v.CommentId, v.FanId });
+            modelBuilder.Entity<CommentVote>().HasKey(v => v.Id);
             modelBuilder.Entity<CommentVote>().HasOne(v => v.ThreadComment).WithMany(tc => tc.Votes).HasForeignKey(v => v.CommentId);
             modelBuilder.Entity<CommentVote>().HasOne(v => v.Fan).WithMany(f => f.Votes).HasForeignKey(v => v.FanId);
+            modelBuilder.Entity<CommentVote>().HasQueryFilter(v => !v.IsDeleted);
             modelBuilder.Entity<CommentVote>().ToTable("comment_votes");
         }
     }

@@ -1,25 +1,30 @@
-﻿using HoopHub.BuildingBlocks.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+using HoopHub.BuildingBlocks.Domain;
 using HoopHub.Modules.UserFeatures.Domain.Comments.Events;
 using HoopHub.Modules.UserFeatures.Domain.Fans;
 using HoopHub.Modules.UserFeatures.Domain.Rules;
 
 namespace HoopHub.Modules.UserFeatures.Domain.Comments
 {
-    public class CommentVote : AuditableEntity
+    public class CommentVote : AuditableEntity, ISoftDeletable
     {
+        public Guid Id { get; private set; }
         public Guid CommentId { get; private set; }
+
+        [Required]
         public ThreadComment ThreadComment { get; private set; } = null!;
         public string FanId { get; private set; }
         public Fan Fan { get; private set; } = null!;
         public bool IsUpVote { get; private set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedOnUtc { get; set; }
 
         private CommentVote(Guid commentId, string fanId, bool isUpVote)
         {
+            Id = Guid.NewGuid();
             CommentId = commentId;
             FanId = fanId;
             IsUpVote = isUpVote;
-
-            AddDomainEvent(new CommentVoteAddedDomainEvent(CommentId, FanId, IsUpVote));
         }
 
         public void Update(bool isUpVote)
@@ -28,8 +33,12 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
                 return;
 
             IsUpVote = isUpVote;
-
             AddDomainEvent(new CommentVoteUpdatedDomainEvent(CommentId, FanId, IsUpVote));
+        }
+
+        public void MarkAsAdded()
+        {
+            AddDomainEvent(new CommentVoteAddedDomainEvent(CommentId, FanId, IsUpVote));
         }
 
         public void MarkAsDeleted()

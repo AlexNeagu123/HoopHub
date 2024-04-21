@@ -14,7 +14,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.DeleteTeamThread
 
         public async Task<BaseResponse> Handle(DeleteTeamThreadCommand request, CancellationToken cancellationToken)
         {
-            var validator = new DeleteTeamThreadCommandValidator();
+            var validator = new DeleteTeamThreadCommandValidator(_teamThreadRepository);
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
                 return BaseResponse.ErrorResponseFromFluentResult(validationResult);

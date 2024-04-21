@@ -12,7 +12,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments
         private readonly IThreadCommentRepository _threadCommentRepository = threadCommentRepository;
         public async Task Handle(CommentVoteDeletedDomainEvent notification, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Comment vote deleted: {CommentId}", notification.CommentId);
+            _logger.LogInformation("[Domain Event Received] Comment vote deleted: {CommentId}", notification.CommentId);
             var threadComment = await _threadCommentRepository.FindByIdAsyncIncludingAll(notification.CommentId);
             if (!threadComment.IsSuccess)
             {

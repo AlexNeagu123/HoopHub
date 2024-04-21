@@ -16,7 +16,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.UpdateTeamThread
         private readonly TeamThreadMapper _teamThreadMapper = new();
         public async Task<Response<TeamThreadDto>> Handle(UpdateTeamThreadCommand request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateTeamThreadCommandValidator();
+            var validator = new UpdateTeamThreadCommandValidator(_threadRepository);
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
                 return Response<TeamThreadDto>.ErrorResponseFromFluentResult(validationResult);

@@ -154,7 +154,7 @@ builder.Services.AddDbContext<UserFeaturesContext>((sp, options) =>
     options.UseNpgsql(
         connectionString,
         o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "user_features"))
-    .AddInterceptors([sp.GetRequiredService<SoftDeleteInterceptor>(), sp.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptor>()]));
+    .AddInterceptors(sp.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptor>(), sp.GetRequiredService<SoftDeleteInterceptor>()));
 
 
 builder.Services.AddScoped<IFanRepository, FanRepository>();

@@ -25,10 +25,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.CreateTeamThread
 
 
             var fanId = _userService.GetUserId;
-            if (string.IsNullOrEmpty(fanId))
-                return Response<TeamThreadDto>.ErrorResponseFromKeyMessage(ValidationErrors.InvalidFanId, ValidationKeys.FanId);
-
-            var teamThreadResult = TeamThread.Create(fanId, request.TeamId, request.Title, request.Content);
+            var teamThreadResult = TeamThread.Create(fanId!, request.TeamId, request.Title, request.Content);
             if (!teamThreadResult.IsSuccess)
                 return Response<TeamThreadDto>.ErrorResponseFromKeyMessage(teamThreadResult.ErrorMsg, ValidationKeys.TeamThread);
 

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using HoopHub.Modules.UserFeatures.Application.Constants;
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Domain.Constants;
 
@@ -13,7 +14,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.DeleteThreadCommentV
             {
                 var commentResult = await threadCommentVoteRepository.FindByIdAsyncIncludingAll(commentId, fanId);
                 return commentResult.IsSuccess;
-            }).WithMessage(ValidationErrors.CommentVoteDoNotExist);
+            }).WithMessage(ValidationErrors.CommentVoteDoNotExist).WithName(ValidationKeys.ThreadCommentVote);
         }
     }
 }

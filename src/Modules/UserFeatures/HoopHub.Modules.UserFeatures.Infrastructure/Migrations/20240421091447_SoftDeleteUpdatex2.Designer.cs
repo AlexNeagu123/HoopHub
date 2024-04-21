@@ -3,6 +3,7 @@ using System;
 using HoopHub.Modules.UserFeatures.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 {
     [DbContext(typeof(UserFeaturesContext))]
-    partial class UserFeaturesContextModelSnapshot : ModelSnapshot
+    [Migration("20240421091447_SoftDeleteUpdatex2")]
+    partial class SoftDeleteUpdatex2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,25 +56,14 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 
             modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Comments.CommentVote", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("CommentId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("FanId")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsUpVote")
                         .HasColumnType("boolean");
@@ -79,9 +71,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentId");
+                    b.HasKey("CommentId", "FanId");
 
                     b.HasIndex("FanId");
 

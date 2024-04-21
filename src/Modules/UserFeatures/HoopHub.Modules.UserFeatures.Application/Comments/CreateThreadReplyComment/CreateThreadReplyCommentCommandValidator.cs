@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using HoopHub.Modules.UserFeatures.Application.Constants;
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Domain.Constants;
 
@@ -15,7 +16,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyCom
             {
                 var parentCommentResult = await threadCommentRepository.FindByIdAsync(parentId);
                 return parentCommentResult.IsSuccess;
-            }).WithMessage(ValidationErrors.CommentDoNotExist);
+            }).WithMessage(ValidationErrors.CommentDoNotExist).WithName(ValidationKeys.ThreadComment);
         }
     }
 }
