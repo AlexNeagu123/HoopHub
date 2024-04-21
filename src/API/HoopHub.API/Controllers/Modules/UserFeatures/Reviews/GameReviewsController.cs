@@ -15,7 +15,7 @@ namespace HoopHub.API.Controllers.Modules.UserFeatures.Reviews
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = UserRoles.User)]
-        public async Task<IActionResult> CreateGameReview([FromQuery] GetGameReviewQuery command)
+        public async Task<IActionResult> GetGameReview([FromQuery] GetGameReviewQuery command)
         {
             var response = await Mediator.Send(command);
             if (!response.Success)

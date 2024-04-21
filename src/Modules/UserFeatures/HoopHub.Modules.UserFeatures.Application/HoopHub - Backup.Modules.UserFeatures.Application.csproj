@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.11.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
+    <PackageReference Include="MassTransit" Version="8.2.0" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.17.4" />
+    <PackageReference Include="Riok.Mapperly" Version="3.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\HoopHub.BuildingBlocks.Application\HoopHub.BuildingBlocks.Application.csproj" />
+    <ProjectReference Include="..\..\UserAccess\HoopHub.Modules.UserAccess.IntegrationEvents\HoopHub.Modules.UserAccess.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\HoopHub.Modules.UserFeatures.Domain\HoopHub.Modules.UserFeatures.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PlayerFollowEntries\CreatePlayerFollowEntry\" />
+    <Folder Include="PlayerFollowEntries\DeletePlayerFollowEntry\" />
+    <Folder Include="PlayerFollowEntries\GetPlayersFollowed\" />
+    <Folder Include="PlayerFollowEntries\Dtos\" />
+    <Folder Include="PlayerFollowEntries\NewFolder\" />
+    <Folder Include="TeamFollowEntries\CreateTeamFollowEntry\" />
+    <Folder Include="TeamFollowEntries\GetTeamsFollowed\" />
+    <Folder Include="TeamFollowEntries\DeleteTeamFollowEntry\" />
+  </ItemGroup>
+
+</Project>

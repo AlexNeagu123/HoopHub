@@ -11,5 +11,7 @@
         public const string GameReview = "GameReview";  
         public const string PlayerPerformanceReview = "PlayerPerformanceReview";
         public const string GameThread = "GameThread";
+        public const string PlayerFollowEntry = "PlayerFollowEntry";
+        public const string TeamFollowEntry = "TeamFollowEntry";
     }
 }

@@ -3,7 +3,6 @@ using HoopHub.Modules.UserAccess.Domain.Roles;
 using HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadCommentVote;
 using HoopHub.Modules.UserFeatures.Application.Comments.DeleteThreadCommentVote;
 using HoopHub.Modules.UserFeatures.Application.Comments.UpdateThreadCommentVote;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

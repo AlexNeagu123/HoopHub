@@ -35,5 +35,9 @@
         public const string PlayerPerformanceReviewExists = "Player performance review already exists";
         public const string PlayerPerformanceReviewDoNotExist = "Player performance review does not exist";
         public const string GameThreadExists = "Game thread already exists";
+        public const string PlayerFollowEntryExists = "Player already followed";
+        public const string TeamFollowEntryAlreadyExists = "Team already followed";
+        public const string PlayerFollowEntryDoNotExist = "Player does not exist in the follow list";
+        public const string TeamFollowEntryDoNotExist = "Team does not exist in the follow list";
     }
 }
