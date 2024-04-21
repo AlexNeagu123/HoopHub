@@ -10,5 +10,6 @@
         public const string ThreadCommentVote = "ThreadCommentVote";
         public const string GameReview = "GameReview";  
         public const string PlayerPerformanceReview = "PlayerPerformanceReview";
+        public const string GameThread = "GameThread";
     }
 }

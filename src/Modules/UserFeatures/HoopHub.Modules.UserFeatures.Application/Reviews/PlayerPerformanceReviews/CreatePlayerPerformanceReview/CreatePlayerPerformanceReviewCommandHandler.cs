@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using HoopHub.BuildingBlocks.Application.Responses;
+﻿using HoopHub.BuildingBlocks.Application.Responses;
 using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.Modules.UserFeatures.Application.Constants;
 using HoopHub.Modules.UserFeatures.Application.Persistence;

@@ -9,15 +9,16 @@ using MediatR;
 
 namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadComment
 {
-    public class CreateThreadCommentCommandHandler(ICurrentUserService userService, IThreadCommentRepository threadCommentRepository, ITeamThreadRepository teamThreadRepository) : IRequestHandler<CreateThreadCommentCommand, Response<ThreadCommentDto>>
+    public class CreateThreadCommentCommandHandler(ICurrentUserService userService, IThreadCommentRepository threadCommentRepository, ITeamThreadRepository teamThreadRepository, IGameThreadRepository gameThreadRepository) : IRequestHandler<CreateThreadCommentCommand, Response<ThreadCommentDto>>
     {
         private readonly ICurrentUserService _currentUserService = userService;
         private readonly IThreadCommentRepository _threadCommentRepository = threadCommentRepository;
+        private readonly IGameThreadRepository _gameThreadRepository = gameThreadRepository;
         private readonly ITeamThreadRepository _teamThreadRepository = teamThreadRepository;
         private readonly ThreadCommentMapper _threadCommentMapper = new();
         public async Task<Response<ThreadCommentDto>> Handle(CreateThreadCommentCommand request, CancellationToken cancellationToken)
         {
-            var validator = new CreateThreadCommentCommandValidator(_teamThreadRepository);
+            var validator = new CreateThreadCommentCommandValidator(_teamThreadRepository, _gameThreadRepository);
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
                 return Response<ThreadCommentDto>.ErrorResponseFromFluentResult(validationResult);

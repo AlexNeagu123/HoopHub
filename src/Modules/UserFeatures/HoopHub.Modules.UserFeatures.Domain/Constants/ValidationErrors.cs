@@ -8,7 +8,7 @@
         public const string InvalidUsername = "Username cannot be empty";
         public const string InvalidEmail = "Email cannot be empty";
         public const string BothTeamIdsRequired = "Visitor or Home team ids cannot be empty";
-        public const string InvalidDate = "Date must be in a valid format (yyyy-MM-dd)";
+        public const string InvalidDate = "Date must be in a valid format (yyyy-MM-dd) and should be earlier (or equal) than todays date";
         public const string InvalidPlayerId = "Player Id cannot be empty";
         public const string InvalidPlayerRating = "Player rating should be a decimal between 0 and 10";
         public const string InvalidTitle = "Title should have at least 5 characters and at most 50";
@@ -34,5 +34,6 @@
         public const string GameReviewDoNotExist = "Game review does not exist";
         public const string PlayerPerformanceReviewExists = "Player performance review already exists";
         public const string PlayerPerformanceReviewDoNotExist = "Player performance review does not exist";
+        public const string GameThreadExists = "Game thread already exists";
     }
 }

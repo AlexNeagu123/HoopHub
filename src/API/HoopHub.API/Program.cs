@@ -162,6 +162,7 @@ builder.Services.AddScoped<ITeamThreadRepository, TeamThreadRepository>();
 builder.Services.AddScoped<IThreadCommentRepository, ThreadCommentRepository>();
 builder.Services.AddScoped<IThreadCommentVoteRepository, ThreadCommentVoteRepository>();
 builder.Services.AddScoped<IGameReviewRepository, GameReviewRepository>();
+builder.Services.AddScoped<IGameThreadRepository, GameThreadRepository>();
 builder.Services.AddScoped<IPlayerPerformanceReviewRepository, PlayerPerformanceReviewRepository>();
 builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
 

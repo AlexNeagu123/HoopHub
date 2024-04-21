@@ -1,5 +1,6 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
 using HoopHub.Modules.UserFeatures.Domain.Constants;
+using System.Globalization;
 
 namespace HoopHub.Modules.UserFeatures.Domain.Rules
 {
@@ -9,7 +10,22 @@ namespace HoopHub.Modules.UserFeatures.Domain.Rules
 
         public bool IsBroken()
         {
-            return string.IsNullOrEmpty(_date) || DateTime.TryParseExact(_date, Config.DateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out _);
+            return string.IsNullOrEmpty(_date) || !BeAValidDate(_date);
+        }
+
+        public static bool BeAValidDate(string date)
+        {
+            if (DateTime.TryParseExact(
+                    date,
+                    Config.DateFormat,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out var parsedDate))
+            {
+                return parsedDate.Date <= DateTime.Today;
+            }
+
+            return false;
         }
 
         public string Message => ValidationErrors.InvalidDate;
