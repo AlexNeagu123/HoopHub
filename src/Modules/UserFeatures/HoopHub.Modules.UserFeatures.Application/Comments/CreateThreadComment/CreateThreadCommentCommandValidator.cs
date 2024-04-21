@@ -13,7 +13,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadComment
             RuleFor(x => x.TeamThreadId).Must((command, teamThreadId) => (teamThreadId == null) ^ (command.GameThreadId == null)).WithMessage(ValidationErrors.ShouldBeExactlyOneThreadNonNull);
             RuleFor(x => x.TeamThreadId).MustAsync(async (teamThreadId, cancellation) =>
             {
-                if(teamThreadId == null)
+                if (teamThreadId == null)
                     return true;
                 var teamThreadResult = await teamThreadRepository.FindByIdAsync(teamThreadId.Value);
                 return teamThreadResult.IsSuccess;

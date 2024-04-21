@@ -91,14 +91,14 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
 
         private static void ModelGameReviewsTable(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<GameReview>().HasKey(gr => new { gr.HomeTeamId, gr.VisitorTeamId, gr.Date });
+            modelBuilder.Entity<GameReview>().HasKey(gr => new { gr.HomeTeamId, gr.VisitorTeamId, gr.Date, gr.FanId });
             modelBuilder.Entity<GameReview>().HasOne(gr => gr.Fan).WithMany(f => f.GameReviews).HasForeignKey(gr => gr.FanId);
             modelBuilder.Entity<GameReview>().ToTable("game_reviews");
         }
 
         private static void ModelPlayerPerformanceReviewsTable(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PlayerPerformanceReview>().HasKey(ppr => new { ppr.HomeTeamId, ppr.VisitorTeamId, ppr.Date });
+            modelBuilder.Entity<PlayerPerformanceReview>().HasKey(ppr => new { ppr.HomeTeamId, ppr.VisitorTeamId, ppr.PlayerId, ppr.Date, ppr.FanId });
             modelBuilder.Entity<PlayerPerformanceReview>().HasOne(ppr => ppr.Fan).WithMany(f => f.PlayerPerformanceReviews).HasForeignKey(ppr => ppr.FanId);
             modelBuilder.Entity<PlayerPerformanceReview>().ToTable("player_performance_reviews");
         }

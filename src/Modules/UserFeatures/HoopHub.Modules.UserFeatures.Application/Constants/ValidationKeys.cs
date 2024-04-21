@@ -8,5 +8,7 @@
         public const string TeamThread = "TeamThread";
         public const string ThreadComment = "ThreadComment";
         public const string ThreadCommentVote = "ThreadCommentVote";
+        public const string GameReview = "GameReview";  
+        public const string PlayerPerformanceReview = "PlayerPerformanceReview";
     }
 }

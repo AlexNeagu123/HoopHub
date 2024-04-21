@@ -4,7 +4,6 @@ using HoopHub.Modules.UserFeatures.Application.Constants;
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Application.Threads.Dtos;
 using HoopHub.Modules.UserFeatures.Application.Threads.Mappers;
-using HoopHub.Modules.UserFeatures.Domain.Constants;
 using HoopHub.Modules.UserFeatures.Domain.Threads;
 using MediatR;
 

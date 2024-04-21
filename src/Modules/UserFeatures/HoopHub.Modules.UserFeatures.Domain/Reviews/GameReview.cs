@@ -31,13 +31,23 @@ namespace HoopHub.Modules.UserFeatures.Domain.Reviews
                 CheckRule(new BothTeamIdsAreRequired(visitorTeamId));
                 CheckRule(new FanIdCannotBeEmpty(fanId));
                 CheckRule(new DateMustBeValid(date));
-                CheckRule(new GameRatingShouldBeDecimalBetween0And5(rating));
+                CheckRule(new GameRatingShouldBeDecimalBetween1And5(rating));
             }
             catch (BusinessRuleValidationException e)
             {
                 return Result<GameReview>.Failure(e.Details);
             }
             return Result<GameReview>.Success(new GameReview(homeTeamId, visitorTeamId, date, fanId, rating));
+        }
+
+        public void Update(decimal rating)
+        {
+            try
+            {
+                CheckRule(new GameRatingShouldBeDecimalBetween1And5(rating));
+                Rating = rating;
+            }
+            catch (BusinessRuleValidationException) { }
         }
     }
 }

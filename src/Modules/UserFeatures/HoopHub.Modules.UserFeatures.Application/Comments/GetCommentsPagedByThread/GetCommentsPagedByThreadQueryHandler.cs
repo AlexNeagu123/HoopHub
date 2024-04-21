@@ -10,15 +10,16 @@ using MediatR;
 namespace HoopHub.Modules.UserFeatures.Application.Comments.GetCommentsPagedByThread
 {
     public class GetCommentsPagedByThreadQueryHandler(
-        IThreadCommentRepository threadCommentRepository)
+        IThreadCommentRepository threadCommentRepository, ITeamThreadRepository teamThreadRepository)
         : IRequestHandler<GetCommentsPagedByThreadQuery, PagedResponse<IReadOnlyList<ThreadCommentDto>>>
     {
         private readonly IThreadCommentRepository _threadCommentRepository = threadCommentRepository;
+        private readonly ITeamThreadRepository _teamThreadRepository = teamThreadRepository;
         private readonly ThreadCommentMapper _threadCommentMapper = new();
 
         public async Task<PagedResponse<IReadOnlyList<ThreadCommentDto>>> Handle(GetCommentsPagedByThreadQuery request, CancellationToken cancellationToken)
         {
-            var validator = new GetCommentsPagedByThreadQueryValidator(_threadCommentRepository);
+            var validator = new GetCommentsPagedByThreadQueryValidator(_threadCommentRepository, _teamThreadRepository);
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
                 return PagedResponse<IReadOnlyList<ThreadCommentDto>>.ErrorResponseFromFluentResult(validationResult);

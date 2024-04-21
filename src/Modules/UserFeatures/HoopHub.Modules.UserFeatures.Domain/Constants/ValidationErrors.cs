@@ -30,5 +30,9 @@
         public const string CommentVoteDoNotExist = "Comment vote does not exist";
         public const string InvalidFirstComment = "First comment does not exist";
         public const string ThreadDoNotExist = "Thread with this id does not exist";
+        public const string GameReviewAlreadyExists = "Game review already exists";
+        public const string GameReviewDoNotExist = "Game review does not exist";
+        public const string PlayerPerformanceReviewExists = "Player performance review already exists";
+        public const string PlayerPerformanceReviewDoNotExist = "Player performance review does not exist";
     }
 }

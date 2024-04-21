@@ -32,7 +32,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Reviews
                 CheckRule(new PlayerIdCannotBeEmpty(playerId));
                 CheckRule(new FanIdCannotBeEmpty(fanId));
                 CheckRule(new DateMustBeValid(date));
-                CheckRule(new PlayerRatingShouldBeDecimalBetween0And10(rating));
+                CheckRule(new PlayerRatingShouldBeDecimalBetween1And10(rating));
             }
             catch (BusinessRuleValidationException e)
             {
@@ -40,6 +40,16 @@ namespace HoopHub.Modules.UserFeatures.Domain.Reviews
             }
 
             return Result<PlayerPerformanceReview>.Success(new PlayerPerformanceReview(homeTeamId, visitorTeamId, date, fanId, rating, playerId));
+        }
+
+        public void Update(decimal rating)
+        {
+            try
+            {
+                CheckRule(new PlayerRatingShouldBeDecimalBetween1And10(rating));
+                Rating = rating;
+            }
+            catch (BusinessRuleValidationException) { }
         }
     }
 }
