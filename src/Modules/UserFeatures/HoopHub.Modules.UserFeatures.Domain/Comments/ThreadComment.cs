@@ -1,4 +1,6 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
+using HoopHub.Modules.UserFeatures.Domain.Comments.Events;
+using HoopHub.Modules.UserFeatures.Domain.Constants;
 using HoopHub.Modules.UserFeatures.Domain.Fans;
 using HoopHub.Modules.UserFeatures.Domain.Rules;
 using HoopHub.Modules.UserFeatures.Domain.Threads;
@@ -25,6 +27,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
         public bool IsDeleted { get; set; }
         public DateTime? DeletedOnUtc { get; set; }
 
+
         private ThreadComment(string content, string fanId)
         {
             Content = content;
@@ -44,6 +47,21 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
                 return Result<ThreadComment>.Failure(e.Details);
             }
             return Result<ThreadComment>.Success(new ThreadComment(content, fanId));
+        }
+
+        public void NotifyThreadOwner(string threadOwnerId, Fan fan)
+        {
+            if (fan.Id != FanId)
+                return;
+
+            AddDomainEvent(new CommentAddedThreadNotificationDomainEvent(
+                threadOwnerId,
+                fan.Id,
+                Config.CommentAddedThreadNotificationTitle,
+                Config.CommentAddedThreadNotificationContent(fan.Username),
+                fan.AvatarPhotoUrl, 
+                Id.ToString())
+            );
         }
 
         public void UpVote()

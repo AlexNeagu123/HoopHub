@@ -6,8 +6,7 @@
         FollowedPlayerGoodPerformance,
         FollowedTeamGameEnd,
         CommentReply,
-        ThreadComment,  
-        CommentUpVote,
-        CommentDownVote
+        ThreadComment,
+        CommentUpVote
     }
 }

@@ -7,5 +7,6 @@ namespace HoopHub.Modules.UserFeatures.Application.Persistence
     public interface IPlayerPerformanceReviewRepository : IAsyncRepository<PlayerPerformanceReview>
     {
         Task<Result<PlayerPerformanceReview>> FindByIdAsyncIncludingAll(Guid homeTeamId, Guid visitorTeamId, Guid playerId, string date, string fanId);
+        Task<decimal?> GetAverageRatingByGameTupleId(Guid homeTeamId, Guid visitorTeamId, Guid playerId, string date);
     }
 }

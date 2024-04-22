@@ -18,5 +18,22 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
                 ? Result<GameReview>.Failure("Game review not found")
                 : Result<GameReview>.Success(gameReview);
         }
+
+        public async Task<decimal?> GetAverageRatingByGameTupleId(Guid homeTeamId, Guid visitorTeamId, string date)
+        {
+            var reviewCount = await context.GameReviews
+                .CountAsync(x => x.HomeTeamId == homeTeamId && x.VisitorTeamId == visitorTeamId && x.Date == date);
+
+            decimal? averageRating = null;
+
+            if (reviewCount > 0)
+            {
+                averageRating = await context.GameReviews
+                    .Where(x => x.HomeTeamId == homeTeamId && x.VisitorTeamId == visitorTeamId && x.Date == date)
+                    .AverageAsync(x => x.Rating);
+            }
+
+            return averageRating;
+        }
     }
 }

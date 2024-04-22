@@ -32,10 +32,11 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.GetGameRe
                 };
             };
 
+            var averageRating = await _gameReviewRepository.GetAverageRatingByGameTupleId(request.HomeTeamId, request.VisitorTeamId, request.Date);
             return new Response<GameReviewDto>
             {
                 Success = true,
-                Data = _gameReviewMapper.GameReviewToGameReviewDto(gameReviewResult.Value)
+                Data = _gameReviewMapper.GameReviewToGameReviewDto(gameReviewResult.Value, averageRating)
             };
         }
     }

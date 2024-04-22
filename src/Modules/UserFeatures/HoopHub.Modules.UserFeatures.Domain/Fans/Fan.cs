@@ -1,5 +1,6 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
 using HoopHub.Modules.UserFeatures.Domain.Comments;
+using HoopHub.Modules.UserFeatures.Domain.Constants;
 using HoopHub.Modules.UserFeatures.Domain.FanNotifications;
 using HoopHub.Modules.UserFeatures.Domain.Follows;
 using HoopHub.Modules.UserFeatures.Domain.Reviews;
@@ -13,10 +14,12 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
         public string Id { get; private set; }
         public string Username { get; private set; }
         public string Email { get; private set; }
+        public int UpVotes { get; private set; }
+        public int DownVotes { get; private set; }
+        public FanBadgeType FanBadge { get; private set; }
         public string? AvatarPhotoUrl { get; private set; }
         public Guid? FavouriteTeamId { get; private set; }
-
-        public ICollection<TeamThread> TeamThreads { get; private set; } = null!;
+        public ICollection<TeamThread> TeamThreads { get; private set; } = [];
         public ICollection<ThreadComment> Comments { get; private set; } = [];
         public ICollection<CommentVote> Votes { get; private set; } = [];
         public ICollection<GameReview> GameReviews { get; private set; } = [];
@@ -31,6 +34,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
             Id = id;
             Username = username;
             Email = email;
+            FanBadge = FanBadgeType.Rookie;
         }
 
         public static Result<Fan> Create(string id, string username, string email)
@@ -56,17 +60,61 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
                 CheckRule(new ImageUrlCannotBeEmpty(avatarPhotoUrl));
                 AvatarPhotoUrl = avatarPhotoUrl;
             }
-            catch (BusinessRuleValidationException) {}
+            catch (BusinessRuleValidationException) { }
         }
 
-        public void UpdateFavouriteTeamId(Guid favouriteTeamId)
+        public void UpdateFavouriteTeamId(Guid? favouriteTeamId)
         {
-            try
+            FavouriteTeamId = favouriteTeamId;
+        }
+
+        public void UpVote()
+        {
+            UpVotes++;
+            CheckBadgeUpdate();
+        }
+
+        public void DownVote()
+        {
+            DownVotes++;
+            CheckBadgeUpdate();
+        }
+
+        public void RemoveVote(bool isUpVote)
+        {
+            if (isUpVote)
+                UpVotes--;
+            else
+                DownVotes--;
+
+            CheckBadgeUpdate();
+        }
+
+        public void UpdateVoteCount(bool isUpVote)
+        {
+            if (isUpVote)
             {
-                CheckRule(new TeamIdCannotBeEmpty(favouriteTeamId));
-                FavouriteTeamId = favouriteTeamId;
+                UpVotes++;
+                DownVotes--;
             }
-            catch (BusinessRuleValidationException) { }
+            else
+            {
+                UpVotes--;
+                DownVotes++;
+            }
+
+            CheckBadgeUpdate();
+        }
+
+        private void CheckBadgeUpdate()
+        {
+            FanBadge = UpVotes switch
+            {
+                < Config.RookieBadgeThreshold => FanBadgeType.Rookie,
+                < Config.RegularBadgeThreshold => FanBadgeType.Regular,
+                < Config.ExpertBadgeThreshold => FanBadgeType.Expert,
+                _ => FanBadgeType.Goat
+            };
         }
     }
 }

@@ -31,8 +31,15 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.BackgroundJobs
                 if (domainEvent == null)
                     continue;
 
-                await _publisher.Publish(domainEvent, context.CancellationToken);
-                outboxMessage.ProcessedOnUtc = DateTime.UtcNow;
+                try
+                {
+                    await _publisher.Publish(domainEvent, context.CancellationToken);
+                    outboxMessage.ProcessedOnUtc = DateTime.UtcNow;
+                }
+                catch (DomainEventHandlerException e)
+                {
+                    outboxMessage.Error = e.Message;
+                }
             }
 
             await _context.SaveChangesAsync();

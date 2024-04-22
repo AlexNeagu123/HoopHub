@@ -7,7 +7,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.Mappers
     public class GameReviewMapper
     {
         private readonly FanMapper _fanMapper = new();
-        public GameReviewDto GameReviewToGameReviewDto(GameReview gameReview)
+        public GameReviewDto GameReviewToGameReviewDto(GameReview gameReview, decimal? averageRating)
         {
             return new GameReviewDto
             {
@@ -15,7 +15,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.Mappers
                 HomeTeamId = gameReview.HomeTeamId,
                 VisitorTeamId = gameReview.VisitorTeamId,
                 Rating = gameReview.Rating,
-                Date = gameReview.Date
+                Date = gameReview.Date,
+                AverageRating = averageRating
             };
         }
     }

@@ -18,11 +18,6 @@ namespace HoopHub.Modules.UserFeatures.Application.Fans.UpdateFan
         private readonly FanMapper _fanMapper = new();
         public async Task<Response<FanDto>> Handle(UpdateFanCommand request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateFanCommandValidator();
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
-            if (!validationResult.IsValid)
-                return Response<FanDto>.ErrorResponseFromFluentResult(validationResult);
-
             var currentUserId = _currentUserService.GetUserId;
             if (string.IsNullOrEmpty(currentUserId))
                 return Response<FanDto>.ErrorResponseFromKeyMessage(ValidationErrors.InvalidFanId, ValidationKeys.FanId);
@@ -32,13 +27,14 @@ namespace HoopHub.Modules.UserFeatures.Application.Fans.UpdateFan
                 return Response<FanDto>.ErrorResponseFromKeyMessage(fanResult.ErrorMsg, ValidationKeys.FanId);
 
             var fan = fanResult.Value;
+            fan.UpdateFavouriteTeamId(request.FavouriteTeamId);
 
             if (request.ProfileImage is not null)
             {
                 var profileImageUrlResult = await _storageService.UploadAsync(currentUserId, request.ProfileImage);
                 if (!profileImageUrlResult.IsSuccess)
                     return Response<FanDto>.ErrorResponseFromKeyMessage(profileImageUrlResult.ErrorMsg, ValidationKeys.ProfileImage);
-                
+
                 fan.UpdateAvatarPhotoUrl(profileImageUrlResult.Value);
                 var updateFanResult = await _fanRepository.UpdateAsync(fan);
                 if (!updateFanResult.IsSuccess)

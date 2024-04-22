@@ -18,7 +18,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.Mappers
                 Id = comment.Id,
                 ParentId = comment.ParentId,
                 Content = comment.Content,
-                Fan = _fanMapper.FanToFanDto(comment.Fan),
+                Fan = comment.Fan != null! ? _fanMapper.FanToFanDto(comment.Fan) : null,
                 TeamThread = comment.TeamThread != null ? _teamThreadMapper.TeamThreadToTeamThreadDto(comment.TeamThread) : null,
                 GameThread = comment.GameThread != null ? _gameThreadMapper.GameThreadToGameThreadDto(comment.GameThread) : null,
                 UpVotes = comment.UpVotes,

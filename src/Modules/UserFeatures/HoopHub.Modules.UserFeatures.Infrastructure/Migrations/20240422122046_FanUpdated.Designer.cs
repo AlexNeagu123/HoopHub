@@ -3,6 +3,7 @@ using System;
 using HoopHub.Modules.UserFeatures.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 {
     [DbContext(typeof(UserFeaturesContext))]
-    partial class UserFeaturesContextModelSnapshot : ModelSnapshot
+    [Migration("20240422122046_FanUpdated")]
+    partial class FanUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,9 +150,6 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("AttachedImageUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("AttachedNavigationData")
                         .HasColumnType("text");
 
                     b.Property<string>("Content")

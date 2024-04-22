@@ -10,7 +10,7 @@ namespace HoopHub.BuildingBlocks.Application.Responses
         }
         public T Data { get; set; } = default!;
 
-        public static Response<T> ErrorResponseFromKeyMessage(string errorMessage, string errorKey)
+        public new static Response<T> ErrorResponseFromKeyMessage(string errorMessage, string errorKey)
         {
             return new Response<T>
             {
@@ -19,7 +19,7 @@ namespace HoopHub.BuildingBlocks.Application.Responses
             };
         }
 
-        public static Response<T> ErrorResponseFromFluentResult(ValidationResult result)
+        public new static Response<T> ErrorResponseFromFluentResult(ValidationResult result)
         {
             return new Response<T>
             {

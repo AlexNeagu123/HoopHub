@@ -10,7 +10,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.Dtos
         public string Content { get; set; }
         public TeamThreadDto? TeamThread { get; set; }
         public GameThreadDto? GameThread { get; set; }
-        public FanDto Fan { get; set; }
+        public FanDto? Fan { get; set; }
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
         public DateTime CreatedDate { get; set; }

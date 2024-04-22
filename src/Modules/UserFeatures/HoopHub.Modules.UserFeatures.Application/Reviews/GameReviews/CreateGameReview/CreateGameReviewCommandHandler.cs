@@ -35,7 +35,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.CreateGam
             return new Response<GameReviewDto>
             {
                 Success = true,
-                Data = _gameReviewMapper.GameReviewToGameReviewDto(addedGameReview.Value)
+                Data = _gameReviewMapper.GameReviewToGameReviewDto(addedGameReview.Value, null)
             };
         }
     }

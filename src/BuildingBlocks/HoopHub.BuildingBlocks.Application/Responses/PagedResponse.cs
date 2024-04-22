@@ -2,7 +2,7 @@
 
 namespace HoopHub.BuildingBlocks.Application.Responses
 {
-    public class PagedResponse<T> : BaseResponse where T : class 
+    public class PagedResponse<T> : BaseResponse where T : class
     {
         public PagedResponse() : base()
         {
@@ -14,7 +14,7 @@ namespace HoopHub.BuildingBlocks.Application.Responses
         public int TotalPages => PageSize == 0 ? 0 : (int)Math.Ceiling((decimal)TotalRecords / PageSize);
         public int TotalRecords { get; set; }
 
-        public static PagedResponse<T> ErrorResponseFromKeyMessage(string errorMessage, string errorKey)
+        public new static PagedResponse<T> ErrorResponseFromKeyMessage(string errorMessage, string errorKey)
         {
             return new PagedResponse<T>
             {
@@ -23,7 +23,7 @@ namespace HoopHub.BuildingBlocks.Application.Responses
             };
         }
 
-        public static PagedResponse<T> ErrorResponseFromFluentResult(ValidationResult result)
+        public new static PagedResponse<T> ErrorResponseFromFluentResult(ValidationResult result)
         {
             return new PagedResponse<T>
             {

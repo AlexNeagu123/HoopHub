@@ -39,7 +39,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.PlayerPerformanceRevi
             return new Response<PlayerPerformanceReviewDto>
             {
                 Success = true,
-                Data = _playerPerformanceReviewMapper.PlayerPerformanceReviewToPlayerPerformanceReviewDto(playerPerformanceReview)
+                Data = _playerPerformanceReviewMapper.PlayerPerformanceReviewToPlayerPerformanceReviewDto(playerPerformanceReview, null)
             };
         }
     }

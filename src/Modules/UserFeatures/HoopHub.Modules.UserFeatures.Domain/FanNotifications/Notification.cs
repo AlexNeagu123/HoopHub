@@ -16,6 +16,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.FanNotifications
         public string Title { get; private set; }
         public string Content { get; private set; }
         public string? AttachedImageUrl { get; private set; }
+        public string? AttachedNavigationData { get; private set; }
 
         private Notification(string recipientId, NotificationType type, string title, string content)
         {
@@ -40,7 +41,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.FanNotifications
             {
                 return Result<Notification>.Failure(e.Details);
             }
-            
+
             return Result<Notification>.Success(new Notification(recipientId, type, title, content));
         }
 
@@ -59,13 +60,14 @@ namespace HoopHub.Modules.UserFeatures.Domain.FanNotifications
             catch (BusinessRuleValidationException) { }
         }
 
-        public void AttachImageUrl(string imageUrl)
+        public void AttachImageUrl(string? imageUrl)
         {
-            try
-            {
-                CheckRule(new ImageUrlCannotBeEmpty(imageUrl));
-                AttachedImageUrl = imageUrl;
-            } catch(BusinessRuleValidationException) { }
+            AttachedImageUrl = imageUrl;
+        }
+
+        public void AttachNavigationData(string? navigationData)
+        {
+            AttachedNavigationData = navigationData;
         }
     }
 }

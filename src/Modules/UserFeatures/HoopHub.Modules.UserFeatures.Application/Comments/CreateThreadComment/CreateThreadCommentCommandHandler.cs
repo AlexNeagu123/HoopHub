@@ -9,12 +9,13 @@ using MediatR;
 
 namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadComment
 {
-    public class CreateThreadCommentCommandHandler(ICurrentUserService userService, IThreadCommentRepository threadCommentRepository, ITeamThreadRepository teamThreadRepository, IGameThreadRepository gameThreadRepository) : IRequestHandler<CreateThreadCommentCommand, Response<ThreadCommentDto>>
+    public class CreateThreadCommentCommandHandler(ICurrentUserService userService, IThreadCommentRepository threadCommentRepository, ITeamThreadRepository teamThreadRepository, IGameThreadRepository gameThreadRepository, IFanRepository fanRepository) : IRequestHandler<CreateThreadCommentCommand, Response<ThreadCommentDto>>
     {
         private readonly ICurrentUserService _currentUserService = userService;
         private readonly IThreadCommentRepository _threadCommentRepository = threadCommentRepository;
         private readonly IGameThreadRepository _gameThreadRepository = gameThreadRepository;
         private readonly ITeamThreadRepository _teamThreadRepository = teamThreadRepository;
+        private readonly IFanRepository _fanRepository = fanRepository;
         private readonly ThreadCommentMapper _threadCommentMapper = new();
         public async Task<Response<ThreadCommentDto>> Handle(CreateThreadCommentCommand request, CancellationToken cancellationToken)
         {
@@ -29,10 +30,15 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadComment
                 return Response<ThreadCommentDto>.ErrorResponseFromKeyMessage(threadCommentResult.ErrorMsg, ValidationKeys.ThreadComment);
 
             var threadComment = threadCommentResult.Value;
-            if (request.TeamThreadId != null)
+            if (request.TeamThreadId.HasValue)
+            {
                 threadComment.AttachTeamThread(request.TeamThreadId);
+                var teamThread = await _teamThreadRepository.FindByIdAsyncIncludingFan(request.TeamThreadId.Value);
+                var fan = await _fanRepository.FindByIdAsync(fanId!);
+                threadComment.NotifyThreadOwner(teamThread.Value.FanId, fan.Value);
+            }
 
-            if (request.GameThreadId != null)
+            if (request.GameThreadId.HasValue)
                 threadComment.AttachGameThread(request.GameThreadId);
 
             var addResult = await _threadCommentRepository.AddAsync(threadComment);

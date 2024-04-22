@@ -7,7 +7,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyCom
 {
     public class CreateThreadReplyCommentCommandValidator : AbstractValidator<CreateThreadReplyCommentCommand>
     {
-        public CreateThreadReplyCommentCommandValidator(IThreadCommentRepository threadCommentRepository)
+        public CreateThreadReplyCommentCommandValidator(IThreadCommentRepository threadCommentRepository, ITeamThreadRepository teamThreadRepository, IGameThreadRepository gameThreadRepository)
         {
             RuleFor(x => x.Content).NotEmpty().Length(Config.ContentMinLength, Config.ContentMaxLength).WithMessage(ValidationErrors.InvalidCommentContent);
             RuleFor(x => x.ParentCommentId).NotEmpty().NotNull().WithMessage(ValidationErrors.InvalidParentCommentId);
@@ -17,6 +17,22 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyCom
                 var parentCommentResult = await threadCommentRepository.FindByIdAsync(parentId);
                 return parentCommentResult.IsSuccess;
             }).WithMessage(ValidationErrors.CommentDoNotExist).WithName(ValidationKeys.ThreadComment);
+
+            RuleFor(x => x.TeamThreadId).MustAsync(async (teamThreadId, cancellation) =>
+            {
+                if (teamThreadId == null)
+                    return true;
+                var teamThreadResult = await teamThreadRepository.FindByIdAsync(teamThreadId.Value);
+                return teamThreadResult.IsSuccess;
+            }).WithMessage(ValidationErrors.ThreadDoNotExist).WithName(ValidationKeys.TeamThread);
+
+            RuleFor(x => x.GameThreadId).MustAsync(async (gameThreadId, cancellation) =>
+            {
+                if (gameThreadId == null)
+                    return true;
+                var gameThreadResult = await gameThreadRepository.FindByIdAsync(gameThreadId.Value);
+                return gameThreadResult.IsSuccess;
+            }).WithMessage(ValidationErrors.ThreadDoNotExist).WithName(ValidationKeys.GameThread);
         }
     }
 }

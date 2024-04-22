@@ -9,7 +9,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.Mappers
         private readonly FanMapper _fanMapper = new();
 
         public PlayerPerformanceReviewDto PlayerPerformanceReviewToPlayerPerformanceReviewDto(
-            PlayerPerformanceReview playerPerformanceReview)
+            PlayerPerformanceReview playerPerformanceReview, decimal? averageRating)
         {
             return new PlayerPerformanceReviewDto
             {
@@ -18,7 +18,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.Mappers
                 VisitorTeamId = playerPerformanceReview.VisitorTeamId,
                 Rating = playerPerformanceReview.Rating,
                 PlayerId = playerPerformanceReview.PlayerId,
-                Date = playerPerformanceReview.Date
+                Date = playerPerformanceReview.Date,
+                AverageRating = averageRating
             };
         }
     }
