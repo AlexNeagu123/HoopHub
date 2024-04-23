@@ -17,7 +17,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
         public int UpVotes { get; private set; }
         public int DownVotes { get; private set; }
         public FanBadgeType FanBadge { get; private set; }
-        public string? AvatarPhotoUrl { get; private set; }
+        public string? AvatarPhotoUrl { get; private set; } = Config.DefaultAvatarPhotoUrl;
         public Guid? FavouriteTeamId { get; private set; }
         public ICollection<TeamThread> TeamThreads { get; private set; } = [];
         public ICollection<ThreadComment> Comments { get; private set; } = [];
