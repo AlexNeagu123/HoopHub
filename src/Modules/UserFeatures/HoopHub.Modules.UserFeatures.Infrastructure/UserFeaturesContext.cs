@@ -24,6 +24,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
         public DbSet<PlayerPerformanceReview> PlayerPerformanceReviews { get; set; }
         public DbSet<TeamFollowEntry> TeamFollowEntries { get; set; }
         public DbSet<PlayerFollowEntry> PlayerFollowEntries { get; set; }
+        public DbSet<TeamThreadVote> TeamThreadVotes { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<OutboxMessage> OutboxMessages { get; set; }
 
@@ -65,6 +66,25 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
             ModelTeamFollowEntriesTable(modelBuilder);
             ModelPlayerFollowEntriesTable(modelBuilder);
             ModelNotificationsTable(modelBuilder);
+            ModelTeamThreadVotesTable(modelBuilder);
+        }
+
+        private static void ModelTeamThreadVotesTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TeamThreadVote>().HasKey(ttv => ttv.Id);
+            modelBuilder.Entity<TeamThreadVote>().HasOne(ttv => ttv.TeamThread).WithMany(tt => tt.Votes).HasForeignKey(ttv => ttv.TeamThreadId);
+            modelBuilder.Entity<TeamThreadVote>().HasOne(ttv => ttv.Fan).WithMany(f => f.TeamThreadVotes).HasForeignKey(ttv => ttv.FanId);
+            modelBuilder.Entity<TeamThreadVote>().HasQueryFilter(v => !v.IsDeleted);
+            modelBuilder.Entity<TeamThreadVote>().ToTable("team_thread_votes");
+        }
+
+        private static void ModelCommentVotesTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CommentVote>().HasKey(v => v.Id);
+            modelBuilder.Entity<CommentVote>().HasOne(v => v.ThreadComment).WithMany(tc => tc.Votes).HasForeignKey(v => v.CommentId);
+            modelBuilder.Entity<CommentVote>().HasOne(v => v.Fan).WithMany(f => f.Votes).HasForeignKey(v => v.FanId);
+            modelBuilder.Entity<CommentVote>().HasQueryFilter(v => !v.IsDeleted);
+            modelBuilder.Entity<CommentVote>().ToTable("comment_votes");
         }
 
         private static void ModelTeamFollowEntriesTable(ModelBuilder modelBuilder)
@@ -140,15 +160,6 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
 
             modelBuilder.Entity<ThreadComment>().HasQueryFilter(r => !r.IsDeleted);
             modelBuilder.Entity<ThreadComment>().ToTable("comments");
-        }
-
-        private static void ModelCommentVotesTable(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<CommentVote>().HasKey(v => v.Id);
-            modelBuilder.Entity<CommentVote>().HasOne(v => v.ThreadComment).WithMany(tc => tc.Votes).HasForeignKey(v => v.CommentId);
-            modelBuilder.Entity<CommentVote>().HasOne(v => v.Fan).WithMany(f => f.Votes).HasForeignKey(v => v.FanId);
-            modelBuilder.Entity<CommentVote>().HasQueryFilter(v => !v.IsDeleted);
-            modelBuilder.Entity<CommentVote>().ToTable("comment_votes");
         }
     }
 }

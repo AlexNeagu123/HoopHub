@@ -7,7 +7,7 @@
         public const string FanUpdate = "FanUpdate";
         public const string TeamThread = "TeamThread";
         public const string ThreadComment = "ThreadComment";
-        public const string ThreadCommentVote = "ThreadCommentVote";
+        public const string ThreadCommentVote = "TeamThreadVote";
         public const string GameReview = "GameReview";  
         public const string PlayerPerformanceReview = "PlayerPerformanceReview";
         public const string GameThread = "GameThread";

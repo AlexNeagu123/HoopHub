@@ -36,10 +36,11 @@ namespace HoopHub.Modules.UserFeatures.Application.Fans.UpdateFan
                     return Response<FanDto>.ErrorResponseFromKeyMessage(profileImageUrlResult.ErrorMsg, ValidationKeys.ProfileImage);
 
                 fan.UpdateAvatarPhotoUrl(profileImageUrlResult.Value);
-                var updateFanResult = await _fanRepository.UpdateAsync(fan);
-                if (!updateFanResult.IsSuccess)
-                    return Response<FanDto>.ErrorResponseFromKeyMessage(updateFanResult.ErrorMsg, ValidationKeys.FanUpdate);
             }
+
+            var updateFanResult = await _fanRepository.UpdateAsync(fan);
+            if (!updateFanResult.IsSuccess)
+                return Response<FanDto>.ErrorResponseFromKeyMessage(updateFanResult.ErrorMsg, ValidationKeys.FanUpdate);
 
             return new Response<FanDto>
             {

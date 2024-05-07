@@ -22,6 +22,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
         public ICollection<TeamThread> TeamThreads { get; private set; } = [];
         public ICollection<ThreadComment> Comments { get; private set; } = [];
         public ICollection<CommentVote> Votes { get; private set; } = [];
+        public ICollection<TeamThreadVote> TeamThreadVotes { get; private set; } = [];
         public ICollection<GameReview> GameReviews { get; private set; } = [];
         public ICollection<PlayerPerformanceReview> PlayerPerformanceReviews { get; private set; } = [];
         public ICollection<TeamFollowEntry> TeamFollowEntries { get; private set; } = [];

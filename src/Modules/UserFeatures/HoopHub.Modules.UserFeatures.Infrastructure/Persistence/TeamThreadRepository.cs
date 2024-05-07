@@ -56,5 +56,22 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
 
             return PagedResult<IReadOnlyList<TeamThread>>.Success(threads, totalCount);
         }
+
+        public async Task<PagedResult<IReadOnlyList<TeamThread>>> GetByFanIdPagedAsync(string fanId, int page, int pageSize)
+        {
+            var threads = await context.TeamThreads
+                .Include(t => t.Fan)
+                .Where(t => t.FanId == fanId)
+                .OrderByDescending(t => t.CreatedDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var totalCount = await context.TeamThreads
+                .Where(t => t.FanId == fanId)
+                .CountAsync();
+
+            return PagedResult<IReadOnlyList<TeamThread>>.Success(threads, totalCount);
+        }
     }
 }

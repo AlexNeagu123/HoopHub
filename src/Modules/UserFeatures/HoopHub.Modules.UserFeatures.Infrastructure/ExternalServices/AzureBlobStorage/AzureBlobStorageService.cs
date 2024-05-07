@@ -20,12 +20,22 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.ExternalServices.AzureBlob
 
             var connectionString = _configuration[Config.AzureConnectionStringKey];
             var containerName = _configuration[Config.AzureContainerNameKey];
-            
+
             var blobContainerClient = new BlobContainerClient(connectionString, containerName);
             var blobClient = blobContainerClient.GetBlobClient(fanId);
 
             try
             {
+                var blobExists = await blobClient.ExistsAsync();
+                if (blobExists)
+                {
+                    var deleteResult = await blobClient.DeleteAsync();
+                    if (deleteResult.IsError)
+                    {
+                        return Result<string>.Failure("Failed to delete the existing image.");
+                    }
+                }
+
                 await blobClient.UploadAsync(file.OpenReadStream(), new BlobUploadOptions
                 {
                     HttpHeaders = new BlobHttpHeaders

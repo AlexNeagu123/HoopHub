@@ -11,6 +11,9 @@ namespace HoopHub.Modules.UserFeatures.Domain.Threads
         public Fan Fan { get; private set; } = null!;
         public string Title { get; private set; }
         public string Content { get; private set; }
+        public int UpVotes { get; private set; }
+        public int DownVotes { get; private set; }
+        public ICollection<TeamThreadVote> Votes { get; private set; } = [];
         public bool IsDeleted { get; set; }
         public DateTime? DeletedOnUtc { get; set; }
 
@@ -36,6 +39,37 @@ namespace HoopHub.Modules.UserFeatures.Domain.Threads
                 return Result<TeamThread>.Failure(e.Details);
             }
             return Result<TeamThread>.Success(new TeamThread(fanId, teamId, title, content));
+        }
+        public void UpVote()
+        {
+            UpVotes++;
+        }
+
+        public void DownVote()
+        {
+            DownVotes++;
+        }
+
+        public void UpdateVoteCount(bool isUpVote)
+        {
+            if (isUpVote)
+            {
+                UpVotes++;
+                DownVotes--;
+            }
+            else
+            {
+                UpVotes--;
+                DownVotes++;
+            }
+        }
+
+        public void RemoveVote(bool isUpVote)
+        {
+            if (isUpVote)
+                UpVotes--;
+            else
+                DownVotes--;
         }
 
         public void Update(string title, string content)

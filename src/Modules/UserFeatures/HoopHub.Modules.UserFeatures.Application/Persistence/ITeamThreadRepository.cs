@@ -9,5 +9,6 @@ namespace HoopHub.Modules.UserFeatures.Application.Persistence
         Task<PagedResult<IReadOnlyList<TeamThread>>> GetByTeamIdPagedAsync(Guid teamId, int page, int pageSize);
         Task<Result<TeamThread>> FindByIdAsyncIncludingFan(Guid id);
         Task<PagedResult<IReadOnlyList<TeamThread>>> GetByTeamIdAndFanIdPagedAsync(Guid teamId, string fanId, int page, int pageSize);
+        Task<PagedResult<IReadOnlyList<TeamThread>>> GetByFanIdPagedAsync(string fanId, int page, int pageSize);
     }
 }
