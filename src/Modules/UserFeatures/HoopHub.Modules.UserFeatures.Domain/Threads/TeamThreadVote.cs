@@ -33,17 +33,17 @@ namespace HoopHub.Modules.UserFeatures.Domain.Threads
                 return;
 
             IsUpVote = isUpVote;
-            AddDomainEvent(new TeamThreadVoteUpdatedDomainEvent(TeamThreadId, FanId, IsUpVote));
+            AddDomainEvent(new TeamThreadVoteUpdatedDomainEvent(TeamThreadId, IsUpVote));
         }
 
         public void MarkAsAdded()
         {
-            AddDomainEvent(new TeamThreadVoteAddedDomainEvent(TeamThreadId, FanId, IsUpVote));
+            AddDomainEvent(new TeamThreadVoteAddedDomainEvent(TeamThreadId, IsUpVote));
         }
 
         public void MarkAsDeleted()
         {
-            AddDomainEvent(new TeamThreadVoteDeletedDomainEvent(TeamThreadId, FanId, IsUpVote));
+            AddDomainEvent(new TeamThreadVoteDeletedDomainEvent(TeamThreadId, IsUpVote));
         }
 
         public static Result<TeamThreadVote> Create(Guid teamThreadId, string fanId, bool isUpVote)

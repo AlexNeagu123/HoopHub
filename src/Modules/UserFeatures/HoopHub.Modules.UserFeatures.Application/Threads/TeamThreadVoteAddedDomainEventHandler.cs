@@ -16,8 +16,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads
 
         public async Task Handle(TeamThreadVoteAddedDomainEvent notification, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("[Domain Event Received] Team thread vote added for thread {ThreadId} by fan {FanId}",
-                notification.ThreadId, notification.FanId);
+            _logger.LogInformation("[Domain Event Received] Team thread vote added for thread {ThreadId}",
+                notification.ThreadId);
             var threadResult = await _teamThreadRepository.FindByIdAsyncIncludingFan(notification.ThreadId);
             if (!threadResult.IsSuccess)
                 throw new DomainEventHandlerException($"Thread {notification.ThreadId} not found");
@@ -32,11 +32,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads
             if (!updateResult.IsSuccess)
                 throw new DomainEventHandlerException($"Error updating thread {notification.ThreadId}");
 
-            var fanResult = await _fanRepository.FindByIdAsync(notification.FanId);
-            if (!fanResult.IsSuccess)
-                throw new DomainEventHandlerException($"Fan {notification.FanId} not found");
-
-            var fan = fanResult.Value;
+            var fan = thread.Fan;
             if (notification.IsUpvote)
                 fan.UpVote();
             else

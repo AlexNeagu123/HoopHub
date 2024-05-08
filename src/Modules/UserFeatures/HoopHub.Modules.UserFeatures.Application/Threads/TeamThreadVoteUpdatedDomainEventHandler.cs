@@ -27,16 +27,12 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads
             if (!updateResult.IsSuccess)
                 throw new DomainEventHandlerException($"Error updating thread vote: {notification.ThreadId}");
 
-            var fanResult = await _fanRepository.FindByIdAsync(notification.FanId);
-            if (!fanResult.IsSuccess)
-                throw new DomainEventHandlerException($"Fan not found for vote update: {notification.FanId}");
-
-            var fan = fanResult.Value;
+            var fan = thread.Fan;
             fan.UpdateVoteCount(notification.IsUpvote);
 
             var updateFanResult = await _fanRepository.UpdateAsync(fan);
             if (!updateFanResult.IsSuccess)
-                throw new DomainEventHandlerException($"Error updating fan vote: {notification.FanId}");
+                throw new DomainEventHandlerException("Error updating fan vote");
 
             _logger.LogInformation($"Thread vote updated: {notification.ThreadId}");
         }

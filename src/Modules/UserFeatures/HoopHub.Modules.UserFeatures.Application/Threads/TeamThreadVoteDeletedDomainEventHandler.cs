@@ -28,18 +28,14 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads
             if (!updateThreadResult.IsSuccess)
                 throw new DomainEventHandlerException($"Error updating thread for vote deleted event. ThreadId: {notification.ThreadId}");
 
-            var fanResult = await _fanRepository.FindByIdAsync(notification.FanId);
-            if (!fanResult.IsSuccess)
-                throw new DomainEventHandlerException($"Fan not found for vote deleted event. FanId: {notification.FanId}");
-
-            var fan = fanResult.Value;
+            var fan = thread.Fan;
             fan.RemoveVote(notification.IsUpvote);
 
             var updateFanResult = await _fanRepository.UpdateAsync(fan);
             if (!updateFanResult.IsSuccess)
-                throw new DomainEventHandlerException($"Error updating fan for vote deleted event. FanId: {notification.FanId}");
+                throw new DomainEventHandlerException($"Error updating fan for vote deleted event. ");
 
-            _logger.LogInformation("Vote removed from thread. ThreadId: {ThreadId}, FanId: {FanId}", notification.ThreadId, notification.FanId);
+            _logger.LogInformation("Vote removed from thread. ThreadId: {ThreadId}", notification.ThreadId);
         }
     }
 }

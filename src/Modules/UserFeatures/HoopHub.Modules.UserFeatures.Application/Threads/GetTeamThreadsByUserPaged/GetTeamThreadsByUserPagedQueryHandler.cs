@@ -10,10 +10,12 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.GetTeamThreadsByUserP
 {
     public class GetTeamThreadsByUserPagedQueryHandler(
         ITeamThreadRepository teamThreadRepository,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        ITeamThreadVoteRepository teamThreadVoteRepository)
         : IRequestHandler<GetTeamThreadsByUserPagedQuery, PagedResponse<ICollection<TeamThreadDto>>>
     {
         private readonly ITeamThreadRepository _teamThreadRepository = teamThreadRepository;
+        private readonly ITeamThreadVoteRepository _teamThreadVoteRepository = teamThreadVoteRepository;
         private readonly ICurrentUserService _currentUserService = currentUserService;
         private readonly TeamThreadMapper _teamThreadMapper = new();
 
@@ -24,13 +26,25 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.GetTeamThreadsByUserP
             if (!validationResult.IsValid)
                 return PagedResponse<ICollection<TeamThreadDto>>.ErrorResponseFromFluentResult(validationResult);
 
-            var fanId = request.FanId ?? _currentUserService.GetUserId;
+            var fanId = request.FanId ?? _currentUserService.GetUserId!;
+            var requesterId = _currentUserService.GetUserId!;
+
             var threadsResult = await _teamThreadRepository.GetByFanIdPagedAsync(fanId!, request.Page, request.PageSize);
             if (!threadsResult.IsSuccess)
                 return PagedResponse<ICollection<TeamThreadDto>>.ErrorResponseFromKeyMessage(threadsResult.ErrorMsg, ValidationKeys.TeamThread);
 
             var threads = threadsResult.Value;
-            var threadsDto = threads.Select(thread => _teamThreadMapper.TeamThreadToTeamThreadDto(thread)).ToList();
+            var threadVoteStatuses = new List<ThreadVoteStatus>();
+
+            foreach (var thread in threads)
+            {
+                var commentVote = await _teamThreadVoteRepository.FindByIdAsyncIncludingAll(thread.Id, requesterId);
+                var status = !commentVote.IsSuccess ? ThreadVoteStatus.None :
+                    commentVote.Value.IsUpVote ? ThreadVoteStatus.UpVoted : ThreadVoteStatus.DownVoted;
+                threadVoteStatuses.Add(status);
+            }
+
+            var threadsDto = threads.Select((thread, index) => _teamThreadMapper.TeamThreadToTeamThreadDto(thread, threadVoteStatuses[index])).ToList();
 
             return new PagedResponse<ICollection<TeamThreadDto>>
             {
