@@ -167,6 +167,7 @@ builder.Services.AddScoped<IPlayerPerformanceReviewRepository, PlayerPerformance
 builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
 builder.Services.AddScoped<IPlayerFollowEntryRepository, PlayerFollowEntryRepository>();
 builder.Services.AddScoped<ITeamFollowEntryRepository, TeamFollowEntryRepository>();
+builder.Services.AddScoped<ITeamThreadVoteRepository, TeamThreadVoteRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())

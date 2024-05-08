@@ -15,5 +15,6 @@
         public const string TeamFollowEntry = "TeamFollowEntry";
         public const string Fan = "Fan";
         public const string Notification = "Notification";
+        public const string TeamThreadVote = "TeamThreadVote";
     }
 }

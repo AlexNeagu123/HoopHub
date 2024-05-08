@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HoopHub.BuildingBlocks.Domain;
 
 namespace HoopHub.Modules.UserFeatures.Domain.Threads.Events
 {
-    internal class TeamThreadVoteAdded
+    public class TeamThreadVoteAddedDomainEvent(Guid threadId, string fanId, bool isUpvote) : DomainEventBase
     {
+        public Guid ThreadId { get; } = threadId;
+        public string FanId { get; } = fanId;
+        public bool IsUpvote { get; } = isUpvote;
     }
 }

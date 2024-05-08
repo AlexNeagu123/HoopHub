@@ -32,14 +32,10 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.UpdateThreadCommentV
             threadCommentVote.Update(request.IsUpvote);
 
             var updateThreadCommentVoteResult = await _threadCommentVoteRepository.UpdateAsync(threadCommentVote);
-            if (!updateThreadCommentVoteResult.IsSuccess)
-                return Response<ThreadCommentVoteDto>.ErrorResponseFromKeyMessage(updateThreadCommentVoteResult.ErrorMsg, ValidationKeys.ThreadCommentVote);
 
-            return new Response<ThreadCommentVoteDto>
-            {
-                Success = true,
-                Data = _threadCommentVoteMapper.CommentVoteToCommentVoteDto(threadCommentVote)
-            };
+            return updateThreadCommentVoteResult.IsSuccess
+                ? new Response<ThreadCommentVoteDto> { Success = true, Data = _threadCommentVoteMapper.CommentVoteToCommentVoteDto(threadCommentVote) }
+                : Response<ThreadCommentVoteDto>.ErrorResponseFromKeyMessage(updateThreadCommentVoteResult.ErrorMsg, ValidationKeys.ThreadCommentVote);
         }
     }
 }

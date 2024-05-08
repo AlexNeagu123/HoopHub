@@ -6,16 +6,17 @@ using Microsoft.Extensions.Logging;
 
 namespace HoopHub.Modules.UserFeatures.Application.Threads
 {
-    public class TeamThreadVoteDeletedDomainEventHandler(ILogger<TeamThreadVoteAddedDomainEventHandler> logger,
+    public class TeamThreadVoteDeletedDomainEventHandler(ILogger<TeamThreadVoteDeletedDomainEvent> logger,
         ITeamThreadRepository threadCommentRepository,
-        IFanRepository fanRepository) : INotificationHandler<TeamThreadVoteAddedDomainEvent>
+        IFanRepository fanRepository) : INotificationHandler<TeamThreadVoteDeletedDomainEvent>
     {
-        private readonly ILogger<TeamThreadVoteAddedDomainEventHandler> _logger = logger;
+        private readonly ILogger<TeamThreadVoteDeletedDomainEvent> _logger = logger;
         private readonly ITeamThreadRepository _threadCommentRepository = threadCommentRepository;
         private readonly IFanRepository _fanRepository = fanRepository;
 
-        public async Task Handle(TeamThreadVoteAddedDomainEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(TeamThreadVoteDeletedDomainEvent notification, CancellationToken cancellationToken)
         {
+            _logger.LogInformation("[Domain Event Received] Thread vote deleted: {ThreadId}", notification.ThreadId);
             var threadResult = await _threadCommentRepository.FindByIdAsyncIncludingFan(notification.ThreadId);
             if (!threadResult.IsSuccess)
                 throw new DomainEventHandlerException($"Thread not found for vote deleted event. ThreadId: {notification.ThreadId}");

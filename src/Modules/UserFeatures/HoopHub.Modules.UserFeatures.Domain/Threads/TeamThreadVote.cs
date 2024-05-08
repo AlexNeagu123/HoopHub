@@ -1,8 +1,6 @@
 ﻿using HoopHub.Modules.UserFeatures.Domain.Fans;
 using System.ComponentModel.DataAnnotations;
 using HoopHub.BuildingBlocks.Domain;
-using HoopHub.Modules.UserFeatures.Domain.Comments.Events;
-using HoopHub.Modules.UserFeatures.Domain.Comments;
 using HoopHub.Modules.UserFeatures.Domain.Rules;
 using HoopHub.Modules.UserFeatures.Domain.Threads.Events;
 

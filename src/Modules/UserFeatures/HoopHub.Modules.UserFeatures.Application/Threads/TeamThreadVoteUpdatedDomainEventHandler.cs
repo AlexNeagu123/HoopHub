@@ -6,19 +6,19 @@ using Microsoft.Extensions.Logging;
 
 namespace HoopHub.Modules.UserFeatures.Application.Threads
 {
-    public class TeamThreadVoteUpdatedDomainEventHandler(ILogger<TeamThreadVoteAddedDomainEventHandler> logger,
+    public class TeamThreadVoteUpdatedDomainEventHandler(ILogger<TeamThreadVoteUpdatedDomainEventHandler> logger,
         ITeamThreadRepository threadCommentRepository,
-        IFanRepository fanRepository) : INotificationHandler<TeamThreadVoteAddedDomainEvent>
+        IFanRepository fanRepository) : INotificationHandler<TeamThreadVoteUpdatedDomainEvent>
     {
-        private readonly ILogger<TeamThreadVoteAddedDomainEventHandler> _logger = logger;
+        private readonly ILogger<TeamThreadVoteUpdatedDomainEventHandler> _logger = logger;
         private readonly ITeamThreadRepository _threadCommentRepository = threadCommentRepository;
         private readonly IFanRepository _fanRepository = fanRepository;
-        public async Task Handle(TeamThreadVoteAddedDomainEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(TeamThreadVoteUpdatedDomainEvent notification, CancellationToken cancellationToken)
         {
             var threadResult = await _threadCommentRepository.FindByIdAsyncIncludingFan(notification.ThreadId);
             if (!threadResult.IsSuccess)
                 throw new DomainEventHandlerException($"Thread not found for vote update: {notification.ThreadId}");
-            
+
 
             var thread = threadResult.Value;
             thread.UpdateVoteCount(notification.IsUpvote);
