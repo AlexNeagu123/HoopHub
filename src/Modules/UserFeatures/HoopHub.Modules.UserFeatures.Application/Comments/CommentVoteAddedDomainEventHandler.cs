@@ -15,7 +15,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments
         private readonly IFanRepository _fanRepository = fanRepository;
         public async Task Handle(CommentVoteAddedDomainEvent notification, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("[Domain Event Received] Comment vote added for comment {CommentId} by fan {FanId}", notification.CommentId, notification.FanId);
+            _logger.LogInformation("[Domain Event Received] Comment vote added for comment {CommentId}", notification.CommentId);
             var commentResult = await _threadCommentRepository.FindByIdAsyncIncludingAll(notification.CommentId);
             if (!commentResult.IsSuccess)   
                 throw new DomainEventHandlerException($"Comment {notification.CommentId} not found");

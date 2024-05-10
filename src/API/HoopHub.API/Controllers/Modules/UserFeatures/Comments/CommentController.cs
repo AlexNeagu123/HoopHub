@@ -4,6 +4,7 @@ using HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadComment;
 using HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyComment;
 using HoopHub.Modules.UserFeatures.Application.Comments.DeleteThreadComment;
 using HoopHub.Modules.UserFeatures.Application.Comments.GetCommentsPagedByThread;
+using HoopHub.Modules.UserFeatures.Application.Comments.GetCommentsPagedByUserId;
 using HoopHub.Modules.UserFeatures.Application.Comments.UpdateThreadComment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,18 @@ namespace HoopHub.API.Controllers.Modules.UserFeatures.Comments
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetComments([FromQuery] GetCommentsPagedByThreadQuery query)
+        {
+            var response = await Mediator.Send(query);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("fan")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCommentsByUser([FromQuery] GetCommentsPagedByUserIdQuery query)
         {
             var response = await Mediator.Send(query);
             if (!response.Success)

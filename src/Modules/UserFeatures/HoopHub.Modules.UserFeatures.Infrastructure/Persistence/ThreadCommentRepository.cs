@@ -82,5 +82,39 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
 
             return PagedResult<IReadOnlyList<ThreadComment>>.Success(comments, totalCount);
         }
+
+        public async Task<PagedResult<IReadOnlyList<ThreadComment>>> GetPagedByFanAsync(string fanId, int page, int pageSize)
+        {
+            var comments = await context.Comments
+                .Include(c => c.Fan)
+                .Include(c => c.GameThread)
+                .Include(c => c.TeamThread)
+                .Where(c => c.FanId == fanId)
+                .OrderByDescending(c => c.CreatedDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var totalCount = await context.Comments.Where(c => c.FanId == fanId).CountAsync();
+
+            return PagedResult<IReadOnlyList<ThreadComment>>.Success(comments, totalCount);
+        }
+
+        public async Task<PagedResult<IReadOnlyList<ThreadComment>>> GetPagedByFanMostPopularAsync(string fanId, int page, int pageSize)
+        {
+            var comments = await context.Comments
+                  .Include(c => c.Fan)
+                  .Include(c => c.GameThread)
+                  .Include(c => c.TeamThread)
+                  .Where(c => c.FanId == fanId)
+                  .OrderByDescending(c => c.UpVotes)
+                  .Skip((page - 1) * pageSize)
+                  .Take(pageSize)
+                  .ToListAsync();
+
+            var totalCount = await context.Comments.Where(c => c.FanId == fanId).CountAsync();
+
+            return PagedResult<IReadOnlyList<ThreadComment>>.Success(comments, totalCount);
+        }
     }
 }

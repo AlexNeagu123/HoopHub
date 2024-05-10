@@ -15,5 +15,11 @@ namespace HoopHub.Modules.UserFeatures.Application.Persistence
 
         Task<PagedResult<IReadOnlyList<ThreadComment>>> GetPagedByTeamThreadMostPopularAsync(Guid teamThreadId,
             int page, int pageSize);
+
+        Task<PagedResult<IReadOnlyList<ThreadComment>>> GetPagedByFanAsync(string fanId, int page,
+            int pageSize);
+
+        Task<PagedResult<IReadOnlyList<ThreadComment>>> GetPagedByFanMostPopularAsync(string fanId, int page,
+            int pageSize);
     }
 }

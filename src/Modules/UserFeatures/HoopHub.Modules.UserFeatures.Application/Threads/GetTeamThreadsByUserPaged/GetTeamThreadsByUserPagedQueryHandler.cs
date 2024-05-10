@@ -1,5 +1,6 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
 using HoopHub.BuildingBlocks.Application.Services;
+using HoopHub.BuildingBlocks.Domain;
 using HoopHub.Modules.UserFeatures.Application.Constants;
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Application.Threads.Dtos;
@@ -34,13 +35,13 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.GetTeamThreadsByUserP
                 return PagedResponse<ICollection<TeamThreadDto>>.ErrorResponseFromKeyMessage(threadsResult.ErrorMsg, ValidationKeys.TeamThread);
 
             var threads = threadsResult.Value;
-            var threadVoteStatuses = new List<ThreadVoteStatus>();
+            var threadVoteStatuses = new List<VoteStatus>();
 
             foreach (var thread in threads)
             {
                 var commentVote = await _teamThreadVoteRepository.FindByIdAsyncIncludingAll(thread.Id, requesterId);
-                var status = !commentVote.IsSuccess ? ThreadVoteStatus.None :
-                    commentVote.Value.IsUpVote ? ThreadVoteStatus.UpVoted : ThreadVoteStatus.DownVoted;
+                var status = !commentVote.IsSuccess ? VoteStatus.None :
+                    commentVote.Value.IsUpVote ? VoteStatus.UpVoted : VoteStatus.DownVoted;
                 threadVoteStatuses.Add(status);
             }
 

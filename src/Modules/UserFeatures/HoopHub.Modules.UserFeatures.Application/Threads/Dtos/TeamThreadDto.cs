@@ -1,4 +1,5 @@
-﻿using HoopHub.Modules.UserFeatures.Application.Fans.Dtos;
+﻿using HoopHub.BuildingBlocks.Domain;
+using HoopHub.Modules.UserFeatures.Application.Fans.Dtos;
 
 namespace HoopHub.Modules.UserFeatures.Application.Threads.Dtos
 {
@@ -12,6 +13,6 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.Dtos
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
         public DateTime CreatedDate { get; set; }
-        public ThreadVoteStatus? VoteStatus { get; set; }
+        public VoteStatus? VoteStatus { get; set; }
     }
 }

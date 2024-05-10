@@ -1,4 +1,5 @@
-﻿using HoopHub.Modules.UserFeatures.Application.Comments.Dtos;
+﻿using HoopHub.BuildingBlocks.Domain;
+using HoopHub.Modules.UserFeatures.Application.Comments.Dtos;
 using HoopHub.Modules.UserFeatures.Application.Fans.Mappers;
 using HoopHub.Modules.UserFeatures.Application.Threads.Mappers;
 using HoopHub.Modules.UserFeatures.Domain.Comments;
@@ -11,7 +12,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.Mappers
         private readonly TeamThreadMapper _teamThreadMapper = new();
         private readonly GameThreadMapper _gameThreadMapper = new();
 
-        public ThreadCommentDto ThreadCommentToThreadCommentDto(ThreadComment comment)
+        public ThreadCommentDto ThreadCommentToThreadCommentDto(ThreadComment comment, VoteStatus? voteStatus = null)
         {
             return new ThreadCommentDto
             {
@@ -23,7 +24,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.Mappers
                 GameThread = comment.GameThread != null ? _gameThreadMapper.GameThreadToGameThreadDto(comment.GameThread) : null,
                 UpVotes = comment.UpVotes,
                 DownVotes = comment.DownVotes,
-                CreatedDate = comment.CreatedDate
+                CreatedDate = comment.CreatedDate,
+                VoteStatus = voteStatus
             };
         }
     }

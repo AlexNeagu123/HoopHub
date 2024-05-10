@@ -1,4 +1,5 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
+using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.BuildingBlocks.Domain;
 using HoopHub.Modules.UserFeatures.Application.Comments.Dtos;
 using HoopHub.Modules.UserFeatures.Application.Comments.Mappers;
@@ -10,11 +11,15 @@ using MediatR;
 namespace HoopHub.Modules.UserFeatures.Application.Comments.GetCommentsPagedByThread
 {
     public class GetCommentsPagedByThreadQueryHandler(
-        IThreadCommentRepository threadCommentRepository, ITeamThreadRepository teamThreadRepository)
+        IThreadCommentRepository threadCommentRepository, ITeamThreadRepository teamThreadRepository,
+        IThreadCommentVoteRepository threadCommentVoteRepository,
+        ICurrentUserService currentUserService)
         : IRequestHandler<GetCommentsPagedByThreadQuery, PagedResponse<IReadOnlyList<ThreadCommentDto>>>
     {
         private readonly IThreadCommentRepository _threadCommentRepository = threadCommentRepository;
         private readonly ITeamThreadRepository _teamThreadRepository = teamThreadRepository;
+        private readonly IThreadCommentVoteRepository _threadCommentVoteRepository = threadCommentVoteRepository;
+        private readonly ICurrentUserService _currentUserService = currentUserService;
         private readonly ThreadCommentMapper _threadCommentMapper = new();
 
         public async Task<PagedResponse<IReadOnlyList<ThreadCommentDto>>> Handle(GetCommentsPagedByThreadQuery request, CancellationToken cancellationToken)
@@ -62,7 +67,18 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.GetCommentsPagedByTh
                 comments.Insert(0, firstCommentResult.Value);
             }
 
-            var commentsDto = comments.Select(x => _threadCommentMapper.ThreadCommentToThreadCommentDto(x)).ToList();
+            var commentVoteStatuses = new List<VoteStatus>();
+            var fanId =_currentUserService.GetUserId!;
+            
+            foreach(var comment in comments)
+            {
+                var commentVote = await _threadCommentVoteRepository.FindByIdAsyncIncludingAll(comment.Id, fanId);
+                var status = !commentVote.IsSuccess ? VoteStatus.None :
+                    commentVote.Value.IsUpVote ? VoteStatus.UpVoted : VoteStatus.DownVoted;
+                commentVoteStatuses.Add(status);
+            }
+            
+            var commentsDto = comments.Select((x, index) => _threadCommentMapper.ThreadCommentToThreadCommentDto(x, commentVoteStatuses[index])).ToList();
             return new PagedResponse<IReadOnlyList<ThreadCommentDto>>
             {
                 Success = true,

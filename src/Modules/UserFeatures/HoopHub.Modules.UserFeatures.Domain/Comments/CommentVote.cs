@@ -33,17 +33,17 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
                 return;
 
             IsUpVote = isUpVote;
-            AddDomainEvent(new CommentVoteUpdatedDomainEvent(CommentId, FanId, IsUpVote));
+            AddDomainEvent(new CommentVoteUpdatedDomainEvent(CommentId, IsUpVote));
         }
 
         public void MarkAsAdded()
         {
-            AddDomainEvent(new CommentVoteAddedDomainEvent(CommentId, FanId, IsUpVote));
+            AddDomainEvent(new CommentVoteAddedDomainEvent(CommentId, IsUpVote));
         }
 
         public void MarkAsDeleted()
         {
-            AddDomainEvent(new CommentVoteDeletedDomainEvent(CommentId, FanId, IsUpVote));
+            AddDomainEvent(new CommentVoteDeletedDomainEvent(CommentId, IsUpVote));
         }
 
         public static Result<CommentVote> Create(Guid commentId, string fanId, bool isUpVote)

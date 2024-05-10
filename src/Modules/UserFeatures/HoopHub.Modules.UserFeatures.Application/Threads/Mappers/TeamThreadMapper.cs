@@ -1,4 +1,5 @@
-﻿using HoopHub.Modules.UserFeatures.Application.Fans.Mappers;
+﻿using HoopHub.BuildingBlocks.Domain;
+using HoopHub.Modules.UserFeatures.Application.Fans.Mappers;
 using HoopHub.Modules.UserFeatures.Application.Threads.Dtos;
 using HoopHub.Modules.UserFeatures.Domain.Threads;
 
@@ -7,7 +8,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.Mappers
     public class TeamThreadMapper
     {
         private readonly FanMapper _fanMapper = new();
-        public TeamThreadDto TeamThreadToTeamThreadDto(TeamThread teamThread, ThreadVoteStatus? voteStatus = null)
+        public TeamThreadDto TeamThreadToTeamThreadDto(TeamThread teamThread, VoteStatus? voteStatus = null)
         {
             return new TeamThreadDto
             {

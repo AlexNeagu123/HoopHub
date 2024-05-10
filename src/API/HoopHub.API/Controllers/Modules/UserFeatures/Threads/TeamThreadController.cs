@@ -2,6 +2,7 @@
 using HoopHub.Modules.UserAccess.Domain.Roles;
 using HoopHub.Modules.UserFeatures.Application.Threads.CreateTeamThread;
 using HoopHub.Modules.UserFeatures.Application.Threads.DeleteTeamThread;
+using HoopHub.Modules.UserFeatures.Application.Threads.GetTeamThreadById;
 using HoopHub.Modules.UserFeatures.Application.Threads.GetTeamThreadsByUserPaged;
 using HoopHub.Modules.UserFeatures.Application.Threads.GetTeamThreadsPaged;
 using HoopHub.Modules.UserFeatures.Application.Threads.UpdateTeamThread;
@@ -25,6 +26,21 @@ namespace HoopHub.API.Controllers.Modules.UserFeatures.Threads
             }
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        [Authorize(Roles = UserRoles.User)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetTeamThreadById(Guid id)
+        {
+            var query = new GetTeamThreadByIdQuery { TeamThreadId = id };
+            var response = await Mediator.Send(query);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
 
         [HttpGet]
         [Authorize(Roles = UserRoles.User)]
