@@ -17,7 +17,10 @@ namespace HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.GamesData
 
             try
             {
+                Console.WriteLine("Am ajuns la request!!!!!!");
                 var response = await client.GetAsync($"{Games}?dates[]={date}&per_page=100");
+                Console.WriteLine("Am terminat requestul!!!!!!");
+                
                 response.EnsureSuccessStatusCode();
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var games = JsonConvert.DeserializeObject<BaseExternalApiResponse<GameApiDto>>(responseBody);

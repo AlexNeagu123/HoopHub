@@ -158,6 +158,16 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
             modelBuilder.Entity<ThreadComment>().HasMany(c => c.Votes).WithOne(v => v.ThreadComment)
                 .HasForeignKey(v => v.CommentId).OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<ThreadComment>()
+                .HasOne(c => c.RespondsTo)
+                .WithMany(f => f.Responses)
+                .HasForeignKey(c => c.RespondsToId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ThreadComment>()
+                .Property(c => c.RespondsToId)
+                .IsRequired(false);
+
             modelBuilder.Entity<ThreadComment>().HasQueryFilter(r => !r.IsDeleted);
             modelBuilder.Entity<ThreadComment>().ToTable("comments");
         }

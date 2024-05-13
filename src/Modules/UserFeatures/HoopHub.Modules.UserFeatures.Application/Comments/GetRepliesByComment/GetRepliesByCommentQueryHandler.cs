@@ -5,7 +5,6 @@ using HoopHub.Modules.UserFeatures.Application.Comments.Dtos;
 using HoopHub.Modules.UserFeatures.Application.Comments.Mappers;
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using MediatR;
-using System.Xml.Linq;
 
 namespace HoopHub.Modules.UserFeatures.Application.Comments.GetRepliesByComment
 {

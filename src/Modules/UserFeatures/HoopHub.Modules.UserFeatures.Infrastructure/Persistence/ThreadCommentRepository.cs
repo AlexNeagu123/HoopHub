@@ -14,6 +14,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
                 .Include(c => c.Fan)
                 .Include(c => c.GameThread)
                 .Include(c => c.TeamThread)
+                .Include(c => c.RespondsTo)
                 .FirstOrDefaultAsync(c => c.Id == commentId);
 
             return comment == null ? Result<ThreadComment>.Failure($"Comment with Id {commentId} not found") : Result<ThreadComment>.Success(comment);
@@ -24,6 +25,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
             var comments = await context.Comments
                 .Include(c => c.Fan)
                 .Include(c => c.TeamThread)
+                .Include(c => c.RespondsTo)
                 .Where(c => c.TeamThreadId == teamThreadId)
                 .Where(c => c.ParentId == null)
                 .OrderByDescending(c => c.CreatedDate)
@@ -41,6 +43,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
             var comments = await context.Comments
                 .Include(c => c.Fan)
                 .Include(c => c.TeamThread)
+                .Include(c => c.RespondsTo)
                 .Where(c => c.TeamThreadId == teamThreadId)
                 .Where(c => c.ParentId == null)
                 .OrderByDescending(c => c.UpVotes)
@@ -58,6 +61,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
             var comments = await context.Comments
                 .Include(c => c.Fan)
                 .Include(c => c.GameThread)
+                .Include(c => c.RespondsTo)
                 .Where(c => c.GameThreadId == gameThreadId)
                 .Where(c => c.ParentId == null)
                 .OrderByDescending(c => c.CreatedDate)
@@ -75,6 +79,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
             var comments = await context.Comments
                 .Include(c => c.Fan)
                 .Include(c => c.GameThread)
+                .Include(c => c.RespondsTo)
                 .Where(c => c.GameThreadId == gameThreadId)
                 .Where(c => c.ParentId == null)
                 .OrderByDescending(c => c.UpVotes)
@@ -93,6 +98,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
                 .Include(c => c.Fan)
                 .Include(c => c.GameThread)
                 .Include(c => c.TeamThread)
+                .Include(c => c.RespondsTo)
                 .Where(c => c.FanId == fanId)
                 .OrderByDescending(c => c.CreatedDate)
                 .Skip((page - 1) * pageSize)
@@ -110,6 +116,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
                   .Include(c => c.Fan)
                   .Include(c => c.GameThread)
                   .Include(c => c.TeamThread)
+                  .Include(c => c.RespondsTo)
                   .Where(c => c.FanId == fanId)
                   .OrderByDescending(c => c.UpVotes)
                   .Skip((page - 1) * pageSize)
@@ -127,7 +134,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
                            .Include(c => c.Fan)
                            .Include(c => c.GameThread)
                            .Include(c => c.TeamThread)
+                           .Include(c => c.RespondsTo)
                            .Where(c => c.ParentId == commentId)
+                           .OrderBy(c => c.CreatedDate)
                            .ToListAsync();
 
             return Result<IReadOnlyList<ThreadComment>>.Success(replies);

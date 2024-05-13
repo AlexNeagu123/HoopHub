@@ -11,6 +11,8 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
         public Guid? ParentId { get; private set; }
+        public string? RespondsToId { get; private set; }
+        public Fan? RespondsTo { get; private set; }
         public string Content { get; private set; }
         public Guid? TeamThreadId { get; private set; }
         public TeamThread? TeamThread { get; private set; }
@@ -57,16 +59,33 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
 
         public void MarkAsAdded()
         {
-            AddDomainEvent(new ThreadCommentsCountUpdatedDomainEvent(+1, TeamThreadId, GameThreadId));
+            AddDomainEvent(new ThreadCommentsCountUpdatedDomainEvent(+1, FanId, TeamThreadId, GameThreadId));
             if (ParentId.HasValue)
+            {
                 AddDomainEvent(new ThreadCommentRepliesCountUpdatedDomainEvent(+1, ParentId.Value));
+            }
         }
 
         public void MarkAsDeleted()
         {
-            AddDomainEvent(new ThreadCommentsCountUpdatedDomainEvent(-1, TeamThreadId, GameThreadId));
+            AddDomainEvent(new ThreadCommentsCountUpdatedDomainEvent(-1, FanId, TeamThreadId, GameThreadId));
             if (ParentId.HasValue)
                 AddDomainEvent(new ThreadCommentRepliesCountUpdatedDomainEvent(-1, ParentId.Value));
+        }
+
+        public void NotifyCommentOwner(string commentOwnerId, Fan fan)
+        {
+            if (fan.Id != FanId)
+                return;
+
+            AddDomainEvent(new ReplyAddedToCommentDomainEvent(
+                commentOwnerId,
+        fan.Id,
+                Config.ReplyAddedNotificationTitle,
+                Config.ReplyAddedNotificationTitleContent(fan.Username),
+                fan.AvatarPhotoUrl,
+                Id.ToString())
+            );
         }
 
         public void NotifyThreadOwner(string threadOwnerId, Fan fan)
@@ -118,6 +137,11 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
         public void Update(string content)
         {
             Content = content;
+        }
+
+        public void AttachRespondsToFanId(string fanId)
+        {
+            RespondsToId = fanId;
         }
 
         public void AttachParentId(Guid parentId)

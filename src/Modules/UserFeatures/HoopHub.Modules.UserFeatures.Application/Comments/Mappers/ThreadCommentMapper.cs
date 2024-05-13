@@ -26,7 +26,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.Mappers
                 DownVotes = comment.DownVotes,
                 CreatedDate = comment.CreatedDate,
                 VoteStatus = voteStatus,
-                RepliesCount = comment.RepliesCount
+                RepliesCount = comment.RepliesCount,
+                RespondsToFan = comment.RespondsTo != null ? _fanMapper.FanToFanDto(comment.RespondsTo) : null
             };
         }
     }

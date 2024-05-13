@@ -19,31 +19,38 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyCom
         private readonly ThreadCommentMapper _threadCommentMapper = new();
         public async Task<Response<ThreadCommentDto>> Handle(CreateThreadReplyCommentCommand request, CancellationToken cancellationToken)
         {
-            var validator = new CreateThreadReplyCommentCommandValidator(_threadCommentRepository, _teamThreadRepository, _gameThreadRepository);
+            var validator = new CreateThreadReplyCommentCommandValidator(_threadCommentRepository, _teamThreadRepository, _gameThreadRepository, _fanRepository);
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
                 return Response<ThreadCommentDto>.ErrorResponseFromFluentResult(validationResult);
 
             var fanId = _currentUserService.GetUserId;
+            var fanResult = await _fanRepository.FindByIdAsync(fanId!);
+
             var threadCommentResult = ThreadComment.Create(request.Content, fanId!);
             if (!threadCommentResult.IsSuccess)
                 return Response<ThreadCommentDto>.ErrorResponseFromKeyMessage(threadCommentResult.ErrorMsg, ValidationKeys.ThreadComment);
 
             var threadComment = threadCommentResult.Value;
             threadComment.AttachParentId(request.ParentCommentId);
+            threadComment.AttachRespondsToFanId(request.RespondsToFanId);
 
             if (request.TeamThreadId != null)
             {
                 threadComment.AttachTeamThread(request.TeamThreadId);
                 var teamThread = await _teamThreadRepository.FindByIdAsyncIncludingFan(request.TeamThreadId.Value);
-                var fan = await _fanRepository.FindByIdAsync(fanId!);
-                threadComment.NotifyThreadOwner(teamThread.Value.FanId, fan.Value);
+                threadComment.NotifyThreadOwner(teamThread.Value.FanId, fanResult.Value);
             }
 
             if (request.GameThreadId != null)
                 threadComment.AttachGameThread(request.GameThreadId);
 
+            var parentCommentResult = await _threadCommentRepository.FindByIdAsyncIncludingAll(request.ParentCommentId);
+            var parentComment = parentCommentResult.Value;
+
             threadComment.MarkAsAdded();
+            threadComment.NotifyCommentOwner(parentComment.FanId, fanResult.Value);
+
             var addThreadCommentResult = await _threadCommentRepository.AddAsync(threadComment);
             if (!addThreadCommentResult.IsSuccess)
                 return Response<ThreadCommentDto>.ErrorResponseFromKeyMessage(addThreadCommentResult.ErrorMsg, ValidationKeys.ThreadComment);

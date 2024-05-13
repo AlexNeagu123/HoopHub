@@ -16,6 +16,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
         public string Email { get; private set; }
         public int UpVotes { get; private set; }
         public int DownVotes { get; private set; }
+        public int CommentsCount { get; private set; }
         public FanBadgeType FanBadge { get; private set; }
         public string? AvatarPhotoUrl { get; private set; } = Config.DefaultAvatarPhotoUrl;
         public Guid? FavouriteTeamId { get; private set; }
@@ -29,7 +30,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
         public ICollection<PlayerFollowEntry> PlayerFollowEntries { get; private set; } = [];
         public ICollection<Notification> NotificationsSent { get; private set; } = [];
         public ICollection<Notification> NotificationsReceived { get; private set; } = [];
-
+        public ICollection<ThreadComment> Responses { get; private set; } = [];
         private Fan(string id, string username, string email)
         {
             Id = id;
@@ -105,6 +106,11 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
             }
 
             CheckBadgeUpdate();
+        }
+
+        public void UpdateCommentsCount(int delta)
+        {
+            CommentsCount += delta;
         }
 
         private void CheckBadgeUpdate()

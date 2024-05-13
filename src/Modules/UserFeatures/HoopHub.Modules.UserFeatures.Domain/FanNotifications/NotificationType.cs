@@ -7,6 +7,5 @@
         FollowedTeamGameEnd,
         CommentReply,
         ThreadComment,
-        CommentUpVote
     }
 }

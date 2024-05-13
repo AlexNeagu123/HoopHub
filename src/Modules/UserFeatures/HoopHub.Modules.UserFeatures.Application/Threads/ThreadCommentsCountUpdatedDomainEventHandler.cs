@@ -8,14 +8,19 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads
 {
     public class ThreadCommentsCountUpdatedDomainEventHandler(ILogger<ThreadCommentsCountUpdatedDomainEventHandler> logger,
         ITeamThreadRepository teamThreadRepository,
-        IGameThreadRepository gameThreadRepository) : INotificationHandler<ThreadCommentsCountUpdatedDomainEvent>
+        IGameThreadRepository gameThreadRepository,
+        IFanRepository fanRepository) : INotificationHandler<ThreadCommentsCountUpdatedDomainEvent>
     {
         private readonly ILogger<ThreadCommentsCountUpdatedDomainEventHandler> _logger = logger;
         private readonly ITeamThreadRepository _teamThreadRepository = teamThreadRepository;
         private readonly IGameThreadRepository _gameThreadRepository = gameThreadRepository;
+        private readonly IFanRepository _fanRepository = fanRepository;
 
         public async Task Handle(ThreadCommentsCountUpdatedDomainEvent notification, CancellationToken cancellationToken)
         {
+            _logger.LogInformation(
+                "[Domain Event Received] comment count modified for thread {TeamThreadId} {GameThreadId}",
+                notification.TeamThreadId, notification.GameThreadId);
             if (notification.TeamThreadId.HasValue)
             {
                 var teamThreadResult = await _teamThreadRepository.FindByIdAsync(notification.TeamThreadId.Value);
@@ -50,6 +55,18 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads
             {
                 throw new DomainEventHandlerException("Thread id not found for comment count update");
             }
+
+            var fanResult = await _fanRepository.FindByIdAsync(notification.FanId);
+            if (!fanResult.IsSuccess)
+                throw new DomainEventHandlerException($"Fan not found for comment count update: {notification.FanId}");
+
+            fanResult.Value.UpdateCommentsCount(notification.Delta);
+
+            var updateFanResult = await _fanRepository.UpdateAsync(fanResult.Value);
+            if (!updateFanResult.IsSuccess)
+                throw new DomainEventHandlerException($"Error updating fan comment count: {notification.FanId}");
+
+            _logger.LogInformation($"Fan comment count updated: {notification.FanId}");
         }
     }
 }

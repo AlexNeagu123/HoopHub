@@ -7,7 +7,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyCom
 {
     public class CreateThreadReplyCommentCommandValidator : AbstractValidator<CreateThreadReplyCommentCommand>
     {
-        public CreateThreadReplyCommentCommandValidator(IThreadCommentRepository threadCommentRepository, ITeamThreadRepository teamThreadRepository, IGameThreadRepository gameThreadRepository)
+        public CreateThreadReplyCommentCommandValidator(IThreadCommentRepository threadCommentRepository, ITeamThreadRepository teamThreadRepository, IGameThreadRepository gameThreadRepository, IFanRepository fanRepository)
         {
             RuleFor(x => x.Content).NotEmpty().Length(Config.ContentMinLength, Config.ContentMaxLength).WithMessage(ValidationErrors.InvalidCommentContent);
             RuleFor(x => x.ParentCommentId).NotEmpty().NotNull().WithMessage(ValidationErrors.InvalidParentCommentId);
@@ -33,6 +33,14 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyCom
                 var gameThreadResult = await gameThreadRepository.FindByIdAsync(gameThreadId.Value);
                 return gameThreadResult.IsSuccess;
             }).WithMessage(ValidationErrors.ThreadDoNotExist).WithName(ValidationKeys.GameThread);
+
+            RuleFor(x => x.RespondsToFanId).MustAsync(async (respondsToFanId, cancellation) =>
+            {
+                if (respondsToFanId == null)
+                    return true;
+                var fanResult = await fanRepository.FindByIdAsync(respondsToFanId);
+                return fanResult.IsSuccess;
+            }).WithMessage(ValidationErrors.FanDoNotExist).WithName(ValidationKeys.RespondsToFanId);
         }
     }
 }

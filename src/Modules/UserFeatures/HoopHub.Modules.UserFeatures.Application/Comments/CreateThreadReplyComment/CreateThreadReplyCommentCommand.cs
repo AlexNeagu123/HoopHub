@@ -7,6 +7,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyCom
     public class CreateThreadReplyCommentCommand : IRequest<Response<ThreadCommentDto>>
     {
         public string Content { get; set; }
+        public string RespondsToFanId { get; set; }
         public Guid ParentCommentId { get; set; }
         public Guid? TeamThreadId { get; set; }
         public Guid? GameThreadId { get; set; }

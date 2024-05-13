@@ -7,15 +7,6 @@ namespace HoopHub.Modules.UserFeatures.Application.Fans.Mappers
     {
         public FanDto FanToFanDto(Fan fan)
         {
-            Console.WriteLine(fan);
-            Console.WriteLine(fan.Id);
-            Console.WriteLine(fan.Username);
-            Console.WriteLine(fan.UpVotes);
-            Console.WriteLine(fan.DownVotes);
-            Console.WriteLine(fan.FanBadge);
-            Console.WriteLine(fan.FavouriteTeamId);
-            Console.WriteLine(fan.AvatarPhotoUrl);
-
             return new FanDto
             {
                 Id = fan.Id,
@@ -24,7 +15,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Fans.Mappers
                 DownVotes = fan.DownVotes,
                 FanBadge = fan.FanBadge,
                 FavouriteTeamId = fan.FavouriteTeamId,
-                AvatarPhotoUrl = fan.AvatarPhotoUrl
+                AvatarPhotoUrl = fan.AvatarPhotoUrl,
+                CommentsCount = fan.CommentsCount
             };
         }
     }
