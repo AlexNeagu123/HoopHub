@@ -7,5 +7,11 @@ namespace HoopHub.Modules.UserFeatures.Domain.Threads
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
         public ICollection<ThreadComment> Comments { get; private set; } = [];
+        public int CommentsCount { get; private set; }
+
+        public void UpdateCommentCount(int delta)
+        {
+            CommentsCount += delta;
+        }
     }
 }

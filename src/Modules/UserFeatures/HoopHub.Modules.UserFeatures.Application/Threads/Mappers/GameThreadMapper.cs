@@ -12,7 +12,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.Mappers
                 Id = gameThread.Id,
                 HomeTeamId = gameThread.HomeTeamId,
                 VisitorTeamId = gameThread.VisitorTeamId,
-                Date = gameThread.Date
+                Date = gameThread.Date,
+                CommentsCount = gameThread.CommentsCount
             };
         }
     }

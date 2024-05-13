@@ -21,5 +21,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Persistence
 
         Task<PagedResult<IReadOnlyList<ThreadComment>>> GetPagedByFanMostPopularAsync(string fanId, int page,
             int pageSize);
+
+        Task<Result<IReadOnlyList<ThreadComment>>> GetRepliesByComment(Guid commentId);
     }
 }

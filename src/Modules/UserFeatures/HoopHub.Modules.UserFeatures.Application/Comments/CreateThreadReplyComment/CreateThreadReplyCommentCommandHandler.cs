@@ -43,6 +43,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyCom
             if (request.GameThreadId != null)
                 threadComment.AttachGameThread(request.GameThreadId);
 
+            threadComment.MarkAsAdded();
             var addThreadCommentResult = await _threadCommentRepository.AddAsync(threadComment);
             if (!addThreadCommentResult.IsSuccess)
                 return Response<ThreadCommentDto>.ErrorResponseFromKeyMessage(addThreadCommentResult.ErrorMsg, ValidationKeys.ThreadComment);

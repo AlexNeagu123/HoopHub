@@ -14,6 +14,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.Dtos
         public FanDto? Fan { get; set; }
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
+        public int RepliesCount { get; set; }
         public DateTime CreatedDate { get; set; }
         public VoteStatus? VoteStatus { get; set; }
     }

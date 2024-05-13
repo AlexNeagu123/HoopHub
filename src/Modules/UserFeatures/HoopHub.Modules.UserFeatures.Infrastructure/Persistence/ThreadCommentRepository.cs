@@ -25,6 +25,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
                 .Include(c => c.Fan)
                 .Include(c => c.TeamThread)
                 .Where(c => c.TeamThreadId == teamThreadId)
+                .Where(c => c.ParentId == null)
                 .OrderByDescending(c => c.CreatedDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -41,6 +42,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
                 .Include(c => c.Fan)
                 .Include(c => c.TeamThread)
                 .Where(c => c.TeamThreadId == teamThreadId)
+                .Where(c => c.ParentId == null)
                 .OrderByDescending(c => c.UpVotes)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -57,6 +59,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
                 .Include(c => c.Fan)
                 .Include(c => c.GameThread)
                 .Where(c => c.GameThreadId == gameThreadId)
+                .Where(c => c.ParentId == null)
                 .OrderByDescending(c => c.CreatedDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -73,6 +76,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
                 .Include(c => c.Fan)
                 .Include(c => c.GameThread)
                 .Where(c => c.GameThreadId == gameThreadId)
+                .Where(c => c.ParentId == null)
                 .OrderByDescending(c => c.UpVotes)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -115,6 +119,18 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
             var totalCount = await context.Comments.Where(c => c.FanId == fanId).CountAsync();
 
             return PagedResult<IReadOnlyList<ThreadComment>>.Success(comments, totalCount);
+        }
+
+        public async Task<Result<IReadOnlyList<ThreadComment>>> GetRepliesByComment(Guid commentId)
+        {
+            var replies = await context.Comments
+                           .Include(c => c.Fan)
+                           .Include(c => c.GameThread)
+                           .Include(c => c.TeamThread)
+                           .Where(c => c.ParentId == commentId)
+                           .ToListAsync();
+
+            return Result<IReadOnlyList<ThreadComment>>.Success(replies);
         }
     }
 }

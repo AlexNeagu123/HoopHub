@@ -6,11 +6,11 @@ using Microsoft.Extensions.Logging;
 
 namespace HoopHub.Modules.UserFeatures.Application.Comments
 {
-    public class CommentVoteDeletedDomainEventHandler(ILogger<CommentVoteAddedDomainEventHandler> logger,
+    public class CommentVoteDeletedDomainEventHandler(ILogger<CommentVoteDeletedDomainEvent> logger,
         IThreadCommentRepository threadCommentRepository,
         IFanRepository fanRepository) : INotificationHandler<CommentVoteDeletedDomainEvent>
     {
-        private readonly ILogger<CommentVoteAddedDomainEventHandler> _logger = logger;
+        private readonly ILogger<CommentVoteDeletedDomainEvent> _logger = logger;
         private readonly IThreadCommentRepository _threadCommentRepository = threadCommentRepository;
         private readonly IFanRepository _fanRepository = fanRepository;
         public async Task Handle(CommentVoteDeletedDomainEvent notification, CancellationToken cancellationToken)

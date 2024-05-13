@@ -5,6 +5,7 @@ using HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyComment
 using HoopHub.Modules.UserFeatures.Application.Comments.DeleteThreadComment;
 using HoopHub.Modules.UserFeatures.Application.Comments.GetCommentsPagedByThread;
 using HoopHub.Modules.UserFeatures.Application.Comments.GetCommentsPagedByUserId;
+using HoopHub.Modules.UserFeatures.Application.Comments.GetRepliesByComment;
 using HoopHub.Modules.UserFeatures.Application.Comments.UpdateThreadComment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,19 @@ namespace HoopHub.API.Controllers.Modules.UserFeatures.Comments
             return Ok(response);
         }
 
+        [HttpGet("replies/{id}")]
+        [Authorize(Roles = UserRoles.User)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetRepliesByComment(Guid id)
+        {
+            var response = await Mediator.Send(new GetRepliesByCommentQuery { CommentId = id });
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
         [HttpPost]
         [Authorize(Roles = UserRoles.User)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -51,7 +65,7 @@ namespace HoopHub.API.Controllers.Modules.UserFeatures.Comments
             return Ok(response);
         }
 
-        [HttpPost("reply")]
+        [HttpPost("replies")]
         [Authorize(Roles = UserRoles.User)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateReplyComment([FromBody] CreateThreadReplyCommentCommand command)

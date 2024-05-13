@@ -6,5 +6,6 @@
         public Guid HomeTeamId { get; set; }
         public Guid VisitorTeamId { get; set; }
         public string Date { get; set; } = string.Empty;
+        public int CommentsCount { get; set; }
     }
 }

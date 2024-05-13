@@ -123,6 +123,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("RepliesCount")
+                        .HasColumnType("integer");
+
                     b.Property<Guid?>("TeamThreadId")
                         .HasColumnType("uuid");
 
@@ -334,6 +337,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("CommentsCount")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -360,6 +366,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<int>("CommentsCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Content")
                         .IsRequired()

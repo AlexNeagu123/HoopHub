@@ -14,5 +14,6 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.Dtos
         public int DownVotes { get; set; }
         public DateTime CreatedDate { get; set; }
         public VoteStatus? VoteStatus { get; set; }
+        public int CommentsCount { get; set; }
     }
 }

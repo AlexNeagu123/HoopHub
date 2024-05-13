@@ -5,26 +5,27 @@
 namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class NotifUpdated : Migration
+    public partial class RepliesCount : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "AttachedNavigationData",
+            migrationBuilder.AddColumn<int>(
+                name: "RepliesCount",
                 schema: "user_features",
-                table: "notifications",
-                type: "text",
-                nullable: true);
+                table: "comments",
+                type: "integer",
+                nullable: false,
+                defaultValue: 0);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "AttachedNavigationData",
+                name: "RepliesCount",
                 schema: "user_features",
-                table: "notifications");
+                table: "comments");
         }
     }
 }

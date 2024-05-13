@@ -22,6 +22,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
         public Fan Fan { get; private set; } = null!;
         public int UpVotes { get; private set; }
         public int DownVotes { get; private set; }
+        public int RepliesCount { get; private set; }
         public ICollection<CommentVote> Votes { get; private set; } = [];
 
         public bool IsDeleted { get; set; }
@@ -49,6 +50,25 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
             return Result<ThreadComment>.Success(new ThreadComment(content, fanId));
         }
 
+        public void UpdateRepliesCount(int delta)
+        {
+            RepliesCount += delta;
+        }
+
+        public void MarkAsAdded()
+        {
+            AddDomainEvent(new ThreadCommentsCountUpdatedDomainEvent(+1, TeamThreadId, GameThreadId));
+            if (ParentId.HasValue)
+                AddDomainEvent(new ThreadCommentRepliesCountUpdatedDomainEvent(+1, ParentId.Value));
+        }
+
+        public void MarkAsDeleted()
+        {
+            AddDomainEvent(new ThreadCommentsCountUpdatedDomainEvent(-1, TeamThreadId, GameThreadId));
+            if (ParentId.HasValue)
+                AddDomainEvent(new ThreadCommentRepliesCountUpdatedDomainEvent(-1, ParentId.Value));
+        }
+
         public void NotifyThreadOwner(string threadOwnerId, Fan fan)
         {
             if (fan.Id != FanId)
@@ -59,7 +79,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
                 fan.Id,
                 Config.CommentAddedThreadNotificationTitle,
                 Config.CommentAddedThreadNotificationContent(fan.Username),
-                fan.AvatarPhotoUrl, 
+                fan.AvatarPhotoUrl,
                 Id.ToString())
             );
         }

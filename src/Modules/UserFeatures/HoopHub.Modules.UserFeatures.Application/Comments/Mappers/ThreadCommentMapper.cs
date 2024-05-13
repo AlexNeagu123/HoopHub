@@ -25,7 +25,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.Mappers
                 UpVotes = comment.UpVotes,
                 DownVotes = comment.DownVotes,
                 CreatedDate = comment.CreatedDate,
-                VoteStatus = voteStatus
+                VoteStatus = voteStatus,
+                RepliesCount = comment.RepliesCount
             };
         }
     }

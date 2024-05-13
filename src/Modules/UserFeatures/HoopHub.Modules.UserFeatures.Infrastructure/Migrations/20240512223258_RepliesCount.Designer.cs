@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 {
     [DbContext(typeof(UserFeaturesContext))]
-    [Migration("20240420232914_SoftDeleteUpdate")]
-    partial class SoftDeleteUpdate
+    [Migration("20240512223258_RepliesCount")]
+    partial class RepliesCount
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,14 +56,25 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 
             modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Comments.CommentVote", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("CommentId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("FanId")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FanId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsUpVote")
                         .HasColumnType("boolean");
@@ -71,7 +82,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("CommentId", "FanId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
 
                     b.HasIndex("FanId");
 
@@ -113,6 +126,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("RepliesCount")
+                        .HasColumnType("integer");
+
                     b.Property<Guid?>("TeamThreadId")
                         .HasColumnType("uuid");
 
@@ -137,6 +153,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("AttachedImageUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AttachedNavigationData")
                         .HasColumnType("text");
 
                     b.Property<string>("Content")
@@ -186,15 +205,24 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("DownVotes")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("FanBadge")
+                        .HasColumnType("integer");
 
                     b.Property<Guid?>("FavouriteTeamId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UpVotes")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -254,12 +282,11 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<string>("Date")
                         .HasColumnType("text");
 
+                    b.Property<string>("FanId")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("FanId")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
@@ -267,7 +294,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<decimal>("Rating")
                         .HasColumnType("numeric");
 
-                    b.HasKey("HomeTeamId", "VisitorTeamId", "Date");
+                    b.HasKey("HomeTeamId", "VisitorTeamId", "Date", "FanId");
 
                     b.HasIndex("FanId");
 
@@ -282,26 +309,25 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<Guid>("VisitorTeamId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Date")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FanId")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("FanId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("PlayerId")
-                        .HasColumnType("uuid");
 
                     b.Property<decimal>("Rating")
                         .HasColumnType("numeric");
 
-                    b.HasKey("HomeTeamId", "VisitorTeamId", "Date");
+                    b.HasKey("HomeTeamId", "VisitorTeamId", "PlayerId", "Date", "FanId");
 
                     b.HasIndex("FanId");
 
@@ -313,6 +339,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<int>("CommentsCount")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
@@ -341,6 +370,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("CommentsCount")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("text");
@@ -350,6 +382,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DownVotes")
+                        .HasColumnType("integer");
 
                     b.Property<string>("FanId")
                         .IsRequired()
@@ -368,11 +403,51 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("UpVotes")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FanId");
 
                     b.ToTable("team_threads", "user_features");
+                });
+
+            modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Threads.TeamThreadVote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FanId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsUpVote")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("TeamThreadId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FanId");
+
+                    b.HasIndex("TeamThreadId");
+
+                    b.ToTable("team_thread_votes", "user_features");
                 });
 
             modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Comments.CommentVote", b =>
@@ -489,6 +564,25 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Navigation("Fan");
                 });
 
+            modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Threads.TeamThreadVote", b =>
+                {
+                    b.HasOne("HoopHub.Modules.UserFeatures.Domain.Fans.Fan", "Fan")
+                        .WithMany("TeamThreadVotes")
+                        .HasForeignKey("FanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HoopHub.Modules.UserFeatures.Domain.Threads.TeamThread", "TeamThread")
+                        .WithMany("Votes")
+                        .HasForeignKey("TeamThreadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fan");
+
+                    b.Navigation("TeamThread");
+                });
+
             modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Comments.ThreadComment", b =>
                 {
                     b.Navigation("Votes");
@@ -510,6 +604,8 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 
                     b.Navigation("TeamFollowEntries");
 
+                    b.Navigation("TeamThreadVotes");
+
                     b.Navigation("TeamThreads");
 
                     b.Navigation("Votes");
@@ -523,6 +619,8 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
             modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Threads.TeamThread", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618
         }

@@ -21,6 +21,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.Mappers
                 UpVotes = teamThread.UpVotes,
                 DownVotes = teamThread.DownVotes,
                 VoteStatus = voteStatus,
+                CommentsCount = teamThread.CommentsCount
             };
         }
     }
