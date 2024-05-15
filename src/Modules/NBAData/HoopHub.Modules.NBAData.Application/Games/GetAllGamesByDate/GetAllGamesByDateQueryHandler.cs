@@ -24,7 +24,6 @@ namespace HoopHub.Modules.NBAData.Application.Games.GetAllGamesByDate
             if (!validationResult.IsValid)
                 return Response<IReadOnlyList<GameDto>>.ErrorResponseFromFluentResult(validationResult);
 
-            Console.WriteLine("Am ajuns in handler!!!!!!!!");
             var queryResult = await _gamesDataService.GetGamesByDateAsync(request.Date);
             if(!queryResult.IsSuccess)
                 return Response<IReadOnlyList<GameDto>>.ErrorResponseFromKeyMessage(queryResult.ErrorMsg, ValidationKeys.Games);

@@ -19,7 +19,8 @@ namespace HoopHub.Modules.UserFeatures.Application.FanNotifications.Mappers
                 Content = notification.Content,
                 AttachedImageUrl = notification.AttachedImageUrl,
                 IsRead = notification.IsRead,
-                Type = notification.Type
+                Type = notification.Type,
+                CreatedDate = notification.CreatedDate
             };
         }
     }
