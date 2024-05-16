@@ -35,7 +35,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadComment
                 threadComment.AttachTeamThread(request.TeamThreadId);
                 var teamThread = await _teamThreadRepository.FindByIdAsyncIncludingFan(request.TeamThreadId.Value);
                 var fan = await _fanRepository.FindByIdAsync(fanId!);
-                threadComment.NotifyThreadOwner(teamThread.Value.FanId, fan.Value);
+                threadComment.NotifyThreadOwner(teamThread.Value.FanId, fan.Value, threadComment.Id, teamThread.Value);
             }
 
             if (request.GameThreadId.HasValue)

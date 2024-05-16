@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 {
     [DbContext(typeof(UserFeaturesContext))]
-    [Migration("20240512223258_RepliesCount")]
-    partial class RepliesCount
+    [Migration("20240516145124_ReinitMigrations")]
+    partial class ReinitMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,6 +129,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<int>("RepliesCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("RespondsToId")
+                        .HasColumnType("text");
+
                     b.Property<Guid?>("TeamThreadId")
                         .HasColumnType("uuid");
 
@@ -140,6 +143,8 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.HasIndex("FanId");
 
                     b.HasIndex("GameThreadId");
+
+                    b.HasIndex("RespondsToId");
 
                     b.HasIndex("TeamThreadId");
 
@@ -201,6 +206,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 
                     b.Property<string>("AvatarPhotoUrl")
                         .HasColumnType("text");
+
+                    b.Property<int>("CommentsCount")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
@@ -273,16 +281,20 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 
             modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Reviews.GameReview", b =>
                 {
-                    b.Property<Guid>("HomeTeamId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("HomeTeamId")
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("VisitorTeamId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("VisitorTeamId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Date")
                         .HasColumnType("text");
 
                     b.Property<string>("FanId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -350,14 +362,14 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("HomeTeamId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("HomeTeamApiId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("VisitorTeamId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("VisitorTeamApiId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -481,6 +493,11 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("GameThreadId");
 
+                    b.HasOne("HoopHub.Modules.UserFeatures.Domain.Fans.Fan", "RespondsTo")
+                        .WithMany("Responses")
+                        .HasForeignKey("RespondsToId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HoopHub.Modules.UserFeatures.Domain.Threads.TeamThread", "TeamThread")
                         .WithMany("Comments")
                         .HasForeignKey("TeamThreadId");
@@ -488,6 +505,8 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Navigation("Fan");
 
                     b.Navigation("GameThread");
+
+                    b.Navigation("RespondsTo");
 
                     b.Navigation("TeamThread");
                 });
@@ -601,6 +620,8 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Navigation("PlayerFollowEntries");
 
                     b.Navigation("PlayerPerformanceReviews");
+
+                    b.Navigation("Responses");
 
                     b.Navigation("TeamFollowEntries");
 

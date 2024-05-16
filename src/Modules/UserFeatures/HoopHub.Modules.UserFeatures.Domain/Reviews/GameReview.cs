@@ -6,45 +6,47 @@ namespace HoopHub.Modules.UserFeatures.Domain.Reviews
 {
     public class GameReview : AuditableEntity
     {
-        public Guid HomeTeamId { get; private set; }
-        public Guid VisitorTeamId { get; private set; }
+        public int HomeTeamId { get; private set; }
+        public int VisitorTeamId { get; private set; }
         public string Date { get; private set; }
         public string FanId { get; private set; }
         public Fan Fan { get; private set; } = null!;
         public decimal Rating { get; private set; }
-
-        private GameReview(Guid homeTeamId, Guid visitorTeamId, string date, string fanId, decimal rating)
+        public string Content { get; private set; }
+        private GameReview(int homeTeamId, int visitorTeamId, string date, string fanId, decimal rating, string content)
         {
             HomeTeamId = homeTeamId;
             VisitorTeamId = visitorTeamId;
             Date = date;
             FanId = fanId;
             Rating = rating;
+            Content = content;
         }
 
-        public static Result<GameReview> Create(Guid homeTeamId, Guid visitorTeamId, string date, string fanId,
-            decimal rating)
+        public static Result<GameReview> Create(int homeTeamId, int visitorTeamId, string date, string fanId,
+            decimal rating, string content)
         {
             try
             {
-                CheckRule(new BothTeamIdsAreRequired(homeTeamId));
-                CheckRule(new BothTeamIdsAreRequired(visitorTeamId));
                 CheckRule(new FanIdCannotBeEmpty(fanId));
                 CheckRule(new DateMustBeValid(date));
                 CheckRule(new GameRatingShouldBeDecimalBetween1And5(rating));
+                CheckRule(new CommentContentMustBeValid(content));
             }
             catch (BusinessRuleValidationException e)
             {
                 return Result<GameReview>.Failure(e.Details);
             }
-            return Result<GameReview>.Success(new GameReview(homeTeamId, visitorTeamId, date, fanId, rating));
+            return Result<GameReview>.Success(new GameReview(homeTeamId, visitorTeamId, date, fanId, rating, content));
         }
 
-        public void Update(decimal rating)
+        public void Update(decimal rating, string content)
         {
             try
             {
                 CheckRule(new GameRatingShouldBeDecimalBetween1And5(rating));
+                CheckRule(new CommentContentMustBeValid(content));
+                Content = content;
                 Rating = rating;
             }
             catch (BusinessRuleValidationException) { }

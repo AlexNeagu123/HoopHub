@@ -21,7 +21,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.CreateGameThread
             if (!validationResult.IsValid)
                 return Response<GameThreadDto>.ErrorResponseFromFluentResult(validationResult);
 
-            var gameThreadResult = GameThread.Create(request.HomeTeamId, request.VisitorTeamId, request.Date);
+            var gameThreadResult = GameThread.Create(request.HomeTeamApiId, request.VisitorTeamApiId, request.Date);
             if (!gameThreadResult.IsSuccess)
                 return Response<GameThreadDto>.ErrorResponseFromKeyMessage(gameThreadResult.ErrorMsg, ValidationKeys.GameThread);
 

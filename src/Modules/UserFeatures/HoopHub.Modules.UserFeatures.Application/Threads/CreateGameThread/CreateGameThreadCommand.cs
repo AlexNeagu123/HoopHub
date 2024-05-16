@@ -6,8 +6,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.CreateGameThread
 {
     public class CreateGameThreadCommand : IRequest<Response<GameThreadDto>>
     {
-        public Guid HomeTeamId { get; set; }
-        public Guid VisitorTeamId { get; set; }
+        public int HomeTeamApiId { get; set; }
+        public int VisitorTeamApiId { get; set; }
         public string Date { get; set; } = null!;
     }
 }

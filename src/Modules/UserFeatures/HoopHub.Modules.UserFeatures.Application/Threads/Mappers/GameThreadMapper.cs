@@ -10,8 +10,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.Mappers
             return new GameThreadDto
             {
                 Id = gameThread.Id,
-                HomeTeamId = gameThread.HomeTeamId,
-                VisitorTeamId = gameThread.VisitorTeamId,
+                HomeTeamId = gameThread.HomeTeamApiId,
+                VisitorTeamId = gameThread.VisitorTeamApiId,
                 Date = gameThread.Date,
                 CommentsCount = gameThread.CommentsCount
             };

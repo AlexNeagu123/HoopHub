@@ -15,15 +15,23 @@
         public const string CommentAddedThreadNotificationTitle = "New comment";
         public const string DefaultAvatarPhotoUrl = "https://hoophub.blob.core.windows.net/userphotos/default-profile.png";
         public const string ReplyAddedNotificationTitle = "New reply";
+        public const int CommentTruncateLength = 25;
 
-        public static string ReplyAddedNotificationTitleContent(string userName)
+        public static string TruncateNotificationComment(string content)
         {
-            return $"{userName} just replied to your comment..";
+            var response = content[..Math.Min(CommentTruncateLength, content.Length)];
+            if (CommentTruncateLength < content.Length)
+                response += "...";
+            return response;
+        }
+        public static string ReplyAddedNotificationTitleContent(string userName, string content)
+        {
+            return $"{userName} just replied to your comment \"{TruncateNotificationComment(content)}\"";
         }
 
-        public static string CommentAddedThreadNotificationContent(string userName)
+        public static string CommentAddedThreadNotificationContent(string userName, string content)
         {
-            return $"{userName} just commented on your thread..";
+            return $"{userName} just commented on your thread \"{TruncateNotificationComment(content)}\"";
         }
     }
 }

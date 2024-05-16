@@ -8,16 +8,16 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
 {
     public class GameThreadRepository(UserFeaturesContext context) : BaseRepository<GameThread>(context), IGameThreadRepository
     {
-        public async Task<Result<GameThread>> FindByTupleIdAsync(Guid homeTeamId, Guid visitorTeamId, string date)
+        public async Task<Result<GameThread>> FindByTupleIdAsync(int homeTeamId, int visitorTeamId, string date)
         {
-            var gameThread = await context.GameThreads.FirstOrDefaultAsync(x => x.HomeTeamId == homeTeamId && x.VisitorTeamId == visitorTeamId && x.Date == date);
+            var gameThread = await context.GameThreads.FirstOrDefaultAsync(x => x.HomeTeamApiId == homeTeamId && x.VisitorTeamApiId == visitorTeamId && x.Date == date);
             return gameThread == null ? Result<GameThread>.Failure("Game thread not found.") : Result<GameThread>.Success(gameThread);
         }
 
         public async Task<Result<IReadOnlyList<GameThread>>> GetAllByDateAsync(string date)
         {
             var gameThreads = await context.GameThreads.Where(x => x.Date == date).ToListAsync();
-            return gameThreads.Count == 0 ? Result<IReadOnlyList<GameThread>>.Failure("No game threads found.") : Result<IReadOnlyList<GameThread>>.Success(gameThreads);
+            return Result<IReadOnlyList<GameThread>>.Success(gameThreads);
         }
     }
 }

@@ -10,12 +10,12 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads.CreateGameThread
     {
         public CreateGameThreadCommandValidator(IGameThreadRepository gameThreadRepository)
         {
-            RuleFor(x => x.HomeTeamId).NotEmpty().WithMessage(ValidationErrors.BothTeamIdsRequired);
-            RuleFor(x => x.VisitorTeamId).NotEmpty().WithMessage(ValidationErrors.BothTeamIdsRequired);
+            RuleFor(x => x.HomeTeamApiId).NotEmpty().WithMessage(ValidationErrors.BothTeamIdsRequired);
+            RuleFor(x => x.VisitorTeamApiId).NotEmpty().WithMessage(ValidationErrors.BothTeamIdsRequired);
             RuleFor(x => x.Date).Must(DateMustBeValid.BeAValidDate).WithMessage(ValidationErrors.InvalidDate);
             RuleFor(x => x).MustAsync(async (command, cancellation) =>
             {
-                var gameThreadResult = await gameThreadRepository.FindByTupleIdAsync(command.HomeTeamId, command.VisitorTeamId, command.Date);
+                var gameThreadResult = await gameThreadRepository.FindByTupleIdAsync(command.HomeTeamApiId, command.VisitorTeamApiId, command.Date);
                 return !gameThreadResult.IsSuccess;
             }).WithMessage(ValidationErrors.GameThreadExists).WithName(ValidationKeys.GameThread);
         }

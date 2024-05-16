@@ -22,7 +22,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.CreateGam
             if (!validationResult.IsValid)
                 return Response<GameReviewDto>.ErrorResponseFromFluentResult(validationResult);
 
-            var gameReviewResult = GameReview.Create(request.HomeTeamId, request.VisitorTeamId, request.Date, fanId!, request.Rating);
+            var gameReviewResult = GameReview.Create(request.HomeTeamId, request.VisitorTeamId, request.Date, fanId!, request.Rating, request.Content);
             if (!gameReviewResult.IsSuccess)
                 return Response<GameReviewDto>.ErrorResponseFromKeyMessage(gameReviewResult.ErrorMsg, ValidationKeys.GameReview);
 

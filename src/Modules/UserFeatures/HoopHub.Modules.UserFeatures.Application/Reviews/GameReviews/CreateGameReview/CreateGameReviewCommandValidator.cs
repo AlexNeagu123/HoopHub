@@ -14,6 +14,9 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.CreateGam
             RuleFor(x => x.Rating).InclusiveBetween(1, 5).WithMessage(ValidationErrors.InvalidGameRating);
             RuleFor(x => x.VisitorTeamId).NotEmpty().WithMessage(ValidationErrors.BothTeamIdsRequired);
             RuleFor(x => x.Date).Must(DateMustBeValid.BeAValidDate).WithMessage(ValidationErrors.InvalidDate);
+            RuleFor(x => x.Content).NotEmpty().Length(Config.ContentMinLength, Config.ContentMaxLength)
+                .WithMessage(ValidationErrors.InvalidCommentContent);
+            
             RuleFor(x => x).MustAsync(async (command, cancellation) =>
             {
                 var gameReviewResult = await gameReviewRepository.FindByIdAsyncIncludingAll(command.HomeTeamId,

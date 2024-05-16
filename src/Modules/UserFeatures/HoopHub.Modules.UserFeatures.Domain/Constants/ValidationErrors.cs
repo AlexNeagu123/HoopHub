@@ -40,5 +40,6 @@
         public const string PlayerFollowEntryDoNotExist = "Player does not exist in the follow list";
         public const string TeamFollowEntryDoNotExist = "Team does not exist in the follow list";
         public const string FanDoNotExist = "Fan with the provided id does not exist";
+        public const string NotificationNotRecipient = "You are not the recipient of this notification";
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Outbox : Migration
+    public partial class ReinitMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +24,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     Email = table.Column<string>(type: "text", nullable: false),
                     UpVotes = table.Column<int>(type: "integer", nullable: false),
                     DownVotes = table.Column<int>(type: "integer", nullable: false),
+                    CommentsCount = table.Column<int>(type: "integer", nullable: false),
                     FanBadge = table.Column<int>(type: "integer", nullable: false),
                     AvatarPhotoUrl = table.Column<string>(type: "text", nullable: true),
                     FavouriteTeamId = table.Column<Guid>(type: "uuid", nullable: true),
@@ -41,8 +42,8 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    HomeTeamId = table.Column<Guid>(type: "uuid", nullable: false),
-                    VisitorTeamId = table.Column<Guid>(type: "uuid", nullable: false),
+                    HomeTeamApiId = table.Column<int>(type: "integer", nullable: false),
+                    VisitorTeamApiId = table.Column<int>(type: "integer", nullable: false),
                     Date = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -75,11 +76,12 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                 schema: "user_features",
                 columns: table => new
                 {
-                    HomeTeamId = table.Column<Guid>(type: "uuid", nullable: false),
-                    VisitorTeamId = table.Column<Guid>(type: "uuid", nullable: false),
+                    HomeTeamId = table.Column<int>(type: "integer", nullable: false),
+                    VisitorTeamId = table.Column<int>(type: "integer", nullable: false),
                     Date = table.Column<string>(type: "text", nullable: false),
                     FanId = table.Column<string>(type: "text", nullable: false),
                     Rating = table.Column<decimal>(type: "numeric", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -237,12 +239,14 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ParentId = table.Column<Guid>(type: "uuid", nullable: true),
+                    RespondsToId = table.Column<string>(type: "text", nullable: true),
                     Content = table.Column<string>(type: "text", nullable: false),
                     TeamThreadId = table.Column<Guid>(type: "uuid", nullable: true),
                     GameThreadId = table.Column<Guid>(type: "uuid", nullable: true),
                     FanId = table.Column<string>(type: "text", nullable: false),
                     UpVotes = table.Column<int>(type: "integer", nullable: false),
                     DownVotes = table.Column<int>(type: "integer", nullable: false),
+                    RepliesCount = table.Column<int>(type: "integer", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -258,6 +262,13 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                         principalTable: "fans",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_comments_fans_RespondsToId",
+                        column: x => x.RespondsToId,
+                        principalSchema: "user_features",
+                        principalTable: "fans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_comments_game_threads_GameThreadId",
                         column: x => x.GameThreadId,
@@ -361,6 +372,12 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                 schema: "user_features",
                 table: "comments",
                 column: "GameThreadId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_comments_RespondsToId",
+                schema: "user_features",
+                table: "comments",
+                column: "RespondsToId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_comments_TeamThreadId",

@@ -13,6 +13,7 @@ namespace HoopHub.Modules.UserFeatures.Application.FanNotifications.Dtos
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
         public string? AttachedImageUrl { get; set; }
+        public string? AttachedNavigationData { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }

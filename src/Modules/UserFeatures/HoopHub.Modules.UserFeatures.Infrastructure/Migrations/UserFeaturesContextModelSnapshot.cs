@@ -278,16 +278,20 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 
             modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Reviews.GameReview", b =>
                 {
-                    b.Property<Guid>("HomeTeamId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("HomeTeamId")
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("VisitorTeamId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("VisitorTeamId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Date")
                         .HasColumnType("text");
 
                     b.Property<string>("FanId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -355,14 +359,14 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("HomeTeamId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("HomeTeamApiId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("VisitorTeamId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("VisitorTeamApiId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

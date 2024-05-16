@@ -27,7 +27,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.UpdateGam
                 return Response<GameReviewDto>.ErrorResponseFromKeyMessage(gameReviewResult.ErrorMsg, ValidationKeys.GameReview);
 
             var gameReview = gameReviewResult.Value;
-            gameReview.Update(request.Rating);
+            gameReview.Update(request.Rating, request.Content);
 
             var updateGameReviewResult = await _gameReviewRepository.UpdateAsync(gameReview);
             if (!updateGameReviewResult.IsSuccess)

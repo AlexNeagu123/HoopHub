@@ -34,8 +34,8 @@ namespace HoopHub.API.BackgroundJobs
                 var createResponse = await mediator.Send(new CreateGameThreadCommand
                 {
                     Date = game.Date!,
-                    HomeTeamId = game.HomeTeam.Id,
-                    VisitorTeamId = game.VisitorTeam.Id
+                    HomeTeamApiId = game.HomeTeam.ApiId,
+                    VisitorTeamApiId = game.VisitorTeam.ApiId
                 });
 
                 if (!createResponse.Success)

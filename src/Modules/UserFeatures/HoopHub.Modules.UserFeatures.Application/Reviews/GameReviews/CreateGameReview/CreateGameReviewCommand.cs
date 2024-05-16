@@ -6,9 +6,10 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.CreateGam
 {
     public class CreateGameReviewCommand : IRequest<Response<GameReviewDto>>
     {
-        public Guid HomeTeamId { get; set; }
-        public Guid VisitorTeamId { get; set; }
+        public int HomeTeamId { get; set; }
+        public int VisitorTeamId { get; set; }
         public string Date { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
         public decimal Rating { get; set; }
     }
 }

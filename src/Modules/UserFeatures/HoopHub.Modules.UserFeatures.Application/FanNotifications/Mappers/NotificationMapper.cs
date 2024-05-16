@@ -14,12 +14,13 @@ namespace HoopHub.Modules.UserFeatures.Application.FanNotifications.Mappers
             {
                 Id = notification.Id,
                 Sender = notification.Sender != null ? _fanMapper.FanToFanDto(notification.Sender) : null,
-                Recipient = _fanMapper.FanToFanDto(notification.Recipient),
+                Recipient = notification.Recipient != null ?  _fanMapper.FanToFanDto(notification.Recipient) : null,
                 Title = notification.Title,
                 Content = notification.Content,
                 AttachedImageUrl = notification.AttachedImageUrl,
                 IsRead = notification.IsRead,
                 Type = notification.Type,
+                AttachedNavigationData = notification.AttachedNavigationData,
                 CreatedDate = notification.CreatedDate
             };
         }

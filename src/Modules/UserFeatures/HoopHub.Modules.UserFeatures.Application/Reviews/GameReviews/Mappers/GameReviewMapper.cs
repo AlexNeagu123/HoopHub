@@ -16,7 +16,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.Mappers
                 VisitorTeamId = gameReview.VisitorTeamId,
                 Rating = gameReview.Rating,
                 Date = gameReview.Date,
-                AverageRating = averageRating
+                AverageRating = averageRating,
+                Content = gameReview.Content
             };
         }
     }

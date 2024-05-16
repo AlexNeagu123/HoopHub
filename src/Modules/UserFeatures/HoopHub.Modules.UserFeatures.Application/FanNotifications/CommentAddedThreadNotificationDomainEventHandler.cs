@@ -21,7 +21,6 @@ namespace HoopHub.Modules.UserFeatures.Application.FanNotifications
                 throw new DomainEventHandlerException("Notification could not be created in domain event handler..");
 
             var fanNotification = fanNotificationResult.Value;
-
             fanNotification.AttachImageUrl(notification.SenderImageUrl);
             fanNotification.AttachSender(notification.SenderId);
             fanNotification.AttachNavigationData(notification.AttachedNavigationData);
