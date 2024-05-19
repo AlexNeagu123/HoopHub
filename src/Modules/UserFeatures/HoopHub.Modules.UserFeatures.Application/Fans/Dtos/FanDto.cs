@@ -9,6 +9,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Fans.Dtos
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
         public int CommentsCount { get; set; }
+        public int ReviewsCount { get; set; }
         public FanBadgeType FanBadge { get; set; }
         public Guid? FavouriteTeamId { get; set; }
         public string? AvatarPhotoUrl { get; set; }

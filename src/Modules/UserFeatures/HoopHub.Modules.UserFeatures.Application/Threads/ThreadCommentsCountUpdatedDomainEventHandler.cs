@@ -22,8 +22,6 @@ namespace HoopHub.Modules.UserFeatures.Application.Threads
                 "[Domain Event Received] comment count modified for thread {TeamThreadId} {GameThreadId}",
                 notification.TeamThreadId, notification.GameThreadId);
 
-            Console.WriteLine(notification.TeamThreadId);
-            Console.WriteLine(notification.GameThreadId);
             if (notification.TeamThreadId.HasValue)
             {
                 var teamThreadResult = await _teamThreadRepository.FindByIdAsync(notification.TeamThreadId.Value);

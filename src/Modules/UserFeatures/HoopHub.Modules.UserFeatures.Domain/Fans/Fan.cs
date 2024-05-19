@@ -17,6 +17,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
         public int UpVotes { get; private set; }
         public int DownVotes { get; private set; }
         public int CommentsCount { get; private set; }
+        public int ReviewsCount { get; private set; }
         public FanBadgeType FanBadge { get; private set; }
         public string? AvatarPhotoUrl { get; private set; } = Config.DefaultAvatarPhotoUrl;
         public Guid? FavouriteTeamId { get; private set; }
@@ -111,6 +112,11 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
         public void UpdateCommentsCount(int delta)
         {
             CommentsCount += delta;
+        }
+
+        public void UpdateReviewsCount(int delta)
+        {
+            ReviewsCount += delta;
         }
 
         private void CheckBadgeUpdate()

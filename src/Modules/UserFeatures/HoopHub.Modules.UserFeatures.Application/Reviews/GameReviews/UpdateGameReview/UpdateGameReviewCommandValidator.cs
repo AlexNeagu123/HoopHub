@@ -11,7 +11,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.UpdateGam
         public UpdateGameReviewCommandValidator(IGameReviewRepository gameReviewRepository, string fanId)
         {
             RuleFor(x => x.HomeTeamId).NotEmpty().WithMessage(ValidationErrors.BothTeamIdsRequired);
-            RuleFor(x => x.Rating).InclusiveBetween(1, 5).WithMessage(ValidationErrors.InvalidGameRating);
+            RuleFor(x => x.Rating).InclusiveBetween(0, 5).WithMessage(ValidationErrors.InvalidGameRating);
             RuleFor(x => x.VisitorTeamId).NotEmpty().WithMessage(ValidationErrors.BothTeamIdsRequired);
             RuleFor(x => x.Date).Must(DateMustBeValid.BeAValidDate).WithMessage(ValidationErrors.InvalidDate);
             RuleFor(x => x).MustAsync(async (command, cancellation) =>

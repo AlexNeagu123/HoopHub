@@ -35,5 +35,45 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
 
             return averageRating;
         }
+
+        public async Task<PagedResult<IReadOnlyList<GameReview>>> GetAllPagedAsync(int page, int pageSize, int homeTeamId, int visitorTeamId, string date)
+        {
+            var reviews = await context.GameReviews
+                .Include(x => x.Fan)
+                .OrderByDescending(x => x.Date)
+                .Where(x => x.HomeTeamId == homeTeamId && x.VisitorTeamId == visitorTeamId && x.Date == date)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var totalCount = await context.GameReviews.CountAsync();
+
+            return PagedResult<IReadOnlyList<GameReview>>.Success(reviews, totalCount);
+        }
+
+        public async Task<PagedResult<IReadOnlyList<GameReview>>> GetAllPagedByFanIdAsync(int page, int pageSize, string fanId)
+        {
+            var reviews = await context.GameReviews
+                .Include(x => x.Fan)
+                .OrderByDescending(x => x.Date)
+                .Where(x => x.FanId == fanId)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var totalCount = await context.GameReviews.CountAsync();
+
+            return PagedResult<IReadOnlyList<GameReview>>.Success(reviews, totalCount);
+        }
+
+        public async Task<Result<IReadOnlyList<GameReview>>> FindByDateAndFanIdIncludingAll(string date, string fanId)
+        {
+            var gameReviews = await context.GameReviews
+                .Include(x => x.Fan)
+                .Where(x => x.Date == date && x.FanId == fanId)
+                .ToListAsync();
+
+            return Result<IReadOnlyList<GameReview>>.Success(gameReviews);  
+        }
     }
 }

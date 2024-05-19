@@ -1,5 +1,6 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
 using HoopHub.Modules.UserFeatures.Domain.Fans;
+using HoopHub.Modules.UserFeatures.Domain.Reviews.Events;
 using HoopHub.Modules.UserFeatures.Domain.Rules;
 
 namespace HoopHub.Modules.UserFeatures.Domain.Reviews
@@ -38,6 +39,11 @@ namespace HoopHub.Modules.UserFeatures.Domain.Reviews
                 return Result<GameReview>.Failure(e.Details);
             }
             return Result<GameReview>.Success(new GameReview(homeTeamId, visitorTeamId, date, fanId, rating, content));
+        }
+
+        public void MarkAsAdded()
+        {
+            AddDomainEvent(new GameReviewsCountUpdatedDomainEvent(+1, FanId));
         }
 
         public void Update(decimal rating, string content)

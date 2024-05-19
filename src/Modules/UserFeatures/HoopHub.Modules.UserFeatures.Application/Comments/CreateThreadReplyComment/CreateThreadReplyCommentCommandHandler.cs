@@ -5,7 +5,6 @@ using HoopHub.Modules.UserFeatures.Application.Comments.Mappers;
 using HoopHub.Modules.UserFeatures.Application.Constants;
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Domain.Comments;
-using HoopHub.Modules.UserFeatures.Domain.Threads;
 using MediatR;
 
 namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyComment

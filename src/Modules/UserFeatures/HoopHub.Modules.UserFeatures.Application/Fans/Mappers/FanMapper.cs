@@ -16,7 +16,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Fans.Mappers
                 FanBadge = fan.FanBadge,
                 FavouriteTeamId = fan.FavouriteTeamId,
                 AvatarPhotoUrl = fan.AvatarPhotoUrl,
-                CommentsCount = fan.CommentsCount
+                CommentsCount = fan.CommentsCount,
+                ReviewsCount = fan.ReviewsCount,
             };
         }
     }

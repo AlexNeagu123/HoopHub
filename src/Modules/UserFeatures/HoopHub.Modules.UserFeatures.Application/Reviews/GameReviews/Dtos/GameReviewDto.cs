@@ -11,5 +11,6 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.Dtos
         public decimal? Rating { get; set; }
         public decimal? AverageRating { get; set; }
         public string? Content { get; set; } = string.Empty;
+        public DateTime CreatedDate { get; set; }
     }
 }

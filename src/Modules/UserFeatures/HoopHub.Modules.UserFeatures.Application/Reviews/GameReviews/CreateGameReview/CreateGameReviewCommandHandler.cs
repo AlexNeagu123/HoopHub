@@ -27,6 +27,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.CreateGam
                 return Response<GameReviewDto>.ErrorResponseFromKeyMessage(gameReviewResult.ErrorMsg, ValidationKeys.GameReview);
 
             var gameReview = gameReviewResult.Value;
+            gameReview.MarkAsAdded();
+
             var addResult = await _gameReviewRepository.AddAsync(gameReview);
             if (!addResult.IsSuccess)
                 return Response<GameReviewDto>.ErrorResponseFromKeyMessage(addResult.ErrorMsg, ValidationKeys.GameReview);
