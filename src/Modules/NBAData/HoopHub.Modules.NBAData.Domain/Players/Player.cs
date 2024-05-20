@@ -51,10 +51,18 @@ namespace HoopHub.Modules.NBAData.Domain.Players
         [Column("is_active")]
         public bool IsActive { get; private set; }
 
+        [Column("average_rating")]
+        public decimal? AverageRating { get; private set; }
+
         [Column("current_team_id")]
         [ForeignKey("Team")]
         public Guid? CurrentTeamId { get; private set; }
         public Team? CurrentTeam { get; private set; }
         public ICollection<PlayerTeamSeason> PlayerTeamSeasons { get; private set; }
+
+        public void UpdateAverageRating(decimal? averageRating)
+        {
+            AverageRating = averageRating;
+        }
     }
 }

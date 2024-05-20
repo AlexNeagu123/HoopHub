@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 {
     [DbContext(typeof(UserFeaturesContext))]
-    [Migration("20240519130717_ReviewsUpdatedCount")]
-    partial class ReviewsUpdatedCount
+    [Migration("20240519185831_PlayerPerformanceUpdated")]
+    partial class PlayerPerformanceUpdated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -318,11 +318,11 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 
             modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Reviews.PlayerPerformanceReview", b =>
                 {
-                    b.Property<Guid>("HomeTeamId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("HomeTeamId")
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("VisitorTeamId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("VisitorTeamId")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");

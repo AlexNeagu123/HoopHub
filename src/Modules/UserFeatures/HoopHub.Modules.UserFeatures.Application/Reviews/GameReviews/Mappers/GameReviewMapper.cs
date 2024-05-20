@@ -21,5 +21,16 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.Mappers
                 CreatedDate = gameReview.CreatedDate
             };
         }
+
+        public GameReviewAverageDto GameReviewToGameReviewAverageDto(GameReview gameReview, decimal? averageRating)
+        {
+            return new GameReviewAverageDto
+            {
+                HomeTeamId = gameReview.HomeTeamId,
+                VisitorTeamId = gameReview.VisitorTeamId,
+                Date = gameReview.Date,
+                AverageRating = averageRating
+            };
+        }
     }
 }

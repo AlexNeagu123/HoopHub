@@ -31,11 +31,15 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.PlayerPerformanceRevi
                 return Response<PlayerPerformanceReviewDto>.ErrorResponseFromKeyMessage(playerPerformanceReviewResult.ErrorMsg, ValidationKeys.PlayerPerformanceReview);
 
             var playerPerformanceReview = playerPerformanceReviewResult.Value;
+            var averageRating = await _playerPerformanceReviewRepository.GetAverageRatingByPlayerId(playerPerformanceReview.PlayerId, request.Rating);
+            playerPerformanceReview.UpdateAverage(averageRating);
+
             var addResult = await _playerPerformanceReviewRepository.AddAsync(playerPerformanceReview);
             if (!addResult.IsSuccess)
                 return Response<PlayerPerformanceReviewDto>.ErrorResponseFromKeyMessage(addResult.ErrorMsg, ValidationKeys.PlayerPerformanceReview);
 
             var addedPlayerPerformanceReview = await _playerPerformanceReviewRepository.FindByIdAsyncIncludingAll(playerPerformanceReview.HomeTeamId, playerPerformanceReview.VisitorTeamId, playerPerformanceReview.PlayerId, playerPerformanceReview.Date, fanId!);
+
             return new Response<PlayerPerformanceReviewDto>
             {
                 Success = true,

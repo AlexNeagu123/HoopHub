@@ -1,19 +1,20 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
 using HoopHub.Modules.UserFeatures.Domain.Fans;
+using HoopHub.Modules.UserFeatures.Domain.Reviews.Events;
 using HoopHub.Modules.UserFeatures.Domain.Rules;
 
 namespace HoopHub.Modules.UserFeatures.Domain.Reviews
 {
     public class PlayerPerformanceReview : AuditableEntity
     {
-        public Guid HomeTeamId { get; private set; }
-        public Guid VisitorTeamId { get; private set; }
+        public int HomeTeamId { get; private set; }
+        public int VisitorTeamId { get; private set; }
         public string Date { get; private set; }
         public string FanId { get; private set; }
         public Fan Fan { get; private set; } = null!;
         public decimal Rating { get; private set; }
         public Guid PlayerId { get; private set; }
-        private PlayerPerformanceReview(Guid homeTeamId, Guid visitorTeamId, string date, string fanId, decimal rating, Guid playerId)
+        private PlayerPerformanceReview(int homeTeamId, int visitorTeamId, string date, string fanId, decimal rating, Guid playerId)
         {
             HomeTeamId = homeTeamId;
             VisitorTeamId = visitorTeamId;
@@ -23,12 +24,10 @@ namespace HoopHub.Modules.UserFeatures.Domain.Reviews
             PlayerId = playerId;
         }
 
-        public static Result<PlayerPerformanceReview> Create(Guid homeTeamId, Guid visitorTeamId, string date, string fanId, decimal rating, Guid playerId)
+        public static Result<PlayerPerformanceReview> Create(int homeTeamId, int visitorTeamId, string date, string fanId, decimal rating, Guid playerId)
         {
             try
             {
-                CheckRule(new BothTeamIdsAreRequired(homeTeamId));
-                CheckRule(new BothTeamIdsAreRequired(visitorTeamId));
                 CheckRule(new PlayerIdCannotBeEmpty(playerId));
                 CheckRule(new FanIdCannotBeEmpty(fanId));
                 CheckRule(new DateMustBeValid(date));
@@ -50,6 +49,11 @@ namespace HoopHub.Modules.UserFeatures.Domain.Reviews
                 Rating = rating;
             }
             catch (BusinessRuleValidationException) { }
+        }
+
+        public void UpdateAverage(decimal? averageRating)
+        {
+            AddDomainEvent(new PlayerAverageRatingUpdatedDomainEvent(PlayerId, averageRating));
         }
     }
 }

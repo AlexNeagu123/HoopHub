@@ -5,8 +5,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.PlayerPerformanceRevi
 {
     public class DeletePlayerPerformanceReviewCommand : IRequest<BaseResponse>
     {
-        public Guid HomeTeamId { get; set; }
-        public Guid VisitorTeamId { get; set; }
+        public int HomeTeamId { get; set; }
+        public int VisitorTeamId { get; set; }
         public Guid PlayerId { get; set; }
         public string Date { get; set; } = string.Empty;
     }

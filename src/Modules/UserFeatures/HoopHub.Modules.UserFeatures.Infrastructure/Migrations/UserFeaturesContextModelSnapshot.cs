@@ -315,11 +315,11 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 
             modelBuilder.Entity("HoopHub.Modules.UserFeatures.Domain.Reviews.PlayerPerformanceReview", b =>
                 {
-                    b.Property<Guid>("HomeTeamId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("HomeTeamId")
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("VisitorTeamId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("VisitorTeamId")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uuid");

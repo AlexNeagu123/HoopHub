@@ -4,7 +4,7 @@ using MediatR;
 
 namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.GetGameReviewsByDate
 {
-    public class GetGameReviewsByDateQuery : IRequest<Response<IReadOnlyList<GameReviewDto>>> 
+    public class GetGameReviewsByDateQuery : IRequest<Response<IReadOnlyList<GameReviewAverageDto>>> 
     {
         public string Date { get; set; } = string.Empty;
     }

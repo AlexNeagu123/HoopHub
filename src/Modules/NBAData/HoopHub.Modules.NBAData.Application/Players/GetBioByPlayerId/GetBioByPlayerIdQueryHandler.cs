@@ -14,7 +14,7 @@ namespace HoopHub.Modules.NBAData.Application.Players.GetBioByPlayerId
         private readonly IPlayerTeamSeasonRepository _playerTeamSeasonRepository = playerTeamSeasonRepository;
         private readonly ISeasonAverageStatsService _averageStatsService = averageStatsService;
         private readonly TeamMapper _teamMapper = new();
-        private readonly PlayerMapper _playerMapper = new();
+        private readonly Mappers.PlayerMapper _playerMapper = new();
 
         public async Task<Response<PlayerDto>> Handle(GetBioByPlayerIdQuery request, CancellationToken cancellationToken)
         {

@@ -31,10 +31,14 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.PlayerPerformanceRevi
 
             var playerPerformanceReview = playerPerformanceReviewResult.Value;
             playerPerformanceReview.Update(request.Rating);
+            
+            var averageRating = await _playerPerformanceReviewRepository.GetAverageRatingByPlayerId(playerPerformanceReview.PlayerId, request.Rating);
+            playerPerformanceReview.UpdateAverage(averageRating);
 
             var updatePlayerPerformanceReviewResult = await _playerPerformanceReviewRepository.UpdateAsync(playerPerformanceReview);
             if (!updatePlayerPerformanceReviewResult.IsSuccess)
                 return Response<PlayerPerformanceReviewDto>.ErrorResponseFromKeyMessage(updatePlayerPerformanceReviewResult.ErrorMsg, ValidationKeys.PlayerPerformanceReview);
+
 
             return new Response<PlayerPerformanceReviewDto>
             {

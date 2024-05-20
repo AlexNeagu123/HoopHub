@@ -5,6 +5,7 @@ using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using HoopHub.Modules.NBAData.Application.Games.Mappers;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Application.Players;
+using PlayerMapper = HoopHub.Modules.NBAData.Application.Players.Mappers.PlayerMapper;
 
 namespace HoopHub.Modules.NBAData.Application.Games.BoxScores
 {

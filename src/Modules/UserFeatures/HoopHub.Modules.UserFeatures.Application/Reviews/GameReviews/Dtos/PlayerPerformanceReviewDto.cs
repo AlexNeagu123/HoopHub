@@ -4,8 +4,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.Dtos
 {
     public class PlayerPerformanceReviewDto
     {
-        public Guid HomeTeamId { get; set; }
-        public Guid VisitorTeamId { get; set; }
+        public int HomeTeamId { get; set; }
+        public int VisitorTeamId { get; set; }
         public string Date { get; set; } = string.Empty;
         public Guid PlayerId { get; set; }
         public FanDto? Fan { get; set; }

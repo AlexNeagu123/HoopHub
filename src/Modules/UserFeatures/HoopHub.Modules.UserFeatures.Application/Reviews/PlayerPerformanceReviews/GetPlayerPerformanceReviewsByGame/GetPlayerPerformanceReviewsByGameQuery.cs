@@ -2,13 +2,12 @@
 using HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.Dtos;
 using MediatR;
 
-namespace HoopHub.Modules.UserFeatures.Application.Reviews.PlayerPerformanceReviews.GetPlayerPerformanceReview
+namespace HoopHub.Modules.UserFeatures.Application.Reviews.PlayerPerformanceReviews.GetPlayerPerformanceReviewsByGame
 {
-    public class GetPlayerPerformanceReviewQuery : IRequest<Response<PlayerPerformanceReviewDto>>
+    public class GetPlayerPerformanceReviewsByGameQuery : IRequest<Response<IReadOnlyList<PlayerPerformanceAverageDto>>>
     {
         public int HomeTeamId { get; set; }
         public int VisitorTeamId { get; set; }
-        public Guid PlayerId { get; set; }
         public string Date { get; set; } = string.Empty;
     }
 }

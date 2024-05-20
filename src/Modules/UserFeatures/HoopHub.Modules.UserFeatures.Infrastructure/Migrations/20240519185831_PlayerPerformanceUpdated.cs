@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ReinitMigrations : Migration
+    public partial class PlayerPerformanceUpdated : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,6 +25,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     UpVotes = table.Column<int>(type: "integer", nullable: false),
                     DownVotes = table.Column<int>(type: "integer", nullable: false),
                     CommentsCount = table.Column<int>(type: "integer", nullable: false),
+                    ReviewsCount = table.Column<int>(type: "integer", nullable: false),
                     FanBadge = table.Column<int>(type: "integer", nullable: false),
                     AvatarPhotoUrl = table.Column<string>(type: "text", nullable: true),
                     FavouriteTeamId = table.Column<Guid>(type: "uuid", nullable: true),
@@ -159,8 +160,8 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                 schema: "user_features",
                 columns: table => new
                 {
-                    HomeTeamId = table.Column<Guid>(type: "uuid", nullable: false),
-                    VisitorTeamId = table.Column<Guid>(type: "uuid", nullable: false),
+                    HomeTeamId = table.Column<int>(type: "integer", nullable: false),
+                    VisitorTeamId = table.Column<int>(type: "integer", nullable: false),
                     Date = table.Column<string>(type: "text", nullable: false),
                     FanId = table.Column<string>(type: "text", nullable: false),
                     PlayerId = table.Column<Guid>(type: "uuid", nullable: false),

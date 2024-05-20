@@ -37,12 +37,12 @@ namespace HoopHub.API.Controllers.Modules.UserFeatures.Follows
             return Ok(response);
         }
 
-        [HttpDelete]
+        [HttpDelete("{playerId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = UserRoles.User)]
-        public async Task<IActionResult> UnfollowPlayer([FromBody] DeletePlayerFollowEntryCommand command)
+        public async Task<IActionResult> UnfollowPlayer(Guid playerId)
         {
-            var response = await Mediator.Send(command);
+            var response = await Mediator.Send(new DeletePlayerFollowEntryCommand {PlayerId = playerId});
             if (!response.Success)
             {
                 return BadRequest(response);

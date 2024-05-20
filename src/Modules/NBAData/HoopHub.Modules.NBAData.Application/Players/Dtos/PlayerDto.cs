@@ -20,6 +20,7 @@ namespace HoopHub.Modules.NBAData.Application.Players.Dtos
         public bool IsActive { get; set; }
         public string? ImageUrl { get; set; }
         public string? CurrentTeamId { get; set; }
+        public decimal? AverageRating { get; set; }
 
         public List<SeasonAverageStatsDto> SeasonAverageStats { get; set; } = [];
     }

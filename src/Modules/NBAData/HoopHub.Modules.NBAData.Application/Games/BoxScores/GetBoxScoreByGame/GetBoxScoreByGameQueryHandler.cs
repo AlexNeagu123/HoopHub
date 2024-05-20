@@ -8,6 +8,7 @@ using HoopHub.Modules.NBAData.Application.Games.Mappers;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Application.Players;
 using MediatR;
+using PlayerMapper = HoopHub.Modules.NBAData.Application.Players.Mappers.PlayerMapper;
 
 namespace HoopHub.Modules.NBAData.Application.Games.GetBoxScoreByGame
 {

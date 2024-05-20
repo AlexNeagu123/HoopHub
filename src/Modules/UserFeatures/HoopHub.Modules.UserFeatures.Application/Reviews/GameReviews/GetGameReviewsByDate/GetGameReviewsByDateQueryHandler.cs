@@ -8,30 +8,29 @@ using MediatR;
 namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.GetGameReviewsByDate
 {
     public class GetGameReviewsByDateQueryHandler(IGameReviewRepository gameReviewRepository, ICurrentUserService currentUserService)
-        : IRequestHandler<GetGameReviewsByDateQuery, Response<IReadOnlyList<GameReviewDto>>>
+        : IRequestHandler<GetGameReviewsByDateQuery, Response<IReadOnlyList<GameReviewAverageDto>>>
     {
         private readonly IGameReviewRepository _gameReviewRepository = gameReviewRepository;
         private readonly ICurrentUserService _currentUserService = currentUserService;
         private readonly GameReviewMapper _gameReviewMapper = new();
-        public async Task<Response<IReadOnlyList<GameReviewDto>>> Handle(GetGameReviewsByDateQuery request, CancellationToken cancellationToken)
+        public async Task<Response<IReadOnlyList<GameReviewAverageDto>>> Handle(GetGameReviewsByDateQuery request, CancellationToken cancellationToken)
         {
             var validator = new GetGameReviewsByDateQueryValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
-                return Response<IReadOnlyList<GameReviewDto>>.ErrorResponseFromFluentResult(validationResult);
+                return Response<IReadOnlyList<GameReviewAverageDto>>.ErrorResponseFromFluentResult(validationResult);
 
-            var fanId = _currentUserService.GetUserId!; 
-            var reviewsResult = await _gameReviewRepository.FindByDateAndFanIdIncludingAll(request.Date, fanId);
+            var reviewsResult = await _gameReviewRepository.FindByDateIncludingAll(request.Date);
             var reviews = reviewsResult.Value;
 
-            List<GameReviewDto> reviewsDtoList = [];
+            List<GameReviewAverageDto> reviewsDtoList = [];
             foreach (var review in reviews)
             {
                 var averageRating = await _gameReviewRepository.GetAverageRatingByGameTupleId(review.HomeTeamId, review.VisitorTeamId, request.Date);
-                reviewsDtoList.Add(_gameReviewMapper.GameReviewToGameReviewDto(review, averageRating));
+                reviewsDtoList.Add(_gameReviewMapper.GameReviewToGameReviewAverageDto(review, averageRating));
             }
 
-            return new Response<IReadOnlyList<GameReviewDto>>
+            return new Response<IReadOnlyList<GameReviewAverageDto>>
             {
                 Success = true,
                 Data = reviewsDtoList

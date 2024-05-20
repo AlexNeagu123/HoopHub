@@ -39,13 +39,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.Modules.UserAccess.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserFeatures", "UserFeatures", "{41F8CBF3-E161-4552-84AC-A9BB185E202E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.UserFeatures.Domain", "Modules\UserFeatures\HoopHub.Modules.UserFeatures.Domain\HoopHub.Modules.UserFeatures.Domain.csproj", "{0A1404A6-3CCE-40CB-BB1C-6EA4BB5BCEC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.Modules.UserFeatures.Domain", "Modules\UserFeatures\HoopHub.Modules.UserFeatures.Domain\HoopHub.Modules.UserFeatures.Domain.csproj", "{0A1404A6-3CCE-40CB-BB1C-6EA4BB5BCEC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.UserFeatures.Application", "Modules\UserFeatures\HoopHub.Modules.UserFeatures.Application\HoopHub.Modules.UserFeatures.Application.csproj", "{526451F3-C5A7-4128-BD52-42F2E449310D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.Modules.UserFeatures.Application", "Modules\UserFeatures\HoopHub.Modules.UserFeatures.Application\HoopHub.Modules.UserFeatures.Application.csproj", "{526451F3-C5A7-4128-BD52-42F2E449310D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.UserFeatures.Infrastructure", "Modules\UserFeatures\HoopHub.Modules.UserFeatures.Infrastructure\HoopHub.Modules.UserFeatures.Infrastructure.csproj", "{5C6FD2BA-6101-47B0-82C0-24615FD76158}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.Modules.UserFeatures.Infrastructure", "Modules\UserFeatures\HoopHub.Modules.UserFeatures.Infrastructure\HoopHub.Modules.UserFeatures.Infrastructure.csproj", "{5C6FD2BA-6101-47B0-82C0-24615FD76158}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.UserAccess.IntegrationEvents", "Modules\UserAccess\HoopHub.Modules.UserAccess.IntegrationEvents\HoopHub.Modules.UserAccess.IntegrationEvents.csproj", "{AB838296-E30C-4D9B-A1D1-68A31D04062D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoopHub.Modules.UserAccess.IntegrationEvents", "Modules\UserAccess\HoopHub.Modules.UserAccess.IntegrationEvents\HoopHub.Modules.UserAccess.IntegrationEvents.csproj", "{AB838296-E30C-4D9B-A1D1-68A31D04062D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoopHub.Modules.UserFeatures.IntegrationEvents", "Modules\UserFeatures\HoopHub.Modules.UserFeatures.IntegrationEvents\HoopHub.Modules.UserFeatures.IntegrationEvents.csproj", "{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -249,6 +251,18 @@ Global
 		{AB838296-E30C-4D9B-A1D1-68A31D04062D}.Release|x64.Build.0 = Release|Any CPU
 		{AB838296-E30C-4D9B-A1D1-68A31D04062D}.Release|x86.ActiveCfg = Release|Any CPU
 		{AB838296-E30C-4D9B-A1D1-68A31D04062D}.Release|x86.Build.0 = Release|Any CPU
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}.Debug|x64.Build.0 = Debug|Any CPU
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}.Debug|x86.Build.0 = Debug|Any CPU
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}.Release|x64.ActiveCfg = Release|Any CPU
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}.Release|x64.Build.0 = Release|Any CPU
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}.Release|x86.ActiveCfg = Release|Any CPU
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -272,6 +286,7 @@ Global
 		{526451F3-C5A7-4128-BD52-42F2E449310D} = {41F8CBF3-E161-4552-84AC-A9BB185E202E}
 		{5C6FD2BA-6101-47B0-82C0-24615FD76158} = {41F8CBF3-E161-4552-84AC-A9BB185E202E}
 		{AB838296-E30C-4D9B-A1D1-68A31D04062D} = {6C943839-A4B8-4780-9E1B-E873ADAADC76}
+		{A4B4A2CD-B5E7-46A0-83E8-EC604A26C9A9} = {41F8CBF3-E161-4552-84AC-A9BB185E202E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30301A2B-742A-41EE-97A7-8AAA199BE8F4}

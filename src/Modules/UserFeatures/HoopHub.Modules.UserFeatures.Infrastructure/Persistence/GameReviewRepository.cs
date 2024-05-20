@@ -66,14 +66,17 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
             return PagedResult<IReadOnlyList<GameReview>>.Success(reviews, totalCount);
         }
 
-        public async Task<Result<IReadOnlyList<GameReview>>> FindByDateAndFanIdIncludingAll(string date, string fanId)
+        public async Task<Result<IReadOnlyList<GameReview>>> FindByDateIncludingAll(string date)
         {
-            var gameReviews = await context.GameReviews
+            var groupedGameReviews = await context.GameReviews
                 .Include(x => x.Fan)
-                .Where(x => x.Date == date && x.FanId == fanId)
+                .Where(x => x.Date == date)
+                .GroupBy(x => new { x.VisitorTeamId, x.HomeTeamId, x.Date })
+                .Select(g => g.First())
                 .ToListAsync();
 
-            return Result<IReadOnlyList<GameReview>>.Success(gameReviews);  
+            return Result<IReadOnlyList<GameReview>>.Success(groupedGameReviews);
         }
+
     }
 }

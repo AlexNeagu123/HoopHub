@@ -9,7 +9,7 @@ namespace HoopHub.Modules.NBAData.Application.Players.GetActivePlayersByTeam
         : IRequestHandler<GetActivePlayersByTeamQuery, Response<IReadOnlyList<PlayerDto>>>
     {
         private readonly IPlayerRepository _playerRepository = playerRepository;
-        private readonly PlayerMapper _playerMapper = new();
+        private readonly Mappers.PlayerMapper _playerMapper = new();
 
         public async Task<Response<IReadOnlyList<PlayerDto>>> Handle(GetActivePlayersByTeamQuery request,
             CancellationToken cancellationToken)

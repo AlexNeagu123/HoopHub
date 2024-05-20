@@ -7,6 +7,7 @@ using HoopHub.API.Utility;
 using HoopHub.BuildingBlocks.Application.Persistence;
 using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.BuildingBlocks.Infrastructure;
+using HoopHub.Modules.NBAData.Application.Events;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats;
@@ -192,6 +193,7 @@ builder.Services.AddMassTransit(busConfigurator =>
 {
     busConfigurator.SetKebabCaseEndpointNameFormatter();
     busConfigurator.AddConsumer<UserRegisteredIntegrationEventHandler>();
+    busConfigurator.AddConsumer<PlayerAverageRatingUpdatedIntegrationEventHandler>();
     busConfigurator.UsingInMemory((context, config) =>
     {
         config.ConfigureEndpoints(context);
