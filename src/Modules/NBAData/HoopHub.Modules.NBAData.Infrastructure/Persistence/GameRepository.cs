@@ -34,6 +34,21 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
             return Result<IReadOnlyList<Game>>.Success(games);
         }
 
+        public async Task<Result<Game>> FindGameByDateAndTeams(DateTime date, Guid homeTeamId, Guid visitorTeamId)
+        {
+            var game = await context.Set<Game>()
+                .Include(g => g.HomeTeam)
+                .Include(g => g.VisitorTeam)
+                .Include(g => g.Season)
+                .Where(g => g.Date == date)
+                .Where(g => g.HomeTeamId == homeTeamId
+                            && g.VisitorTeamId == visitorTeamId)
+                .FirstOrDefaultAsync();
+
+            return game == null ? Result<Game>.Failure($"Entity with Date {date} and Teams {homeTeamId} and {visitorTeamId} not found")
+                : Result<Game>.Success(game);
+        }
+
         public async Task<Result<Game>> FindByIdIncludingAll(Guid id)
         {
             var game = await context.Set<Game>()

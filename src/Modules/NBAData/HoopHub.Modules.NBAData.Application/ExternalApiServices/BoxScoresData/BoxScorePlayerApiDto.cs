@@ -31,6 +31,6 @@ namespace HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData
         public int Pts { get; set; }
 
         [JsonProperty("player")]
-        public PlayerApiDto? Player { get; set; }
+        public PlayerApiDto Player { get; set; }
     }
 }

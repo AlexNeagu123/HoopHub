@@ -1,6 +1,7 @@
 ﻿using HoopHub.API.Hubs;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData;
+using HoopHub.Modules.NBAData.Application.Games.BoxScores.CreateBoxScore;
 using HoopHub.Modules.NBAData.Application.Games.CreateGame;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Application.Threads.CreateGameThread;
@@ -32,6 +33,75 @@ namespace HoopHub.API.BackgroundJobs
 
             await HandleLiveBoxScores(teamRepository, playerRepository, boxScoresDataService, mediator);
             await HandleNewFinishedGames(gamesRepository, boxScoresRepository, boxScoresDataService, gamesDataService, mediator);
+            await HandleNewBoxScores(boxScoresRepository, boxScoresDataService, mediator);
+        }
+
+        private async Task HandleNewBoxScores(IBoxScoresRepository boxScoresRepository, IBoxScoresDataService boxScoresDataService, IMediator mediator)
+        {
+            var date = DateTime.Today;
+            var yesterday = date.AddDays(-1).ToUniversalTime();
+            var boxScoresResult = await boxScoresRepository.GetByDateAsync(yesterday);
+            var boxScores = boxScoresResult.Value;
+
+            if (boxScores.Count != 0)
+            {
+                _logger.LogInformation($"Yesterdays box-scores already inserted into the database");
+                return;
+            }
+
+            var externalBoxScoresResult = await boxScoresDataService.GetBoxScoresAsyncByDate(yesterday.ToString("yyyy-MM-dd"));
+            if (!externalBoxScoresResult.IsSuccess)
+            {
+                _logger.LogError($"Error getting external box-scores for {yesterday}");
+                return;
+            }
+
+            var externalBoxScores = externalBoxScoresResult.Value;
+            foreach (var boxScore in externalBoxScores)
+            {
+                var boxScoreDate = DateTime.Parse(boxScore.Date).ToUniversalTime();
+                await HandlePlayersBoxScores(boxScore.HomeTeam.Players, boxScore.HomeTeam.Id, boxScore, boxScoreDate, mediator);
+                await HandlePlayersBoxScores(boxScore.VisitorTeam.Players, boxScore.VisitorTeam.Id, boxScore, boxScoreDate, mediator);
+            }
+        }
+
+        private async Task HandlePlayersBoxScores(List<BoxScorePlayerApiDto> teamPlayers, int teamId, BoxScoreApiDto boxScore, DateTime boxScoreDate, IMediator mediator)
+        {
+            foreach (var player in teamPlayers)
+            {
+                var mediatorResponse = await mediator.Send(new CreateBoxScoreCommand
+                {
+                    Date = boxScoreDate,
+                    TeamId = teamId,
+                    PlayerId = player.Player.Id,
+                    HomeTeamId = boxScore.HomeTeam.Id,
+                    VisitorTeamId = boxScore.VisitorTeam.Id,
+                    Min = player.Min,
+                    Fgm = player.Fgm,
+                    Fga = player.Fga,
+                    FgPct = player.FgPct,
+                    Fg3m = player.Fg3m,
+                    Fg3a = player.Fg3a,
+                    Fg3Pct = player.Fg3Pct,
+                    Ftm = player.Ftm,
+                    Fta = player.Fta,
+                    FtPct = player.FtPct,
+                    Oreb = player.Oreb,
+                    Dreb = player.Dreb,
+                    Reb = player.Reb,
+                    Ast = player.Ast,
+                    Stl = player.Stl,
+                    Blk = player.Blk,
+                    Turnover = player.Turnover,
+                    Pf = player.Pf,
+                    Pts = player.Pts
+                });
+
+                if (!mediatorResponse.Success)
+                {
+                    _logger.LogInformation($"Box score for player {player.Player.Id} on {boxScoreDate} has already been created");
+                }
+            }
         }
 
         private async Task HandleNewFinishedGames(IGameRepository gamesRepository, IBoxScoresRepository boxScoresRepository, IBoxScoresDataService boxScoresDataService, IGamesDataService gamesDataService, IMediator mediator)

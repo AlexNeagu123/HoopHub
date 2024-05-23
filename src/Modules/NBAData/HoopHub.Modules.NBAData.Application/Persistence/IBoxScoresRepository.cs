@@ -7,5 +7,7 @@ namespace HoopHub.Modules.NBAData.Application.Persistence
     public interface IBoxScoresRepository : IAsyncRepository<BoxScores>
     {
         Task<Result<IReadOnlyList<BoxScores>>> GetLastXBoxScoresByPlayerId(Guid playerId, int lastCount);
+        Task<Result<IReadOnlyList<BoxScores>>> GetByDateAsync(DateTime date);
+        Task<Result<BoxScores>> FindByIdIncludingAll(Guid id);
     }
 }

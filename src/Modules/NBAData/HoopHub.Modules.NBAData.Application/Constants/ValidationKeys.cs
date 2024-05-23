@@ -13,5 +13,6 @@
         public const string SeasonPeriod = "SeasonPeriod";
         public const string PlayoffSeries = "PlayoffSeries";
         public const string TeamLatest = "TeamLatest";
+        public const string Game = "Game";
     }
 }

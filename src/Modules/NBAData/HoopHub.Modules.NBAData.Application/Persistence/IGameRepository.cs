@@ -9,5 +9,6 @@ namespace HoopHub.Modules.NBAData.Application.Persistence
         Task<Result<IReadOnlyList<Game>>> GetLastXGamesByTeam(Guid teamId, int lastCount);
         Task<Result<IReadOnlyList<Game>>> FindGamesByDate(DateTime date);
         Task<Result<Game>> FindByIdIncludingAll(Guid id);
+        Task<Result<Game>> FindGameByDateAndTeams(DateTime date, Guid homeTeamId, Guid visitorTeamId);
     }
 }

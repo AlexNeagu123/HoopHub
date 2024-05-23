@@ -1,14 +1,16 @@
-﻿using HoopHub.Modules.NBAData.Application.Players.Dtos;
-using HoopHub.Modules.NBAData.Application.Teams.Dtos;
+﻿using HoopHub.BuildingBlocks.Application.Responses;
+using HoopHub.Modules.NBAData.Application.Games.Dtos;
+using MediatR;
 
-namespace HoopHub.Modules.NBAData.Application.Games.Dtos
+namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.CreateBoxScore
 {
-    public class LocalStoredBoxScoresDto
+    public class CreateBoxScoreCommand : IRequest<Response<LocalStoredBoxScoresDto>>
     {
-        public Guid Id { get; set; }
-        public LocalStoredGameDto Game{ get; set; }
-        public PlayerDto Player { get; set; }
-        public TeamDto Team { get; set; }
+        public DateTime Date { get; set; }
+        public int PlayerId { get; set; }
+        public int TeamId { get; set; }
+        public int VisitorTeamId { get; set; }
+        public int HomeTeamId { get; set; }
         public string? Min { get; set; }
         public int? Fgm { get; set; }
         public int? Fga { get; set; }
