@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\..\BuildingBlocks\HoopHub.BuildingBlocks.Application\HoopHub.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\..\UserFeatures\HoopHub.Modules.UserFeatures.IntegrationEvents\HoopHub.Modules.UserFeatures.IntegrationEvents.csproj" />
     <ProjectReference Include="..\HoopHub.Modules.NBAData.Domain\HoopHub.Modules.NBAData.Domain.csproj" />
+    <ProjectReference Include="..\HoopHub.Modules.NBAData.IntegrationEvents\HoopHub.Modules.NBAData.IntegrationEvents.csproj" />
   </ItemGroup>
 
 </Project>

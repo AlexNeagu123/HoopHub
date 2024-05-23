@@ -4,7 +4,7 @@ using MediatR;
 
 namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByTeam
 {
-    public class GetBoxScoresByTeamQuery : IRequest<Response<IReadOnlyList<GameWithBoxScoreDto>>>
+    public class GetBoxScoresByTeamQuery : IRequest<Response<IReadOnlyList<LocalStoredGameDto>>>
     {
         public Guid TeamId { get; set; }
     }

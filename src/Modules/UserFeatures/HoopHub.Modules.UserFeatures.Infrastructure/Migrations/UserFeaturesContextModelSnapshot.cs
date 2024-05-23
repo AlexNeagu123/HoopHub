@@ -23,7 +23,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("HoopHub.BuildingBlocks.Domain.OutboxMessage", b =>
+            modelBuilder.Entity("HoopHub.BuildingBlocks.Domain.UserFeaturesOutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

@@ -1,4 +1,8 @@
-﻿using HoopHub.Modules.NBAData.Domain.Players;
+﻿using HoopHub.BuildingBlocks.Domain;
+using HoopHub.Modules.NBAData.Domain.BoxScores;
+using HoopHub.Modules.NBAData.Domain.Games;
+using HoopHub.Modules.NBAData.Domain.OutboxMessages;
+using HoopHub.Modules.NBAData.Domain.Players;
 using HoopHub.Modules.NBAData.Domain.PlayerTeamSeasons;
 using HoopHub.Modules.NBAData.Domain.Seasons;
 using HoopHub.Modules.NBAData.Domain.Standings;
@@ -18,6 +22,7 @@ namespace HoopHub.Modules.NBAData.Infrastructure
         public DbSet<TeamBio> TeamBios { get; set; }
         public DbSet<PlayoffSeries> PlayoffSeries { get; set; }
         public DbSet<TeamLatest> TeamsLatest { get; set; }
+        public DbSet<NBADataOutboxMessage> OutboxMessages { get; set; }
 
         public NBADataContext(DbContextOptions<NBADataContext> options) : base(options) { }
 
@@ -31,7 +36,58 @@ namespace HoopHub.Modules.NBAData.Infrastructure
             ModelStandingsTable(modelBuilder);
             ModelPlayoffSeriesTable(modelBuilder);
             ModelTeamLatestTable(modelBuilder);
+            ModelGamesTable(modelBuilder);
+            ModelBoxScoresTable(modelBuilder);
+            ModelOutboxMessagesTable(modelBuilder);
             modelBuilder.HasDefaultSchema("nba_data");
+        }
+
+        private static void ModelOutboxMessagesTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<NBADataOutboxMessage>().HasKey(om => om.Id);
+            modelBuilder.Entity<NBADataOutboxMessage>().ToTable("outbox_messages");
+        }
+
+        private static void ModelBoxScoresTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<BoxScores>().HasKey(bs => bs.Id);
+            modelBuilder.Entity<BoxScores>()
+                .HasOne(bs => bs.Game)
+                .WithMany(g => g.BoxScores)
+                .HasForeignKey(bs => bs.GameId);
+
+            modelBuilder.Entity<BoxScores>()
+                .HasOne(bs => bs.Player)
+                .WithMany(p => p.BoxScores)
+                .HasForeignKey(bs => bs.PlayerId);
+
+            modelBuilder.Entity<BoxScores>()
+                .HasOne(bs => bs.Team)
+                .WithMany(t => t.BoxScores)
+                .HasForeignKey(bs => bs.TeamId);
+
+            modelBuilder.Entity<BoxScores>().ToTable("box_scores");
+        }
+
+        private static void ModelGamesTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Game>().HasKey(g => g.Id);
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.HomeTeam)
+                .WithMany(t => t.HomeGames)
+                .HasForeignKey(g => g.HomeTeamId);
+
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.VisitorTeam)
+                .WithMany(t => t.VisitorGames)
+                .HasForeignKey(g => g.VisitorTeamId);
+
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.Season)
+                .WithMany(s => s.Games)
+                .HasForeignKey(g => g.SeasonId);
+
+            modelBuilder.Entity<Game>().ToTable("games");
         }
 
         private static void ModelTeamLatestTable(ModelBuilder modelBuilder)
@@ -58,7 +114,7 @@ namespace HoopHub.Modules.NBAData.Infrastructure
                 .WithMany(t => t.PlayoffSeries)
                 .HasForeignKey(ps => ps.WinningTeamId);
 
-            
+
             modelBuilder.Entity<PlayoffSeries>().ToTable("playoff_series");
         }
         private static void ModelStandingsTable(ModelBuilder modelBuilder)

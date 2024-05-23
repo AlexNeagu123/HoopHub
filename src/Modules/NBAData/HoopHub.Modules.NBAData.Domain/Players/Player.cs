@@ -59,6 +59,7 @@ namespace HoopHub.Modules.NBAData.Domain.Players
         public Guid? CurrentTeamId { get; private set; }
         public Team? CurrentTeam { get; private set; }
         public ICollection<PlayerTeamSeason> PlayerTeamSeasons { get; private set; }
+        public ICollection<BoxScores.BoxScores> BoxScores { get; private set; }
 
         public void UpdateAverageRating(decimal? averageRating)
         {

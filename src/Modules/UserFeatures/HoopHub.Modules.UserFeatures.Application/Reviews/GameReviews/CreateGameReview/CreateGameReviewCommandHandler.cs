@@ -9,7 +9,8 @@ using MediatR;
 
 namespace HoopHub.Modules.UserFeatures.Application.Reviews.GameReviews.CreateGameReview
 {
-    public class CreateGameReviewCommandHandler(IGameReviewRepository gameReviewRepository, ICurrentUserService currentUserService) : IRequestHandler<CreateGameReviewCommand, Response<GameReviewDto>>
+    public class CreateGameReviewCommandHandler(IGameReviewRepository gameReviewRepository, ICurrentUserService currentUserService) : 
+        IRequestHandler<CreateGameReviewCommand, Response<GameReviewDto>>
     {
         private readonly IGameReviewRepository _gameReviewRepository = gameReviewRepository;
         private readonly ICurrentUserService _currentUserService = currentUserService;

@@ -13,9 +13,11 @@ using HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Infrastructure;
+using HoopHub.Modules.NBAData.Infrastructure.BackgroundJobs;
 using HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.BoxScoresData;
 using HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.GamesData;
 using HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.SeasonAverageStats;
+using HoopHub.Modules.NBAData.Infrastructure.Interceptors;
 using HoopHub.Modules.NBAData.Infrastructure.Persistence;
 using HoopHub.Modules.UserAccess.Application.Services.Login;
 using HoopHub.Modules.UserAccess.Application.Services.Registration;
@@ -25,6 +27,7 @@ using HoopHub.Modules.UserAccess.Infrastructure.Services.Login;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.Registration;
 using HoopHub.Modules.UserFeatures.Application.Events;
 using HoopHub.Modules.UserFeatures.Application.ExternalServices.AzureBlobStorage;
+using HoopHub.Modules.UserFeatures.Application.FanNotifications.Events;
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Infrastructure;
 using HoopHub.Modules.UserFeatures.Infrastructure.BackgroundJobs;
@@ -92,14 +95,19 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("HoopHubConnection");
 
 // NBAData STUFF
-builder.Services.AddDbContext<NBADataContext>(options =>
-       options.UseNpgsql(
-           connectionString,
-           o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "nba_data")));
+builder.Services.AddSingleton<NBADataConvertDomainEventsToOutboxMessagesInterceptor>();
+
+builder.Services.AddDbContext<NBADataContext>((sp, options) =>
+    options.UseNpgsql(
+            connectionString,
+            o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "nba_data"))
+        .AddInterceptors(sp.GetRequiredService<NBADataConvertDomainEventsToOutboxMessagesInterceptor>()));
+
 
 builder.Services.AddDbContext<UserAccessContext>(options =>
     options.UseNpgsql(connectionString,
     o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "user_access")));
+
 
 builder.Services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
@@ -112,6 +120,9 @@ builder.Services.AddScoped<IBoxScoresDataService, BoxScoresDataService>();
 builder.Services.AddScoped<IStandingsRepository, StandingsRepository>();
 builder.Services.AddScoped<IPlayoffSeriesRepository, PlayoffSeriesRepository>();
 builder.Services.AddScoped<ITeamLatestRepository, TeamLatestRepository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<IBoxScoresRepository, BoxScoresRepository>();
+builder.Services.AddScoped<ISeasonRepository, SeasonRepository>();
 
 // UserAccess STUFF
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserAccessContext>()
@@ -149,13 +160,13 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 // UserFeatures STUFF
 builder.Services.AddSingleton<SoftDeleteInterceptor>();
-builder.Services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+builder.Services.AddSingleton<UserFeaturesConvertDomainEventsToOutboxMessagesInterceptor>();
 
 builder.Services.AddDbContext<UserFeaturesContext>((sp, options) =>
     options.UseNpgsql(
         connectionString,
         o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "user_features"))
-    .AddInterceptors(sp.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptor>(), sp.GetRequiredService<SoftDeleteInterceptor>()));
+    .AddInterceptors(sp.GetRequiredService<UserFeaturesConvertDomainEventsToOutboxMessagesInterceptor>(), sp.GetRequiredService<SoftDeleteInterceptor>()));
 
 
 builder.Services.AddScoped<IFanRepository, FanRepository>();
@@ -194,6 +205,7 @@ builder.Services.AddMassTransit(busConfigurator =>
     busConfigurator.SetKebabCaseEndpointNameFormatter();
     busConfigurator.AddConsumer<UserRegisteredIntegrationEventHandler>();
     busConfigurator.AddConsumer<PlayerAverageRatingUpdatedIntegrationEventHandler>();
+    busConfigurator.AddConsumer<GameCreatedIntegrationEventHandler>();
     busConfigurator.UsingInMemory((context, config) =>
     {
         config.ConfigureEndpoints(context);
@@ -202,12 +214,20 @@ builder.Services.AddMassTransit(busConfigurator =>
 
 builder.Services.AddQuartz(configure =>
 {
-    var outboxJobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+    var userFeaturesOutboxJobKey = new JobKey(nameof(UserFeaturesProcessOutboxMessagesJob));
+    var nbaDataOutboxJobKey = new JobKey(nameof(NBADataProcessOutboxMessagesJob));
     var liveBoxScoresJobKey = new JobKey(nameof(LiveBoxScoreJob));
 
-    configure.AddJob<ProcessOutboxMessagesJob>(outboxJobKey)
+    configure.AddJob<UserFeaturesProcessOutboxMessagesJob>(userFeaturesOutboxJobKey)
         .AddTrigger(trigger => trigger
-            .ForJob(outboxJobKey)
+            .ForJob(userFeaturesOutboxJobKey)
+            .WithSimpleSchedule(schedule => schedule
+                .WithIntervalInSeconds(int.Parse(builder.Configuration["BackgroundJobTimes:OutBoxProcessor"] ?? "5"))
+                .RepeatForever()));
+
+    configure.AddJob<NBADataProcessOutboxMessagesJob>(nbaDataOutboxJobKey)
+        .AddTrigger(trigger => trigger
+            .ForJob(nbaDataOutboxJobKey)
             .WithSimpleSchedule(schedule => schedule
                 .WithIntervalInSeconds(int.Parse(builder.Configuration["BackgroundJobTimes:OutBoxProcessor"] ?? "5"))
                 .RepeatForever()));

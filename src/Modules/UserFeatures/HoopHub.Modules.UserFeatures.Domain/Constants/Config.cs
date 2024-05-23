@@ -15,7 +15,14 @@
         public const string CommentAddedThreadNotificationTitle = "New comment";
         public const string DefaultAvatarPhotoUrl = "https://hoophub.blob.core.windows.net/userphotos/default-profile.png";
         public const string ReplyAddedNotificationTitle = "New reply";
+        public const string FollowedTeamGameEndsTitle = "A team you follow finished the game";
+
         public const int CommentTruncateLength = 25;
+
+        public static string FollowedTeamGameEndsContent(string teamName)
+        {
+            return $"{teamName} just finished the game, check the box scores";
+        }
 
         public static string TruncateNotificationComment(string content)
         {

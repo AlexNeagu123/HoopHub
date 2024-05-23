@@ -14,6 +14,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
     public class UserFeaturesContext : DbContext
     {
         private readonly ICurrentUserService _currentUserService;
+
         private readonly IPublisher _publisher;
         public DbSet<Fan> Fans { get; set; }
         public DbSet<TeamThread> TeamThreads { get; set; }
@@ -26,7 +27,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure
         public DbSet<PlayerFollowEntry> PlayerFollowEntries { get; set; }
         public DbSet<TeamThreadVote> TeamThreadVotes { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-        public DbSet<OutboxMessage> OutboxMessages { get; set; }
+        public DbSet<UserFeaturesOutboxMessage> OutboxMessages { get; set; }
 
         public UserFeaturesContext(DbContextOptions<UserFeaturesContext> options, ICurrentUserService userService, IPublisher publisher) :
             base(options)

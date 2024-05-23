@@ -1,5 +1,6 @@
 ﻿using HoopHub.BuildingBlocks.API;
 using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoreByGame;
+using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByPlayer;
 using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByTeam;
 using HoopHub.Modules.NBAData.Application.Games.GetAllGamesByDate;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,18 @@ namespace HoopHub.API.Controllers.Modules.NBAData.Games
         public async Task<IActionResult> GetGamesByTeam(Guid teamId)
         {
             var response = await Mediator.Send(new GetBoxScoresByTeamQuery { TeamId = teamId});
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("box-scores/{playerId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetBoxScoresByPlayer(Guid playerId)
+        {
+            var response = await Mediator.Send(new GetBoxScoresByPlayerQuery { PlayerId = playerId });
             if (!response.Success)
             {
                 return BadRequest(response);

@@ -7,7 +7,7 @@ using Quartz;
 namespace HoopHub.Modules.UserFeatures.Infrastructure.BackgroundJobs
 {
     [DisallowConcurrentExecution]
-    public class ProcessOutboxMessagesJob(UserFeaturesContext context, IPublisher publisher) : IJob
+    public class UserFeaturesProcessOutboxMessagesJob(UserFeaturesContext context, IPublisher publisher) : IJob
     {
         private readonly UserFeaturesContext _context = context;
         private readonly IPublisher _publisher = publisher;

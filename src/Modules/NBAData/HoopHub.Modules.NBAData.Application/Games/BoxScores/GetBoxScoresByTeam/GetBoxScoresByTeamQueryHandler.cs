@@ -2,50 +2,33 @@
 using HoopHub.Modules.NBAData.Application.Constants;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
 using HoopHub.Modules.NBAData.Application.Games.Dtos;
-using HoopHub.Modules.NBAData.Application.Games.GetGamesByTeam;
+using HoopHub.Modules.NBAData.Application.Games.Mappers;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using MediatR;
 
 namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByTeam
 {
-    public class GetBoxScoresByTeamQueryHandler(IBoxScoresDataService boxScoresDataService, ITeamRepository teamRepository, IPlayerRepository playerRepository, ITeamLatestRepository teamLatestRepository) : IRequestHandler<GetBoxScoresByTeamQuery, Response<IReadOnlyList<GameWithBoxScoreDto>>>
+    public class GetBoxScoresByTeamQueryHandler(IBoxScoresDataService boxScoresDataService, ITeamRepository teamRepository, IPlayerRepository playerRepository, ITeamLatestRepository teamLatestRepository, IGameRepository gameRepository) : IRequestHandler<GetBoxScoresByTeamQuery, Response<IReadOnlyList<LocalStoredGameDto>>>
     {
-        private readonly IBoxScoresDataService _boxScoresDataService = boxScoresDataService;
-        private readonly ITeamRepository _teamRepository = teamRepository;
-        private readonly IPlayerRepository _playerRepository = playerRepository;
-        private readonly ITeamLatestRepository _teamLatestRepository = teamLatestRepository;
-
-        public async Task<Response<IReadOnlyList<GameWithBoxScoreDto>>> Handle(GetBoxScoresByTeamQuery request, CancellationToken cancellationToken)
+        private readonly IGameRepository _gameRepository = gameRepository;
+        private readonly LocalGameMapper _localGameMapper = new();
+        public async Task<Response<IReadOnlyList<LocalStoredGameDto>>> Handle(GetBoxScoresByTeamQuery request, CancellationToken cancellationToken)
         {
             var validator = new GetBoxScoresByTeamQueryValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
-                return Response<IReadOnlyList<GameWithBoxScoreDto>>.ErrorResponseFromFluentResult(validationResult);
+                return Response<IReadOnlyList<LocalStoredGameDto>>.ErrorResponseFromFluentResult(validationResult);
 
-            List<GameWithBoxScoreDto> lastGames = [];
-            var latestGamesResult = await _teamLatestRepository.GetLatestByTeam(request.TeamId);
-            if (!latestGamesResult.IsSuccess)
-                return Response<IReadOnlyList<GameWithBoxScoreDto>>.ErrorResponseFromKeyMessage(latestGamesResult.ErrorMsg, ValidationKeys.TeamLatest);
-            
-            var latestGames = latestGamesResult.Value;
-            foreach (var game in latestGames)
+            var gamesResult = await _gameRepository.GetLastXGamesByTeam(request.TeamId, 5);
+            if (!gamesResult.IsSuccess)
+                return Response<IReadOnlyList<LocalStoredGameDto>>.ErrorResponseFromKeyMessage(gamesResult.ErrorMsg, ValidationKeys.Games);
+
+            var gamesResultDto = gamesResult.Value.Select(game => _localGameMapper.LocalStoredGameToLocalStoredGameDto(game)).ToList();
+
+            return new Response<IReadOnlyList<LocalStoredGameDto>>
             {
-                var boxScoreByTeam = await _boxScoresDataService.GetBoxScoresAsyncByTeamAndDate(game.GameDate, game.Team.ApiId);
-                if(!boxScoreByTeam.IsSuccess)
-                    continue;
-
-                BoxScoreProcessor boxScoreProcessor = new(_teamRepository, _playerRepository);
-                var processResponse = await boxScoreProcessor.ProcessApiBoxScoreAndConvert(boxScoreByTeam.Value);
-                if (processResponse.Success)
-                {
-                    lastGames.Add(processResponse.Data);
-                }
-            }
-
-            return new Response<IReadOnlyList<GameWithBoxScoreDto>> 
-            {
-                Success = true, 
-                Data = lastGames        
+                Success = true,
+                Data = gamesResultDto
             };
         }
     }

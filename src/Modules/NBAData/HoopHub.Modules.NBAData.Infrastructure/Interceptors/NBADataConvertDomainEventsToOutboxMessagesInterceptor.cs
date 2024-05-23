@@ -1,10 +1,11 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
+using HoopHub.Modules.NBAData.Domain.OutboxMessages;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
 
-namespace HoopHub.Modules.UserFeatures.Infrastructure.Interceptors
+namespace HoopHub.Modules.NBAData.Infrastructure.Interceptors
 {
-    public class ConvertDomainEventsToOutboxMessagesInterceptor : SaveChangesInterceptor
+    public class NBADataConvertDomainEventsToOutboxMessagesInterceptor : SaveChangesInterceptor
     {
         public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
             InterceptionResult<int> result, CancellationToken cancellationToken = default)
@@ -21,20 +22,20 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Interceptors
                     entry.ClearDomainEvents();
                     return domainEvents;
                 })
-                .Select(domainEvent => new OutboxMessage
+                .Select(domainEvent => new NBADataOutboxMessage
                 {
                     Id = Guid.NewGuid(),
                     OccuredOnUtc = domainEvent.OccurredOn,
                     Type = domainEvent.GetType().Name,
                     Content = JsonConvert.SerializeObject(domainEvent,
-                        new JsonSerializerSettings
-                        {
+                                               new JsonSerializerSettings
+                                               {
                             TypeNameHandling = TypeNameHandling.All
                         })
                 })
                 .ToList();
 
-            dbContext.Set<OutboxMessage>().AddRange(outboxMessages);
+            dbContext.Set<NBADataOutboxMessage>().AddRange(outboxMessages);
 
             return base.SavingChangesAsync(eventData, result, cancellationToken);
         }

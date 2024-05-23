@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
 {
-    public class GameReviewRepository(UserFeaturesContext context) : BaseRepository<GameReview>(context), IGameReviewRepository
+    public class GameReviewRepository(UserFeaturesContext context) 
+        : BaseRepository<GameReview>(context), IGameReviewRepository
     {
         public async Task<Result<GameReview>> FindByIdAsyncIncludingAll(int homeTeamId, int visitorTeamId, string date, string fanId)
         {
