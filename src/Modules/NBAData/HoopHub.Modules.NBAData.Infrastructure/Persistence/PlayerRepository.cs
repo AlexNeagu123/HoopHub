@@ -22,5 +22,13 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
                 .FirstOrDefaultAsync(p => p.ApiId == apiId);
             return player == null ? Result<Player>.Failure($"Entity with ApiId {apiId} not found") : Result<Player>.Success(player);
         }
+
+        public async Task<Result<IReadOnlyList<Player>>> GetAllActivePlayers()
+        {
+            var players = await context.Set<Player>()
+                .Where(p => p.IsActive)
+                .ToListAsync();
+            return Result<IReadOnlyList<Player>>.Success(players);
+        }
     }
 }

@@ -6,5 +6,6 @@ namespace HoopHub.Modules.UserFeatures.Application.PlayerFollowEntries.GetPlayer
 {
     public class GetPlayersFollowedQuery : IRequest<Response<IReadOnlyList<PlayerFollowEntryDto>>>
     {
+        public string? FanId { get; set; }
     }
 }

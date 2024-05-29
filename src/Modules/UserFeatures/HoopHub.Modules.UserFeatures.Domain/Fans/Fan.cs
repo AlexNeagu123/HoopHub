@@ -71,7 +71,10 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
                 CheckRule(new ImageUrlCannotBeEmpty(avatarPhotoUrl));
                 AvatarPhotoUrl = avatarPhotoUrl;
             }
-            catch (BusinessRuleValidationException) { }
+            catch (BusinessRuleValidationException)
+            {
+                Console.WriteLine(avatarPhotoUrl);
+            }
         }
 
         public void UpdateFavouriteTeamId(Guid? favouriteTeamId)

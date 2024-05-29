@@ -14,9 +14,9 @@ namespace HoopHub.API.Controllers.Modules.UserFeatures.Follows
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = UserRoles.User)]
-        public async Task<IActionResult> GetPlayerFollowList()
+        public async Task<IActionResult> GetPlayerFollowList([FromQuery] GetPlayersFollowedQuery request)
         {
-            var response = await Mediator.Send(new GetPlayersFollowedQuery());
+            var response = await Mediator.Send(request);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -42,7 +42,7 @@ namespace HoopHub.API.Controllers.Modules.UserFeatures.Follows
         [Authorize(Roles = UserRoles.User)]
         public async Task<IActionResult> UnfollowPlayer(Guid playerId)
         {
-            var response = await Mediator.Send(new DeletePlayerFollowEntryCommand {PlayerId = playerId});
+            var response = await Mediator.Send(new DeletePlayerFollowEntryCommand { PlayerId = playerId });
             if (!response.Success)
             {
                 return BadRequest(response);

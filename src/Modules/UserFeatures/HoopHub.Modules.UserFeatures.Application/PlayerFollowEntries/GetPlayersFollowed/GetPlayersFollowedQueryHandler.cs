@@ -20,6 +20,9 @@ namespace HoopHub.Modules.UserFeatures.Application.PlayerFollowEntries.GetPlayer
         public async Task<Response<IReadOnlyList<PlayerFollowEntryDto>>> Handle(GetPlayersFollowedQuery request, CancellationToken cancellationToken)
         {
             var fanId = _userService.GetUserId;
+            if(request.FanId != null)
+                fanId = request.FanId;
+
             var playerFollowEntryResult = await _playerFollowEntryRepository.GetAllByFanIdIncludingFanAsync(fanId!);
             if (!playerFollowEntryResult.IsSuccess)
                 return Response<IReadOnlyList<PlayerFollowEntryDto>>.ErrorResponseFromKeyMessage(playerFollowEntryResult.ErrorMsg, ValidationKeys.PlayerFollowEntry);
