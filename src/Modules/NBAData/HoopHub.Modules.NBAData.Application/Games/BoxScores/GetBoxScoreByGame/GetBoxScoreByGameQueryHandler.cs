@@ -1,30 +1,24 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
+using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.Modules.NBAData.Application.Constants;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
-using HoopHub.Modules.NBAData.Application.Games.BoxScores;
-using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoreByGame;
 using HoopHub.Modules.NBAData.Application.Games.Dtos;
-using HoopHub.Modules.NBAData.Application.Games.Mappers;
 using HoopHub.Modules.NBAData.Application.Persistence;
-using HoopHub.Modules.NBAData.Application.Players;
 using MediatR;
-using PlayerMapper = HoopHub.Modules.NBAData.Application.Players.Mappers.PlayerMapper;
 
-namespace HoopHub.Modules.NBAData.Application.Games.GetBoxScoreByGame
+namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoreByGame
 {
-    public class GetBoxScoreByGameQueryHandler(IBoxScoresDataService boxScoresDataService, ITeamRepository teamRepository, IPlayerRepository playerRepository) 
+    public class GetBoxScoreByGameQueryHandler(IBoxScoresDataService boxScoresDataService, ITeamRepository teamRepository, IPlayerRepository playerRepository, ICurrentUserService currentUserService)
         : IRequestHandler<GetBoxScoreByGameQuery, Response<GameWithBoxScoreDto>>
     {
         private readonly IBoxScoresDataService _boxScoresDataService = boxScoresDataService;
         private readonly ITeamRepository _teamRepository = teamRepository;
         private readonly IPlayerRepository _playerRepository = playerRepository;
-        private readonly BoxScoreTeamMapper _boxScoreTeamMapper = new();
-        private readonly BoxScorePlayerMapper _boxScorePlayerMapper = new();
-        private readonly PlayerMapper _playerMapper = new();
-        private readonly GameWithBoxScoreMapper _gameWithBoxScoreMapper = new();
+        private readonly ICurrentUserService _currentUserService = currentUserService;
 
         public async Task<Response<GameWithBoxScoreDto>> Handle(GetBoxScoreByGameQuery request, CancellationToken cancellationToken)
         {
+            var isLicensed = _currentUserService.GetUserLicense ?? false;
             var validator = new GetBoxScoreByGameQueryValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
@@ -38,11 +32,10 @@ namespace HoopHub.Modules.NBAData.Application.Games.GetBoxScoreByGame
             foreach (var boxScore in apiBoxScores)
             {
                 if (boxScore.HomeTeam == null || boxScore.VisitorTeam == null) continue;
-                
                 if (boxScore.HomeTeam.Id != request.HomeTeamApiId || boxScore.VisitorTeam.Id != request.VisitorTeamApiId)
                     continue;
 
-                BoxScoreProcessor boxScoreProcessor = new(_teamRepository, _playerRepository);
+                BoxScoreProcessor boxScoreProcessor = new(_teamRepository, _playerRepository, isLicensed);
                 return await boxScoreProcessor.ProcessApiBoxScoreAndConvert(boxScore);
             }
 

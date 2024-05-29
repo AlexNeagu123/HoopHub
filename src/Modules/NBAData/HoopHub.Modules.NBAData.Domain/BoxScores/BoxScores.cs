@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using HoopHub.BuildingBlocks.Domain;
+using HoopHub.Modules.NBAData.Domain.BoxScores.Events;
 using HoopHub.Modules.NBAData.Domain.Games;
 using HoopHub.Modules.NBAData.Domain.Players;
 using HoopHub.Modules.NBAData.Domain.Teams;
 
 namespace HoopHub.Modules.NBAData.Domain.BoxScores
 {
-    public class BoxScores
+    public class BoxScores : Entity
     {
         [Column("id")]
         public Guid Id { get; private set; }
@@ -178,6 +180,38 @@ namespace HoopHub.Modules.NBAData.Domain.BoxScores
                 turnover,
                 pf,
                 pts);
+        }
+
+        public void MarkAsAdded(int homeTeamApiId, int visitorTeamApiId, string playerName, DateTime date, string? playerImageUrl)
+        {
+            AddDomainEvent(new BoxScoresCreatedDomainEvent(
+                GameId,
+                PlayerId,
+                TeamId,
+                homeTeamApiId,
+                visitorTeamApiId,
+                playerName,
+                date,
+                playerImageUrl,
+                Min,
+                Fgm,
+                Fga,
+                FgPct,
+                Fg3m,
+                Fg3a,
+                Fg3Pct,
+                Ftm,
+                Fta,
+                FtPct,
+                Oreb,
+                Dreb,
+                Reb,
+                Ast,
+                Stl,
+                Blk,
+                Turnover,
+                Pf,
+                Pts));
         }
     }
 }

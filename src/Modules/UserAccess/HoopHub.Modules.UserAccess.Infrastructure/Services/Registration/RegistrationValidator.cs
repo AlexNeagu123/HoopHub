@@ -14,6 +14,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration
                 .EmailAddress().WithMessage(ErrorMessages.InvalidEmailAddress);
 
             RuleFor(x => x.UserName).NotEmpty().WithMessage(ErrorMessages.UserNameRequired);
+            RuleFor(x => x.UserName).MaximumLength(Config.UserNameMaxLength).WithMessage(ErrorMessages.UserNameTooLong);
             RuleFor(x => x.Password).NotEmpty().MinimumLength(8).WithMessage(ErrorMessages.PasswordLengthViolation);
             RuleFor(x => x.ConfirmPassword).Equal(x => x.Password).WithMessage(ErrorMessages.PasswordsDoNotMatch);
             RuleFor(x => x.UserName).MustAsync(async (userName, cancellation) =>

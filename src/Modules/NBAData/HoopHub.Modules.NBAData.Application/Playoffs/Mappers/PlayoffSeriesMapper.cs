@@ -10,7 +10,7 @@ namespace HoopHub.Modules.NBAData.Application.Playoffs.Mappers
         private readonly TeamMapper _teamMapper = new();
         private readonly SeasonMapper _seasonMapper = new();
 
-        public PlayoffSeriesDto PlayoffSeriesToPlayoffSeriesDto(PlayoffSeries series)
+        public PlayoffSeriesDto PlayoffSeriesToPlayoffSeriesDto(PlayoffSeries series, bool isLicensed)
         {
             return new PlayoffSeriesDto
             {
@@ -19,8 +19,8 @@ namespace HoopHub.Modules.NBAData.Application.Playoffs.Mappers
                 LosingTeamRank = series.LosingTeamRank,
                 WinningTeamWins = series.WinningTeamWins,
                 LosingTeamWins = series.LosingTeamWins,
-                LosingTeam = _teamMapper.TeamToTeamDto(series.LosingTeam),
-                WinningTeam = _teamMapper.TeamToTeamDto(series.WinningTeam),
+                LosingTeam = _teamMapper.TeamToTeamDto(series.LosingTeam, isLicensed),
+                WinningTeam = _teamMapper.TeamToTeamDto(series.WinningTeam, isLicensed),
                 Season = _seasonMapper.SeasonToSeasonDto(series.Season)
             };
         }

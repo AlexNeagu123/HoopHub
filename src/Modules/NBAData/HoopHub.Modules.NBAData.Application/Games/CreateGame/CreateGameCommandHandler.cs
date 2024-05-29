@@ -1,4 +1,5 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
+using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.Modules.NBAData.Application.Constants;
 using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using HoopHub.Modules.NBAData.Application.Games.Mappers;
@@ -8,16 +9,18 @@ using MediatR;
 
 namespace HoopHub.Modules.NBAData.Application.Games.CreateGame
 {
-    public class CreateGameCommandHandler(ITeamRepository teamRepository, ISeasonRepository seasonRepository, IGameRepository gameRepository)
+    public class CreateGameCommandHandler(ITeamRepository teamRepository, ISeasonRepository seasonRepository, IGameRepository gameRepository, ICurrentUserService currentUserService)
         : IRequestHandler<CreateGameCommand, Response<LocalStoredGameDto>>
     {
         private readonly ITeamRepository _teamRepository = teamRepository;
         private readonly ISeasonRepository _seasonRepository = seasonRepository;
         private readonly IGameRepository _gameRepository = gameRepository;
         private readonly LocalGameMapper _gameMapper = new();
+        private readonly ICurrentUserService _currentUserService = currentUserService;
 
         public async Task<Response<LocalStoredGameDto>> Handle(CreateGameCommand request, CancellationToken cancellationToken)
         {
+            var isLicensed = _currentUserService.GetUserLicense ?? false;
             var homeTeamResult = await _teamRepository.FindByApiIdAsync(request.HomeTeamApiId);
             if (!homeTeamResult.IsSuccess)
                 return Response<LocalStoredGameDto>.ErrorResponseFromKeyMessage(homeTeamResult.ErrorMsg, ValidationKeys.Games);
@@ -56,7 +59,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.CreateGame
             return new Response<LocalStoredGameDto>
             {
                 Success = true,
-                Data = _gameMapper.LocalStoredGameToLocalStoredGameDto(addedGameResult.Value)
+                Data = _gameMapper.LocalStoredGameToLocalStoredGameDto(addedGameResult.Value, isLicensed)
             };
         }
     }

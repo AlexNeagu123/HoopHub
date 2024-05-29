@@ -5,6 +5,7 @@ using HoopHub.Modules.NBAData.Domain.PlayerTeamSeasons;
 using HoopHub.Modules.NBAData.Domain.Standings;
 using HoopHub.Modules.NBAData.Domain.TeamBios;
 using HoopHub.Modules.NBAData.Domain.TeamsLatest;
+using HoopHub.Modules.NBAData.Domain.AdvancedStatsEntries;
 
 namespace HoopHub.Modules.NBAData.Domain.Teams
 {
@@ -46,5 +47,6 @@ namespace HoopHub.Modules.NBAData.Domain.Teams
         public ICollection<Game> HomeGames { get; private set; }
         public ICollection<Game> VisitorGames { get; private set; }
         public ICollection<BoxScores.BoxScores> BoxScores { get; private set; }
+        public ICollection<AdvancedStatsEntry> AdvancedStatsEntries { get; private set; } = [];
     }
 }

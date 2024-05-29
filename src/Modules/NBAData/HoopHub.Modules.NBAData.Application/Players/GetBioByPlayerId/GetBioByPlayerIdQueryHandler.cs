@@ -1,4 +1,5 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
+using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.Modules.NBAData.Application.Constants;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats;
 using HoopHub.Modules.NBAData.Application.Persistence;
@@ -9,15 +10,18 @@ using MediatR;
 namespace HoopHub.Modules.NBAData.Application.Players.GetBioByPlayerId
 {
     public class GetBioByPlayerIdQueryHandler(IPlayerTeamSeasonRepository playerTeamSeasonRepository,
-        ISeasonAverageStatsService averageStatsService) : IRequestHandler<GetBioByPlayerIdQuery, Response<PlayerDto>>
+        ISeasonAverageStatsService averageStatsService,
+        ICurrentUserService currentUserService) : IRequestHandler<GetBioByPlayerIdQuery, Response<PlayerDto>>
     {
         private readonly IPlayerTeamSeasonRepository _playerTeamSeasonRepository = playerTeamSeasonRepository;
         private readonly ISeasonAverageStatsService _averageStatsService = averageStatsService;
         private readonly TeamMapper _teamMapper = new();
         private readonly Mappers.PlayerMapper _playerMapper = new();
+        private readonly ICurrentUserService _currentUserService = currentUserService;
 
         public async Task<Response<PlayerDto>> Handle(GetBioByPlayerIdQuery request, CancellationToken cancellationToken)
         {
+            var isLicensed = _currentUserService.GetUserLicense ?? false;
             var validator = new GetBioByPlayerIdQueryValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
@@ -31,7 +35,7 @@ namespace HoopHub.Modules.NBAData.Application.Players.GetBioByPlayerId
             if (playerHistory.Count == 0)
                 return Response<PlayerDto>.ErrorResponseFromKeyMessage(ErrorMessages.PlayerBioNotFound, ValidationKeys.PlayerBio);
 
-            var playerDto = _playerMapper.PlayerToPlayerDto(playerHistory[0].Player);
+            var playerDto = _playerMapper.PlayerToPlayerDto(playerHistory[0].Player, isLicensed);
             foreach (var seasonInfo in playerHistory)
             {
                 var intSeason = GetIntSeasonStart(seasonInfo.Season.SeasonPeriod);
@@ -44,7 +48,7 @@ namespace HoopHub.Modules.NBAData.Application.Players.GetBioByPlayerId
 
                 var stats = statsResult.Value;
                 seasonInfo.Team.Players = null!;
-                stats.Team = _teamMapper.TeamToTeamDto(seasonInfo.Team);
+                stats.Team = _teamMapper.TeamToTeamDto(seasonInfo.Team, isLicensed);
                 playerDto.SeasonAverageStats.Add(stats);
             }
 

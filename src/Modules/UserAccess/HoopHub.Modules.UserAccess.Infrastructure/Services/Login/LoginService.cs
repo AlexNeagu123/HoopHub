@@ -29,10 +29,13 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Login
             {
                 new(ClaimTypes.Name, user.UserName!),
                 new (ClaimTypes.NameIdentifier, user.Id),
+                new(ClaimTypes.Email, user.Email!),
+                new(ClaimTypes.Version, user.IsLicensed.ToString()),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
+
             var token = _jwtProvider.GenerateToken(authClaims);
             return new Response<string>
             {

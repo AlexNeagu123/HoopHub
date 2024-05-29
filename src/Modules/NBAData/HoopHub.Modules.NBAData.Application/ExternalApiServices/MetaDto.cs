@@ -2,7 +2,7 @@
 {
     public class MetaDto
     {
-        public int NextCursor;
+        public int? NextCursor;
         public int PerPage;
     }
 }

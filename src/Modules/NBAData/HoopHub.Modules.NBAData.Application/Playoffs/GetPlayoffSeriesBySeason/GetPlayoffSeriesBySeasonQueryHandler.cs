@@ -1,4 +1,5 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
+using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.Modules.NBAData.Application.Constants;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Application.Playoffs.Dtos;
@@ -7,13 +8,15 @@ using MediatR;
 
 namespace HoopHub.Modules.NBAData.Application.Playoffs.GetPlayoffSeriesBySeason
 {
-    public class GetPlayoffSeriesBySeasonQueryHandler(IPlayoffSeriesRepository playoffSeriesRepository) : IRequestHandler<GetPlayoffSeriesBySeasonQuery, Response<GroupedPlayoffSeriesDto>>
+    public class GetPlayoffSeriesBySeasonQueryHandler(IPlayoffSeriesRepository playoffSeriesRepository, ICurrentUserService currentUserService) : IRequestHandler<GetPlayoffSeriesBySeasonQuery, Response<GroupedPlayoffSeriesDto>>
     {
         private readonly IPlayoffSeriesRepository _playoffSeriesRepository = playoffSeriesRepository;
         private readonly PlayoffSeriesMapper _playoffSeriesMapper = new();
+        private readonly ICurrentUserService _currentUserService = currentUserService;
 
         public async Task<Response<GroupedPlayoffSeriesDto>> Handle(GetPlayoffSeriesBySeasonQuery request, CancellationToken cancellationToken)
         {
+            var isLicensed = _currentUserService.GetUserLicense ?? false;
             var validator = new GetPlayoffSeriesBySeasonQueryValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
@@ -27,7 +30,7 @@ namespace HoopHub.Modules.NBAData.Application.Playoffs.GetPlayoffSeriesBySeason
             if (!playoffSeries.IsSuccess)
                 return Response<GroupedPlayoffSeriesDto>.ErrorResponseFromKeyMessage(playoffSeries.ErrorMsg, ValidationKeys.PlayoffSeries);
 
-            var playoffSeriesDtoList = playoffSeries.Value.Select(series => _playoffSeriesMapper.PlayoffSeriesToPlayoffSeriesDto(series)).ToList();
+            var playoffSeriesDtoList = playoffSeries.Value.Select(series => _playoffSeriesMapper.PlayoffSeriesToPlayoffSeriesDto(series, isLicensed)).ToList();
 
             var priorityIndexes = new Dictionary<Guid, int>();
             foreach (var seriesDto in playoffSeriesDtoList)

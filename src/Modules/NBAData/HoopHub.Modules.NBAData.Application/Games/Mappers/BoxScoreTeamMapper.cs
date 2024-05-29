@@ -1,11 +1,12 @@
-﻿using HoopHub.Modules.NBAData.Application.Games.Dtos;
+﻿using HoopHub.Modules.NBAData.Application.Constants;
+using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using HoopHub.Modules.NBAData.Domain.Teams;
 
 namespace HoopHub.Modules.NBAData.Application.Games.Mappers
 {
     public class BoxScoreTeamMapper
     {
-        public BoxScoreTeamDto TeamToBoxScoreTeamDto(Team team)
+        public BoxScoreTeamDto TeamToBoxScoreTeamDto(Team team, bool isLicensed)
         {
             return new BoxScoreTeamDto
             {
@@ -16,7 +17,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.Mappers
                 City = team.City,
                 Conference = team.Conference,
                 Division = team.Division,
-                ImageUrl = team.ImageUrl,
+                ImageUrl = isLicensed ? team.ImageUrl : Config.DefaultTeamImageUrl,
                 Players = []
             };
         }

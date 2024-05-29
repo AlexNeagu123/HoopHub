@@ -15,8 +15,8 @@ namespace HoopHub.Modules.UserFeatures.Application.Events
         {
             _logger.LogInformation($"Integration Event Received. User with ID: {context.Message.UserId} has been registered.");
             var message = context.Message;
-            
-            var fanCreatedResult = Fan.Create(message.UserId, message.UserName, message.UserEmail);
+
+            var fanCreatedResult = Fan.Create(message.UserId, message.UserName, message.UserEmail, message.IsLicensed);
             if (!fanCreatedResult.IsSuccess)
             {
                 _logger.LogError(

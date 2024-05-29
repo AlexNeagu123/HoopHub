@@ -18,6 +18,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
         public int DownVotes { get; private set; }
         public int CommentsCount { get; private set; }
         public int ReviewsCount { get; private set; }
+        public bool IsLicensed { get; private set; } = false;
         public FanBadgeType FanBadge { get; private set; }
         public string? AvatarPhotoUrl { get; private set; } = Config.DefaultAvatarPhotoUrl;
         public Guid? FavouriteTeamId { get; private set; }
@@ -32,15 +33,16 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
         public ICollection<Notification> NotificationsSent { get; private set; } = [];
         public ICollection<Notification> NotificationsReceived { get; private set; } = [];
         public ICollection<ThreadComment> Responses { get; private set; } = [];
-        private Fan(string id, string username, string email)
+        private Fan(string id, string username, string email, bool isLicensed)
         {
             Id = id;
             Username = username;
             Email = email;
             FanBadge = FanBadgeType.Rookie;
+            IsLicensed = isLicensed;
         }
 
-        public static Result<Fan> Create(string id, string username, string email)
+        public static Result<Fan> Create(string id, string username, string email, bool isLicensed)
         {
             try
             {
@@ -53,7 +55,13 @@ namespace HoopHub.Modules.UserFeatures.Domain.Fans
                 return Result<Fan>.Failure(ex.Details);
             }
 
-            return Result<Fan>.Success(new Fan(id, username, email));
+            return Result<Fan>.Success(new Fan(id, username, email, isLicensed));
+        }
+
+        public void UpdateDetails(string username, bool isLicensed)
+        {
+            Username = username;
+            IsLicensed = isLicensed;
         }
 
         public void UpdateAvatarPhotoUrl(string avatarPhotoUrl)

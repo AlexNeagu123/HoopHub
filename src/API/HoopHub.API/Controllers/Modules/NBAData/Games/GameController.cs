@@ -1,4 +1,6 @@
 ﻿using HoopHub.BuildingBlocks.API;
+using HoopHub.Modules.NBAData.Application.AdvancedStatsEntry.GetAdvancedStatsEntriesByGame;
+using HoopHub.Modules.NBAData.Application.AdvancedStatsEntry.GetAdvancedStatsEntriesByPlayer;
 using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoreByGame;
 using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByPlayer;
 using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByTeam;
@@ -27,7 +29,21 @@ namespace HoopHub.API.Controllers.Modules.NBAData.Games
         public async Task<IActionResult> GetBoxScoreByGame([FromQuery] string date, [FromQuery] int homeTeamId, [FromQuery] int visitorTeamId)
         {
             var response = await Mediator.Send(new GetBoxScoreByGameQuery
-                { Date = date, HomeTeamApiId = homeTeamId, VisitorTeamApiId = visitorTeamId });
+            { Date = date, HomeTeamApiId = homeTeamId, VisitorTeamApiId = visitorTeamId });
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("advanced-stats")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAdvancedStatsByGame([FromQuery] string date, [FromQuery] int homeTeamId,
+            [FromQuery] int visitorTeamId)
+        {
+            var response = await Mediator.Send(new GetAdvancedStatsByGameQuery
+            { Date = date, HomeTeamApiId = homeTeamId, VisitorTeamApiId = visitorTeamId });
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -37,9 +53,9 @@ namespace HoopHub.API.Controllers.Modules.NBAData.Games
 
         [HttpGet("{teamId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetGamesByTeam(Guid teamId)
+        public async Task<IActionResult> GetGamesByTeam(Guid teamId, [FromQuery] int gameCount)
         {
-            var response = await Mediator.Send(new GetBoxScoresByTeamQuery { TeamId = teamId});
+            var response = await Mediator.Send(new GetBoxScoresByTeamQuery { TeamId = teamId, GameCount = gameCount });
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -49,9 +65,21 @@ namespace HoopHub.API.Controllers.Modules.NBAData.Games
 
         [HttpGet("box-scores/{playerId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetBoxScoresByPlayer(Guid playerId)
+        public async Task<IActionResult> GetBoxScoresByPlayer(Guid playerId, [FromQuery] int gameCount)
         {
-            var response = await Mediator.Send(new GetBoxScoresByPlayerQuery { PlayerId = playerId });
+            var response = await Mediator.Send(new GetBoxScoresByPlayerQuery { PlayerId = playerId, GameCount = gameCount });
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("advanced-stats/{playerId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAdvancedStatsEntriesByPlayer(Guid playerId)
+        {
+            var response = await Mediator.Send(new GetAdvancedStatsEntriesByPlayerQuery { PlayerId = playerId });
             if (!response.Success)
             {
                 return BadRequest(response);

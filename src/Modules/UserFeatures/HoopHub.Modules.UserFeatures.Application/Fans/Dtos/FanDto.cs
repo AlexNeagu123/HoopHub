@@ -13,5 +13,6 @@ namespace HoopHub.Modules.UserFeatures.Application.Fans.Dtos
         public FanBadgeType FanBadge { get; set; }
         public Guid? FavouriteTeamId { get; set; }
         public string? AvatarPhotoUrl { get; set; }
+        public bool IsLicensed { get; set; }
     }
 }

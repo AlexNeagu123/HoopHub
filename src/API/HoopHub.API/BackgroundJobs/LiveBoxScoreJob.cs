@@ -1,4 +1,7 @@
 ﻿using HoopHub.API.Hubs;
+using HoopHub.BuildingBlocks.Application.Services;
+using HoopHub.Modules.NBAData.Application.AdvancedStatsEntry.CreateAdvancedStatsEntry;
+using HoopHub.Modules.NBAData.Application.ExternalApiServices.AdvancedStatsData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData;
 using HoopHub.Modules.NBAData.Application.Games.BoxScores.CreateBoxScore;
@@ -12,11 +15,12 @@ using Quartz;
 namespace HoopHub.API.BackgroundJobs
 {
     [DisallowConcurrentExecution]
-    public class LiveBoxScoreJob(IServiceScopeFactory serviceScopeFactory, IHubContext<LiveBoxScoreHub, ILiveBoxScoreClient> hubContext, ILogger<LiveBoxScoreJob> logger) : IJob
+    public class LiveBoxScoreJob(IServiceScopeFactory serviceScopeFactory, IHubContext<LiveBoxScoreHub, ILiveBoxScoreClient> hubContext, ILogger<LiveBoxScoreJob> logger, ICurrentUserService currentUserService) : IJob
     {
         private readonly IServiceScopeFactory _serviceScopeFactory = serviceScopeFactory;
         private readonly IHubContext<LiveBoxScoreHub, ILiveBoxScoreClient> _hubContext = hubContext;
         private readonly ILogger<LiveBoxScoreJob> _logger = logger;
+        private readonly ICurrentUserService _currentUserService = currentUserService;
 
         public async Task Execute(IJobExecutionContext context)
         {
@@ -28,15 +32,86 @@ namespace HoopHub.API.BackgroundJobs
             var gamesDataService = scope.ServiceProvider.GetRequiredService<IGamesDataService>();
             var gamesRepository = scope.ServiceProvider.GetRequiredService<IGameRepository>();
             var boxScoresRepository = scope.ServiceProvider.GetRequiredService<IBoxScoresRepository>();
+            var advancedStatsRepository = scope.ServiceProvider.GetRequiredService<IAdvancedStatsEntryRepository>();
+            var advancedStatsDataService = scope.ServiceProvider.GetRequiredService<IAdvancedStatsDataService>();
 
             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
             await HandleLiveBoxScores(teamRepository, playerRepository, boxScoresDataService, mediator);
             await HandleNewFinishedGames(gamesRepository, boxScoresRepository, boxScoresDataService, gamesDataService, mediator);
             await HandleNewBoxScores(boxScoresRepository, boxScoresDataService, mediator);
+            await HandleNewAdvancedStats(advancedStatsRepository, advancedStatsDataService, mediator);
         }
 
-        private async Task HandleNewBoxScores(IBoxScoresRepository boxScoresRepository, IBoxScoresDataService boxScoresDataService, IMediator mediator)
+        private async Task HandleNewAdvancedStats(IAdvancedStatsEntryRepository advancedStatsRepository, IAdvancedStatsDataService advancedStatsDataService, IMediator mediator)
+        {
+            var date = DateTime.Today;
+            var yesterday = date.AddDays(-1).ToUniversalTime();
+            var advancedStatsResult = await advancedStatsRepository.GetByDateAsync(yesterday);
+            var advancedStats = advancedStatsResult.Value;
+
+            if (advancedStats.Count != 0)
+            {
+                _logger.LogInformation("Yesterday's advanced stats already inserted into the database");
+                return;
+            }
+
+            var externalAdvancedStatsResult = await advancedStatsDataService.GetAdvancedStatsAsyncByDate(yesterday.ToString("yyyy-MM-dd"));
+            if (!externalAdvancedStatsResult.IsSuccess)
+            {
+                _logger.LogError($"Error getting external advanced stats for {yesterday}");
+                _logger.LogError($"{externalAdvancedStatsResult.ErrorMsg}");
+                return;
+            }
+
+            var externalAdvancedStats = externalAdvancedStatsResult.Value;
+
+            foreach (var stat in externalAdvancedStats)
+            {
+                var statDate = DateTime.Parse(stat.Game.Date).ToUniversalTime();
+                await HandlePlayersAdvancedStats(stat.Player, stat.Player.TeamId, stat, statDate, mediator);
+            }
+        }
+
+        private async Task HandlePlayersAdvancedStats(AdvancedStatsPlayerApiDto player, int teamId, AdvancedStatsApiDto stat, DateTime statDate, IMediator mediator)
+        {
+            var command = new CreateAdvancedStatsEntryCommand
+            {
+                Date = statDate,
+                PlayerId = player.Id,
+                TeamId = teamId,
+                HomeTeamId = stat.Game.HomeTeamId,
+                Pie = stat.Pie,
+                VisitorTeamId = stat.Game.VisitorTeamId,
+                Pace = stat.Pace,
+                AssistPercentage = stat.AssistPercentage,
+                AssistRatio = stat.AssistRatio,
+                AssistToTurnover = stat.AssistToTurnover,
+                DefensiveRating = stat.DefensiveRating,
+                DefensiveReboundPercentage = stat.DefensiveReboundPercentage,
+                EffectiveFieldGoalPercentage = stat.EffectiveFieldGoalPercentage,
+                NetRating = stat.NetRating,
+                OffensiveRating = stat.OffensiveRating,
+                OffensiveReboundPercentage = stat.OffensiveReboundPercentage,
+                ReboundPercentage = stat.ReboundPercentage,
+                TrueShootingPercentage = stat.TrueShootingPercentage,
+                TurnoverRatio = stat.TurnoverRatio,
+                UsagePercentage = stat.UsagePercentage
+            };
+
+            var result = await mediator.Send(command);
+
+            if (!result.Success)
+            {
+                _logger.LogError($"Failed to save advanced stats for player {player.Id} on {statDate}");
+                foreach (var error in result.ValidationErrors)
+                {
+                    _logger.LogError($"{error.Key}: {error.Value}");
+                }
+            }
+        }
+
+        private async Task HandleNewBoxScores(IBoxScoresRepository boxScoresRepository, IBoxScoresDataService boxScoresDataService, ISender mediator)
         {
             var date = DateTime.Today;
             var yesterday = date.AddDays(-1).ToUniversalTime();
@@ -65,17 +140,17 @@ namespace HoopHub.API.BackgroundJobs
             }
         }
 
-        private async Task HandlePlayersBoxScores(List<BoxScorePlayerApiDto> teamPlayers, int teamId, BoxScoreApiDto boxScore, DateTime boxScoreDate, IMediator mediator)
+        private async Task HandlePlayersBoxScores(List<BoxScorePlayerApiDto> teamPlayers, int teamId, BoxScoreApiDto boxScore, DateTime boxScoreDate, ISender mediator)
         {
             foreach (var player in teamPlayers)
             {
                 var mediatorResponse = await mediator.Send(new CreateBoxScoreCommand
                 {
                     Date = boxScoreDate,
-                    TeamId = teamId,
                     PlayerId = player.Player.Id,
-                    HomeTeamId = boxScore.HomeTeam.Id,
+                    TeamId = teamId,
                     VisitorTeamId = boxScore.VisitorTeam.Id,
+                    HomeTeamId = boxScore.HomeTeam.Id,
                     Min = player.Min,
                     Fgm = player.Fgm,
                     Fga = player.Fga,
@@ -104,7 +179,7 @@ namespace HoopHub.API.BackgroundJobs
             }
         }
 
-        private async Task HandleNewFinishedGames(IGameRepository gamesRepository, IBoxScoresRepository boxScoresRepository, IBoxScoresDataService boxScoresDataService, IGamesDataService gamesDataService, IMediator mediator)
+        private async Task HandleNewFinishedGames(IGameRepository gamesRepository, IBoxScoresRepository boxScoresRepository, IBoxScoresDataService boxScoresDataService, IGamesDataService gamesDataService, ISender mediator)
         {
             var date = DateTime.Today;
             var yesterday = date.AddDays(-1).ToUniversalTime();
@@ -113,14 +188,14 @@ namespace HoopHub.API.BackgroundJobs
 
             if (yesterdaysGames.Count != 0)
             {
-                _logger.LogInformation($"Yesterdays games already inserted into the database");
+                _logger.LogInformation("Yesterdays games already inserted into the database");
                 return;
             }
 
             var response = await gamesDataService.GetGamesByDateAsync(yesterday.ToString("yyyy-MM-dd"));
             if (!response.IsSuccess)
             {
-                _logger.LogError($"Error getting games for {yesterday}");
+                _logger.LogError("Error getting games for {yesterday}");
                 return;
             }
 
@@ -155,7 +230,8 @@ namespace HoopHub.API.BackgroundJobs
         public async Task HandleLiveBoxScores(ITeamRepository teamRepository, IPlayerRepository playerRepository, IBoxScoresDataService boxScoresDataService,
             IMediator mediator)
         {
-            var response = await LiveScoreGetterService.GetLiveBoxScores(teamRepository, playerRepository, boxScoresDataService);
+            var isLicensed = _currentUserService.GetUserLicense ?? false;
+            var response = await LiveScoreGetterService.GetLiveBoxScores(teamRepository, playerRepository, boxScoresDataService, isLicensed);
             await _hubContext.Clients.All.ReceiveLiveBoxScores(response);
             if (!response.Success)
                 return;

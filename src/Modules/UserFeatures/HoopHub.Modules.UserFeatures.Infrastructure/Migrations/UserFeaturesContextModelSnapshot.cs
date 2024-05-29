@@ -223,6 +223,9 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Migrations
                     b.Property<Guid?>("FavouriteTeamId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsLicensed")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
 

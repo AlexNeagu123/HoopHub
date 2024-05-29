@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
 {
-    public class GameReviewRepository(UserFeaturesContext context) 
+    public class GameReviewRepository(UserFeaturesContext context)
         : BaseRepository<GameReview>(context), IGameReviewRepository
     {
         public async Task<Result<GameReview>> FindByIdAsyncIncludingAll(int homeTeamId, int visitorTeamId, string date, string fanId)
@@ -41,8 +41,8 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
         {
             var reviews = await context.GameReviews
                 .Include(x => x.Fan)
-                .OrderByDescending(x => x.Date)
                 .Where(x => x.HomeTeamId == homeTeamId && x.VisitorTeamId == visitorTeamId && x.Date == date)
+                .OrderByDescending(x => x.CreatedDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -56,8 +56,8 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
         {
             var reviews = await context.GameReviews
                 .Include(x => x.Fan)
-                .OrderByDescending(x => x.Date)
                 .Where(x => x.FanId == fanId)
+                .OrderByDescending(x => x.CreatedDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -72,6 +72,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.Persistence
             var groupedGameReviews = await context.GameReviews
                 .Include(x => x.Fan)
                 .Where(x => x.Date == date)
+                .OrderByDescending(x => x.CreatedDate)
                 .GroupBy(x => new { x.VisitorTeamId, x.HomeTeamId, x.Date })
                 .Select(g => g.First())
                 .ToListAsync();

@@ -6,5 +6,6 @@ namespace HoopHub.Modules.UserAccess.Domain.Users
     {
         public string FirstName  { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
+        public bool IsLicensed { get; set; } = true;
     }
 }

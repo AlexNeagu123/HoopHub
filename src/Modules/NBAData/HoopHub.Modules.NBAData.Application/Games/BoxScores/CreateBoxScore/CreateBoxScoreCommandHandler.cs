@@ -1,4 +1,5 @@
 ﻿using HoopHub.BuildingBlocks.Application.Responses;
+using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.Modules.NBAData.Application.Constants;
 using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using HoopHub.Modules.NBAData.Application.Games.Mappers;
@@ -11,7 +12,8 @@ namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.CreateBoxScore
         IBoxScoresRepository boxScoresRepository,
         ITeamRepository teamRepository,
         IPlayerRepository playerRepository,
-        IGameRepository gameRepository)
+        IGameRepository gameRepository,
+        ICurrentUserService currentUserService)
         : IRequestHandler<CreateBoxScoreCommand, Response<LocalStoredBoxScoresDto>>
     {
         private readonly IBoxScoresRepository _boxScoresRepository = boxScoresRepository;
@@ -19,9 +21,11 @@ namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.CreateBoxScore
         private readonly IPlayerRepository _playerRepository = playerRepository;
         private readonly IGameRepository _gameRepository = gameRepository;
         private readonly LocalBoxScoresMapper _localBoxScoresMapper = new();
+        private readonly ICurrentUserService _currentUserService = currentUserService;
 
         public async Task<Response<LocalStoredBoxScoresDto>> Handle(CreateBoxScoreCommand request, CancellationToken cancellationToken)
         {
+            var isLicensed = _currentUserService.GetUserLicense ?? false;
             var teamResult = await _teamRepository.FindByApiIdAsync(request.TeamId);
             if (!teamResult.IsSuccess)
                 return Response<LocalStoredBoxScoresDto>.ErrorResponseFromKeyMessage(teamResult.ErrorMsg, ValidationKeys.TeamId);
@@ -69,6 +73,9 @@ namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.CreateBoxScore
                     request.Pts
             );
 
+            boxScore.MarkAsAdded(homeTeamResult.Value.ApiId, visitorTeamResult.Value.ApiId, $"{playerResult.Value.FirstName} {playerResult.Value.LastName}", 
+                gameResult.Value.Date, playerResult.Value.ImageUrl);
+
             var addResult = await _boxScoresRepository.AddAsync(boxScore);
             if (!addResult.IsSuccess)
                 return Response<LocalStoredBoxScoresDto>.ErrorResponseFromKeyMessage(addResult.ErrorMsg, ValidationKeys.BoxScores);
@@ -81,7 +88,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.CreateBoxScore
             return new Response<LocalStoredBoxScoresDto>
             {
                 Success = true,
-                Data = _localBoxScoresMapper.LocalStoredBoxScoresToLocalStoredBoxScoresDto(afterAddResult.Value)
+                Data = _localBoxScoresMapper.LocalStoredBoxScoresToLocalStoredBoxScoresDto(afterAddResult.Value, isLicensed)
             };
         }
     }

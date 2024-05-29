@@ -228,13 +228,16 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", "user_access");
                 });
 
-            modelBuilder.Entity("HoopHub.Modules.UserAccess.Domain.Roles.ApplicationUser", b =>
+            modelBuilder.Entity("HoopHub.Modules.UserAccess.Domain.Users.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsLicensed")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .IsRequired()

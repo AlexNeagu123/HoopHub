@@ -10,14 +10,14 @@ namespace HoopHub.Modules.NBAData.Application.Games.Mappers
         private readonly PlayerMapper _playerMapper = new();
         private readonly TeamMapper _teamMapper = new();
         public LocalStoredBoxScoresDto LocalStoredBoxScoresToLocalStoredBoxScoresDto(
-            Domain.BoxScores.BoxScores boxScores)
+            Domain.BoxScores.BoxScores boxScores, bool isLicensed)
         {
             return new LocalStoredBoxScoresDto
             {
                 Id = boxScores.Id,
-                Game = _gameMapper.LocalStoredGameToLocalStoredGameDto(boxScores.Game),
-                Player = _playerMapper.PlayerToPlayerDto(boxScores.Player),
-                Team = _teamMapper.TeamToTeamDto(boxScores.Team),
+                Game = _gameMapper.LocalStoredGameToLocalStoredGameDto(boxScores.Game, isLicensed),
+                Player = _playerMapper.PlayerToPlayerDto(boxScores.Player, isLicensed),
+                Team = _teamMapper.TeamToTeamDto(boxScores.Team, isLicensed),
                 Min = boxScores.Min,
                 Fgm = boxScores.Fgm,
                 Fga = boxScores.Fga,

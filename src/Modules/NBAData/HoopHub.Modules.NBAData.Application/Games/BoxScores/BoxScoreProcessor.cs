@@ -4,12 +4,11 @@ using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
 using HoopHub.Modules.NBAData.Application.Games.Dtos;
 using HoopHub.Modules.NBAData.Application.Games.Mappers;
 using HoopHub.Modules.NBAData.Application.Persistence;
-using HoopHub.Modules.NBAData.Application.Players;
 using PlayerMapper = HoopHub.Modules.NBAData.Application.Players.Mappers.PlayerMapper;
 
 namespace HoopHub.Modules.NBAData.Application.Games.BoxScores
 {
-    public class BoxScoreProcessor(ITeamRepository teamRepository, IPlayerRepository playerRepository)
+    public class BoxScoreProcessor(ITeamRepository teamRepository, IPlayerRepository playerRepository, bool isLicensed)
     {
         private readonly ITeamRepository _teamRepository = teamRepository;
         private readonly IPlayerRepository _playerRepository = playerRepository;
@@ -17,6 +16,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.BoxScores
         private readonly BoxScorePlayerMapper _boxScorePlayerMapper = new();
         private readonly PlayerMapper _playerMapper = new();
         private readonly GameWithBoxScoreMapper _gameWithBoxScoreMapper = new();
+        private readonly bool _isLicensed = isLicensed;
 
         public async Task<Response<GameWithBoxScoreDto>> ProcessApiBoxScoreAndConvert(BoxScoreApiDto boxScore)
         {
@@ -28,12 +28,12 @@ namespace HoopHub.Modules.NBAData.Application.Games.BoxScores
             if (visitorTeam.IsSuccess == false)
                 return Response<GameWithBoxScoreDto>.ErrorResponseFromKeyMessage(visitorTeam.ErrorMsg, ValidationKeys.TeamApiId);
 
-            var boxScoreHomeTeam = _boxScoreTeamMapper.TeamToBoxScoreTeamDto(homeTeam.Value);
-            var boxScoreVisitorTeam = _boxScoreTeamMapper.TeamToBoxScoreTeamDto(visitorTeam.Value);
-                
-            foreach(var apiPlayer in boxScore.HomeTeam.Players)
+            var boxScoreHomeTeam = _boxScoreTeamMapper.TeamToBoxScoreTeamDto(homeTeam.Value, _isLicensed);
+            var boxScoreVisitorTeam = _boxScoreTeamMapper.TeamToBoxScoreTeamDto(visitorTeam.Value, _isLicensed);
+
+            foreach (var apiPlayer in boxScore.HomeTeam.Players)
             {
-                if(apiPlayer.Player == null) 
+                if (apiPlayer.Player == null)
                     continue;
 
                 var boxScorePlayerDto = _boxScorePlayerMapper.BoxScoreApiPlayerDtoToBoxScorePlayerDto(apiPlayer);
@@ -41,7 +41,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.BoxScores
                 if (player.IsSuccess == false)
                     continue;
 
-                var playerDto = _playerMapper.PlayerToPlayerDto(player.Value);
+                var playerDto = _playerMapper.PlayerToPlayerDto(player.Value, _isLicensed);
                 boxScorePlayerDto.Player = playerDto;
                 boxScoreHomeTeam.Players.Add(boxScorePlayerDto);
             }
@@ -56,7 +56,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.BoxScores
                 if (player.IsSuccess == false)
                     continue;
 
-                boxScorePlayerDto.Player = _playerMapper.PlayerToPlayerDto(player.Value);
+                boxScorePlayerDto.Player = _playerMapper.PlayerToPlayerDto(player.Value, _isLicensed);
                 boxScoreVisitorTeam.Players.Add(boxScorePlayerDto);
             }
 

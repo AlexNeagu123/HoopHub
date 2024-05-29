@@ -16,7 +16,7 @@
         public const string DefaultAvatarPhotoUrl = "https://hoophub.blob.core.windows.net/userphotos/default-profile.png";
         public const string ReplyAddedNotificationTitle = "New reply";
         public const string FollowedTeamGameEndsTitle = "A team you follow finished the game";
-
+        public const string FollowedPlayerGoodGameTitle = "Impressive Performance";
         public const int CommentTruncateLength = 25;
 
         public static string FollowedTeamGameEndsContent(string teamName)

@@ -1,4 +1,5 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
+using HoopHub.Modules.NBAData.Domain.AdvancedStatsEntries;
 using HoopHub.Modules.NBAData.Domain.BoxScores;
 using HoopHub.Modules.NBAData.Domain.Games;
 using HoopHub.Modules.NBAData.Domain.OutboxMessages;
@@ -22,8 +23,10 @@ namespace HoopHub.Modules.NBAData.Infrastructure
         public DbSet<TeamBio> TeamBios { get; set; }
         public DbSet<PlayoffSeries> PlayoffSeries { get; set; }
         public DbSet<TeamLatest> TeamsLatest { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<AdvancedStatsEntry> AdvancedStatsEntries { get; set; }
+        public DbSet<BoxScores> BoxScores { get; set; }
         public DbSet<NBADataOutboxMessage> OutboxMessages { get; set; }
-
         public NBADataContext(DbContextOptions<NBADataContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,8 +41,31 @@ namespace HoopHub.Modules.NBAData.Infrastructure
             ModelTeamLatestTable(modelBuilder);
             ModelGamesTable(modelBuilder);
             ModelBoxScoresTable(modelBuilder);
+            ModelAdvancedStatsTable(modelBuilder);
             ModelOutboxMessagesTable(modelBuilder);
             modelBuilder.HasDefaultSchema("nba_data");
+        }
+
+        private static void ModelAdvancedStatsTable(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AdvancedStatsEntry>().HasKey(a => a.Id);
+
+            modelBuilder.Entity<AdvancedStatsEntry>()
+                .HasOne(a => a.Game)
+                .WithMany(g => g.AdvancedStatsEntries)
+                .HasForeignKey(a => a.GameId);
+
+            modelBuilder.Entity<AdvancedStatsEntry>()
+                .HasOne(a => a.Player)
+                .WithMany(p => p.AdvancedStatsEntries)
+                .HasForeignKey(a => a.PlayerId);
+
+            modelBuilder.Entity<AdvancedStatsEntry>()
+                .HasOne(a => a.Team)
+                .WithMany(t => t.AdvancedStatsEntries)
+                .HasForeignKey(a => a.TeamId);
+
+            modelBuilder.Entity<AdvancedStatsEntry>().ToTable("advanced_stats");
         }
 
         private static void ModelOutboxMessagesTable(ModelBuilder modelBuilder)

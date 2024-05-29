@@ -8,7 +8,7 @@ namespace HoopHub.API.BackgroundJobs
 {
     public class LiveScoreGetterService
     {
-        public static async Task<Response<IReadOnlyList<GameWithBoxScoreDto>>> GetLiveBoxScores(ITeamRepository teamRepository, IPlayerRepository playerRepository, IBoxScoresDataService boxScoresDataService)
+        public static async Task<Response<IReadOnlyList<GameWithBoxScoreDto>>> GetLiveBoxScores(ITeamRepository teamRepository, IPlayerRepository playerRepository, IBoxScoresDataService boxScoresDataService, bool isLicensed)
         {
             var boxScores = await boxScoresDataService.GetLiveBoxScores();
             if (!boxScores.IsSuccess)
@@ -20,7 +20,7 @@ namespace HoopHub.API.BackgroundJobs
                 };
             }
 
-            var boxScoreProcessor = new BoxScoreProcessor(teamRepository, playerRepository);
+            var boxScoreProcessor = new BoxScoreProcessor(teamRepository, playerRepository, isLicensed);
             var liveBoxScores = boxScores.Value;
 
             List<GameWithBoxScoreDto> liveProcessedBoxScores = [];

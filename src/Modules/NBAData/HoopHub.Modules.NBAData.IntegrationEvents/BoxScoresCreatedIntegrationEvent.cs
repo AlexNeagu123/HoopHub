@@ -1,0 +1,32 @@
+﻿namespace HoopHub.Modules.NBAData.IntegrationEvents
+{
+    public record BoxScoresCreatedIntegrationEvent(
+        Guid NotificationId,
+        Guid GameId,
+        Guid PlayerId,
+        Guid TeamId,
+        string PlayerName,
+        DateTime Date,
+        string? PlayerImageUrl,
+        int HomeTeamApiId,
+        int VisitorTeamApiId,
+        string? Min,
+        int? Fgm,
+        int? Fga,
+        double? FgPct,
+        int? Fg3m,
+        int? Fg3a,
+        double? Fg3Pct,
+        int? Ftm,
+        int? Fta,
+        double? FtPct,
+        int? Oreb,
+        int? Dreb,
+        int? Reb,
+        int? Ast,
+        int? Stl,
+        int? Blk,
+        int? Turnover,
+        int? Pf,
+        int? Pts);
+}

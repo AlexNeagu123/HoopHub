@@ -11,5 +11,10 @@
         public const string PasswordsDoNotMatch = "Passwords do not match";
         public const string UserAlreadyExists = "Username is already taken";
         public const string EmailAlreadyExists = "Email is already taken";
+        public const string InvalidEmail = "The provided mail for the password reset does not exist in the application";
+        public const string EmailNotSent = "Email could not be sent";
+        public const string UserNotFound = "User not found";
+        public const string UserNotAuthorized = "You are not authorized to perform this action";
+        public const string UserNameTooLong = "Username is too long. Maximum 20 characters are allowed";
     }
 }

@@ -8,6 +8,8 @@ namespace HoopHub.API.Services
         private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
         public string? GetUserRole => _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Role);
         public string? GetUserId => _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        public bool? GetUserLicense => _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Version) is "True";
+        public string? GetUserEmail => _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
         public ClaimsPrincipal GetCurrentClaimsPrincipal()
         {

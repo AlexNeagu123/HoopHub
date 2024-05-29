@@ -3,6 +3,7 @@ using HoopHub.Modules.UserAccess.Application.Constants;
 using HoopHub.Modules.UserAccess.Application.Services.Registration;
 using HoopHub.Modules.UserAccess.Domain.Registration;
 using HoopHub.Modules.UserAccess.Domain.Users;
+using HoopHub.Modules.UserAccess.Infrastructure.Services.Mappers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -14,7 +15,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
         private readonly IPublisher _publisher = publisher;
-        private readonly RegistrationMapper _userMapper = new();
+        private readonly UserMapper _userMapper = new();
         public async Task<Response<UserDto>> RegisterAsync(RegistrationModel request, string role)
         {
             var validator = new RegistrationValidator(_userManager);
@@ -46,7 +47,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.Registration
 
             await _userManager.AddToRoleAsync(user, role);
 
-            await _publisher.Publish(new UserRegisteredDomainEvent(user.Id, user.UserName, user.Email));
+            await _publisher.Publish(new UserRegisteredDomainEvent(user.Id, user.UserName, user.Email, user.IsLicensed));
 
             return new Response<UserDto>
             {

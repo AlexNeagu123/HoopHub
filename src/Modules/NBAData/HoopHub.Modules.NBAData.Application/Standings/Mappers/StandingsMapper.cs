@@ -10,7 +10,7 @@ namespace HoopHub.Modules.NBAData.Application.Standings.Mappers
         private readonly TeamMapper _teamMapper = new();
         private readonly SeasonMapper _seasonMapper = new();
 
-        public StandingsEntryDto StandingsEntryToStandingsEntryDto(StandingsEntry entry)
+        public StandingsEntryDto StandingsEntryToStandingsEntryDto(StandingsEntry entry, bool isLicensed)
         {
             return new StandingsEntryDto
             {
@@ -20,7 +20,7 @@ namespace HoopHub.Modules.NBAData.Application.Standings.Mappers
                 Road = entry.Road,
                 EasternRecord = entry.EasternRecord,
                 WesternRecord = entry.WesternRecord,
-                Team = _teamMapper.TeamToTeamDto(entry.Team),
+                Team = _teamMapper.TeamToTeamDto(entry.Team, isLicensed),
                 Season = _seasonMapper.SeasonToSeasonDto(entry.Season)
             };
         }

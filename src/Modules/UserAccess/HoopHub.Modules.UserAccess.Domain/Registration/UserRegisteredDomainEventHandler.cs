@@ -12,7 +12,7 @@ namespace HoopHub.Modules.UserAccess.Domain.Registration
         public async Task Handle(UserRegisteredDomainEvent notification, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Integration Event Sent. User with ID: {notification.UserId} has been registered.");
-            await _bus.Publish(new UserRegisteredIntegrationEvent(notification.Id, notification.UserId, notification.UserName, notification.UserEmail), cancellationToken);
+            await _bus.Publish(new UserRegisteredIntegrationEvent(notification.Id, notification.UserId, notification.UserName, notification.UserEmail, notification.IsLicensed), cancellationToken);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using HoopHub.BuildingBlocks.Domain;
+using HoopHub.Modules.NBAData.Domain.AdvancedStatsEntries;
 using HoopHub.Modules.NBAData.Domain.Games.Events;
 using HoopHub.Modules.NBAData.Domain.Seasons;
 using HoopHub.Modules.NBAData.Domain.Teams;
@@ -45,7 +46,7 @@ namespace HoopHub.Modules.NBAData.Domain.Games
         public bool? Postseason { get; private set; }
 
         public ICollection<BoxScores.BoxScores> BoxScores { get; private set; } = [];
-
+        public ICollection<AdvancedStatsEntry> AdvancedStatsEntries { get; private set; } = [];
         private Game(DateTime date, Guid homeTeamId, Guid visitorTeamId, int homeTeamScore, int visitorTeamScore, string status, Guid seasonId,
             bool? postseason, string? time, int? period)
         {

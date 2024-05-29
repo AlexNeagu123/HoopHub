@@ -8,23 +8,33 @@ using HoopHub.BuildingBlocks.Application.Persistence;
 using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.BuildingBlocks.Infrastructure;
 using HoopHub.Modules.NBAData.Application.Events;
+using HoopHub.Modules.NBAData.Application.ExternalApiServices.AdvancedStatsData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.GamesData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.SeasonAverageStats;
 using HoopHub.Modules.NBAData.Application.Persistence;
+using HoopHub.Modules.NBAData.Domain.BoxScores.Events;
 using HoopHub.Modules.NBAData.Infrastructure;
 using HoopHub.Modules.NBAData.Infrastructure.BackgroundJobs;
+using HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.AdvancedStatsData;
 using HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.BoxScoresData;
 using HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.GamesData;
 using HoopHub.Modules.NBAData.Infrastructure.ExternalApiServices.SeasonAverageStats;
 using HoopHub.Modules.NBAData.Infrastructure.Interceptors;
 using HoopHub.Modules.NBAData.Infrastructure.Persistence;
+using HoopHub.Modules.NBAData.IntegrationEvents;
+using HoopHub.Modules.UserAccess.Application.Services.Emails;
 using HoopHub.Modules.UserAccess.Application.Services.Login;
 using HoopHub.Modules.UserAccess.Application.Services.Registration;
+using HoopHub.Modules.UserAccess.Application.Services.ResetPassword;
+using HoopHub.Modules.UserAccess.Application.Services.UserDetails;
 using HoopHub.Modules.UserAccess.Domain.Users;
 using HoopHub.Modules.UserAccess.Infrastructure;
+using HoopHub.Modules.UserAccess.Infrastructure.Services.Emails;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.Login;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.Registration;
+using HoopHub.Modules.UserAccess.Infrastructure.Services.ResetPassword;
+using HoopHub.Modules.UserAccess.Infrastructure.Services.UserDetails;
 using HoopHub.Modules.UserFeatures.Application.Events;
 using HoopHub.Modules.UserFeatures.Application.ExternalServices.AzureBlobStorage;
 using HoopHub.Modules.UserFeatures.Application.FanNotifications.Events;
@@ -116,6 +126,7 @@ builder.Services.AddScoped<IPlayerTeamSeasonRepository, PlayerTeamSeasonReposito
 builder.Services.AddScoped<ITeamBioRepository, TeamBioRepository>();
 builder.Services.AddScoped<ISeasonAverageStatsService, SeasonAverageStatsService>();
 builder.Services.AddScoped<IGamesDataService, GamesDataService>();
+builder.Services.AddScoped<IAdvancedStatsDataService, AdvancedStatsDataService>();
 builder.Services.AddScoped<IBoxScoresDataService, BoxScoresDataService>();
 builder.Services.AddScoped<IStandingsRepository, StandingsRepository>();
 builder.Services.AddScoped<IPlayoffSeriesRepository, PlayoffSeriesRepository>();
@@ -123,6 +134,7 @@ builder.Services.AddScoped<ITeamLatestRepository, TeamLatestRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IBoxScoresRepository, BoxScoresRepository>();
 builder.Services.AddScoped<ISeasonRepository, SeasonRepository>();
+builder.Services.AddScoped<IAdvancedStatsEntryRepository, AdvancedStatsEntryRepository>();
 
 // UserAccess STUFF
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserAccessContext>()
@@ -155,7 +167,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IResetPasswordService, ResetPasswordService>();
+builder.Services.AddScoped<IUserDetailsService, UserDetailsService>();
 
 
 // UserFeatures STUFF
@@ -206,6 +220,8 @@ builder.Services.AddMassTransit(busConfigurator =>
     busConfigurator.AddConsumer<UserRegisteredIntegrationEventHandler>();
     busConfigurator.AddConsumer<PlayerAverageRatingUpdatedIntegrationEventHandler>();
     busConfigurator.AddConsumer<GameCreatedIntegrationEventHandler>();
+    busConfigurator.AddConsumer<BoxScoresCreatedIntegrationEventHandler>();
+    busConfigurator.AddConsumer<UserDetailsChangedIntegrationEventHandler>();
     busConfigurator.UsingInMemory((context, config) =>
     {
         config.ConfigureEndpoints(context);

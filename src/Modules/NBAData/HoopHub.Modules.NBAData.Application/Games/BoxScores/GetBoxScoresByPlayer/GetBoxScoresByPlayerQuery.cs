@@ -6,6 +6,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByPlay
 {
     public class GetBoxScoresByPlayerQuery : IRequest<Response<IReadOnlyList<LocalStoredBoxScoresDto>>>
     {
+        public int GameCount { get; set; }
         public Guid PlayerId { get; set; }
     }
 }

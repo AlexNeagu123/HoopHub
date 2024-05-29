@@ -1,6 +1,7 @@
 ﻿using HoopHub.Modules.NBAData.Domain.Teams;
 using System.ComponentModel.DataAnnotations.Schema;
 using HoopHub.Modules.NBAData.Domain.PlayerTeamSeasons;
+using HoopHub.Modules.NBAData.Domain.AdvancedStatsEntries;
 
 namespace HoopHub.Modules.NBAData.Domain.Players
 {
@@ -60,6 +61,7 @@ namespace HoopHub.Modules.NBAData.Domain.Players
         public Team? CurrentTeam { get; private set; }
         public ICollection<PlayerTeamSeason> PlayerTeamSeasons { get; private set; }
         public ICollection<BoxScores.BoxScores> BoxScores { get; private set; }
+        public ICollection<AdvancedStatsEntry> AdvancedStatsEntries { get; private set; } = [];
 
         public void UpdateAverageRating(decimal? averageRating)
         {

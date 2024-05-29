@@ -18,6 +18,7 @@ namespace HoopHub.Modules.UserFeatures.Application.Fans.Mappers
                 AvatarPhotoUrl = fan.AvatarPhotoUrl,
                 CommentsCount = fan.CommentsCount,
                 ReviewsCount = fan.ReviewsCount,
+                IsLicensed = fan.IsLicensed
             };
         }
     }
