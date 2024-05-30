@@ -4,6 +4,7 @@ using HoopHub.Modules.NBAData.Application.AdvancedStatsEntry.GetAdvancedStatsEnt
 using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoreByGame;
 using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByPlayer;
 using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetBoxScoresByTeam;
+using HoopHub.Modules.NBAData.Application.Games.BoxScores.GetRecentBoxScores;
 using HoopHub.Modules.NBAData.Application.Games.GetAllGamesByDate;
 using Microsoft.AspNetCore.Mvc;
 
@@ -80,6 +81,18 @@ namespace HoopHub.API.Controllers.Modules.NBAData.Games
         public async Task<IActionResult> GetAdvancedStatsEntriesByPlayer(Guid playerId)
         {
             var response = await Mediator.Send(new GetAdvancedStatsEntriesByPlayerQuery { PlayerId = playerId });
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("box-scores/recent")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetRecentBoxScores()
+        {
+            var response = await Mediator.Send(new GetRecentBoxScoresQuery());
             if (!response.Success)
             {
                 return BadRequest(response);

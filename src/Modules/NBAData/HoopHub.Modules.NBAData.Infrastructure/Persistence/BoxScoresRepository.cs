@@ -53,5 +53,13 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
                 .FirstOrDefaultAsync(bs => bs.Id == id);
             return boxScores == null ? Result<BoxScores>.Failure($"Entity with Id {id} not found") : Result<BoxScores>.Success(boxScores);
         }
+
+        public async Task<DateTime> FindMostRecentGameDay()
+        {
+            return await context.Set<BoxScores>()
+                .Select(bs => bs.Game.Date)
+                .OrderByDescending(date => date)
+                .FirstOrDefaultAsync();
+        }
     }
 }
