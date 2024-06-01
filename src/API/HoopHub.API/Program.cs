@@ -35,11 +35,13 @@ using HoopHub.Modules.UserAccess.Infrastructure.Services.ResetPassword;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.UserDetails;
 using HoopHub.Modules.UserFeatures.Application.Events;
 using HoopHub.Modules.UserFeatures.Application.ExternalServices.AzureBlobStorage;
+using HoopHub.Modules.UserFeatures.Application.ExternalServices.PredictionModel;
 using HoopHub.Modules.UserFeatures.Application.FanNotifications.Events;
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Infrastructure;
 using HoopHub.Modules.UserFeatures.Infrastructure.BackgroundJobs;
 using HoopHub.Modules.UserFeatures.Infrastructure.ExternalServices.AzureBlobStorage;
+using HoopHub.Modules.UserFeatures.Infrastructure.ExternalServices.PredictionModel;
 using HoopHub.Modules.UserFeatures.Infrastructure.Interceptors;
 using HoopHub.Modules.UserFeatures.Infrastructure.Persistence;
 using MassTransit;
@@ -188,11 +190,15 @@ builder.Services.AddScoped<IThreadCommentVoteRepository, ThreadCommentVoteReposi
 builder.Services.AddScoped<IGameReviewRepository, GameReviewRepository>();
 builder.Services.AddScoped<IGameThreadRepository, GameThreadRepository>();
 builder.Services.AddScoped<IPlayerPerformanceReviewRepository, PlayerPerformanceReviewRepository>();
-builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
 builder.Services.AddScoped<IPlayerFollowEntryRepository, PlayerFollowEntryRepository>();
 builder.Services.AddScoped<ITeamFollowEntryRepository, TeamFollowEntryRepository>();
 builder.Services.AddScoped<ITeamThreadVoteRepository, TeamThreadVoteRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+
+builder.Services.AddSingleton<ITensorFlowModelService, TensorFlowModelService>();
+builder.Services.AddSingleton<IAzureBlobStorageService, AzureBlobStorageService>();
+//builder.Services.AddHostedService<TensorFlowModelService>();
+
 
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {

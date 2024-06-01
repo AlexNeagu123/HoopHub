@@ -6,5 +6,6 @@ namespace HoopHub.Modules.UserFeatures.Application.ExternalServices.AzureBlobSto
     public interface IAzureBlobStorageService
     {
         Task<Result<string>> UploadAsync(string fanId, IFormFile file);
+        Task<Result<string>> DownloadAsync(string blobName, string localPath);
     }
 }

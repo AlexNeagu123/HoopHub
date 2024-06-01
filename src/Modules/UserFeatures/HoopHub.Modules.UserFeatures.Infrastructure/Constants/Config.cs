@@ -3,6 +3,7 @@
     public class Config
     {
         public const string AzureConnectionStringKey = "AzureBlobStorage:ConnectionString";
-        public const string AzureContainerNameKey = "AzureBlobStorage:ContainerName";
+        public const string AzurePhotosContainerNameKey = "AzureBlobStorage:PhotosContainerName";
+        public const string MlContainerNameKey = "AzureBlobStorage:MLContainerName";
     }
 }

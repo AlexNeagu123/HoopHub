@@ -9,10 +9,13 @@
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.11.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
+    <PackageReference Include="Keras.NET" Version="3.8.5" />
     <PackageReference Include="MassTransit" Version="8.2.0" />
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="2.17.4" />
     <PackageReference Include="Riok.Mapperly" Version="3.5.0" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.16.0" />
+    <PackageReference Include="TensorFlow.NET" Version="0.150.0" />
   </ItemGroup>
 
   <ItemGroup>

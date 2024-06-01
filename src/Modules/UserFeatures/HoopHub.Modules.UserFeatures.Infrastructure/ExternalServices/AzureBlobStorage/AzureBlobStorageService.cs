@@ -19,7 +19,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.ExternalServices.AzureBlob
             }
 
             var connectionString = _configuration[Config.AzureConnectionStringKey];
-            var containerName = _configuration[Config.AzureContainerNameKey];
+            var containerName = _configuration[Config.AzurePhotosContainerNameKey];
 
             var blobContainerClient = new BlobContainerClient(connectionString, containerName);
             var blobClient = blobContainerClient.GetBlobClient(fanId);
@@ -45,6 +45,36 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.ExternalServices.AzureBlob
                 });
                 await blobContainerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
                 return Result<string>.Success(blobClient.Uri.AbsoluteUri);
+            }
+            catch (Exception e)
+            {
+                return Result<string>.Failure(e.Message);
+            }
+        }
+
+        public async Task<Result<string>> DownloadAsync(string blobName, string localPath)
+        {
+            var connectionString = _configuration[Config.AzureConnectionStringKey];
+            var containerName = _configuration[Config.MlContainerNameKey];
+
+            var blobContainerClient = new BlobContainerClient(connectionString, containerName);
+            var blobClient = blobContainerClient.GetBlobClient(blobName);
+
+            try
+            {
+                var blobExists = await blobClient.ExistsAsync();
+                if (!blobExists)
+                {
+                    return Result<string>.Failure("Blob does not exist.");
+                }
+
+                BlobDownloadInfo download = await blobClient.DownloadAsync();
+                await using (var fileStream = File.OpenWrite(localPath))
+                {
+                    await download.Content.CopyToAsync(fileStream);
+                }
+
+                return Result<string>.Success(localPath);
             }
             catch (Exception e)
             {
