@@ -24,8 +24,9 @@ COPY ["Modules/UserAccess/HoopHub.Modules.UserAccess.Application/HoopHub.Modules
 COPY ["Modules/UserAccess/HoopHub.Modules.UserAccess.Domain/HoopHub.Modules.UserAccess.Domain.csproj", "Modules/UserAccess/HoopHub.Modules.UserAccess.Domain/"]
 COPY ["Modules/UserAccess/HoopHub.Modules.UserAccess.IntegrationEvents/HoopHub.Modules.UserAccess.IntegrationEvents.csproj", "Modules/UserAccess/HoopHub.Modules.UserAccess.IntegrationEvents/"]
 COPY ["Modules/UserFeatures/HoopHub.Modules.UserFeatures.Application/HoopHub.Modules.UserFeatures.Application.csproj", "Modules/UserFeatures/HoopHub.Modules.UserFeatures.Application/"]
-COPY ["Modules/UserFeatures/HoopHub.Modules.UserFeatures.Domain/HoopHub.Modules.UserFeatures.Domain.csproj", "Modules/UserFeatures/HoopHub.Modules.UserFeatures.Domain/"]
 COPY ["Modules/UserFeatures/HoopHub.Modules.UserFeatures.Infrastructure/HoopHub.Modules.UserFeatures.Infrastructure.csproj", "Modules/UserFeatures/HoopHub.Modules.UserFeatures.Infrastructure/"]
+
+COPY ["Modules/UserFeatures/HoopHub.Modules.UserFeatures.Domain/HoopHub.Modules.UserFeatures.Domain.csproj", "Modules/UserFeatures/HoopHub.Modules.UserFeatures.Domain/"]
 RUN dotnet restore "./API/HoopHub.API/./HoopHub.API.csproj"
 COPY . .
 WORKDIR "/src/API/HoopHub.API"
