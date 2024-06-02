@@ -10,7 +10,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["API/HoopHub.API/HoopHub.API.csproj", "API/HoopHub.API/"]
-COPY ["BuildingBlocks/HoopHub.BuildingBlocks.API/HoopHub.BuildingBlocks.API.csproj", "BuildingBlocks/HoopHub.BuildingBlocks.API/"]
 COPY ["Modules/NBAData/HoopHub.Modules.NBAData.Infrastructure/HoopHub.Modules.NBAData.Infrastructure.csproj", "Modules/NBAData/HoopHub.Modules.NBAData.Infrastructure/"]
 COPY ["BuildingBlocks/HoopHub.BuildingBlocks.Infrastructure/HoopHub.BuildingBlocks.Infrastructure.csproj", "BuildingBlocks/HoopHub.BuildingBlocks.Infrastructure/"]
 COPY ["BuildingBlocks/HoopHub.BuildingBlocks.Application/HoopHub.BuildingBlocks.Application.csproj", "BuildingBlocks/HoopHub.BuildingBlocks.Application/"]
@@ -25,7 +24,6 @@ COPY ["Modules/UserAccess/HoopHub.Modules.UserAccess.Domain/HoopHub.Modules.User
 COPY ["Modules/UserAccess/HoopHub.Modules.UserAccess.IntegrationEvents/HoopHub.Modules.UserAccess.IntegrationEvents.csproj", "Modules/UserAccess/HoopHub.Modules.UserAccess.IntegrationEvents/"]
 COPY ["Modules/UserFeatures/HoopHub.Modules.UserFeatures.Application/HoopHub.Modules.UserFeatures.Application.csproj", "Modules/UserFeatures/HoopHub.Modules.UserFeatures.Application/"]
 COPY ["Modules/UserFeatures/HoopHub.Modules.UserFeatures.Domain/HoopHub.Modules.UserFeatures.Domain.csproj", "Modules/UserFeatures/HoopHub.Modules.UserFeatures.Domain/"]
-COPY ["Modules/UserFeatures/HoopHub.Modules.UserFeatures.Infrastructure/HoopHub.Modules.UserFeatures.Infrastructure.csproj", "Modules/UserFeatures/HoopHub.Modules.UserFeatures.Infrastructure/"]
 RUN dotnet restore "./API/HoopHub.API/./HoopHub.API.csproj"
 COPY . .
 WORKDIR "/src/API/HoopHub.API"
