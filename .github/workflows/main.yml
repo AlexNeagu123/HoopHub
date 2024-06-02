@@ -28,4 +28,4 @@ jobs:
       with:
         push: true
         tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.REGISTRY_USERNAME }}/hoophub-be:${{ github.sha }}
-        file: ./src/API/HoopHub.API/Dockerfile
+        file: src/API/HoopHub.API/Dockerfile
