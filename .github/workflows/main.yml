@@ -1,0 +1,31 @@
+name: Deploy Lambda Function For Core GithubApp
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    
+    - name: Log in to registry
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password:  ${{ secrets.REGISTRY_PASSWORD }}
+    
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.REGISTRY_USERNAME }}/hoophub-be:${{ github.sha }}
+        file: ./src/API/HoopHub.API/Dockerfile
