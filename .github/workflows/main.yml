@@ -26,6 +26,7 @@ jobs:
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
+        context: src
         push: true
         tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.REGISTRY_USERNAME }}/hoophub-be:${{ github.sha }}
-        file: ./src/API/HoopHub.API/Dockerfile
+        file: src/API/HoopHub.API/Dockerfile
