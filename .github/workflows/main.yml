@@ -28,5 +28,5 @@ jobs:
       with:
         context: src
         push: true
-        tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.REGISTRY_USERNAME }}/hoophub-be:${{ github.sha }}
+        tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.REGISTRY_USERNAME }}/hoophub-be
         file: src/API/HoopHub.API/Dockerfile
