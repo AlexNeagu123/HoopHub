@@ -106,7 +106,7 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-var frontendUrl = Environment.GetEnvironmentVariable("PUBLIC_FRONTEND_URL") ?? "https://localhost:5176";
+var frontendUrl = Environment.GetEnvironmentVariable("PUBLIC_FRONTEND_URL") ?? "http://localhost:5176";
 var backendUrl = Environment.GetEnvironmentVariable("PUBLIC_FRONT_END_URL") ?? "https://localhost:5001";
 
 builder.Configuration["Urls:Frontend"] = frontendUrl;
