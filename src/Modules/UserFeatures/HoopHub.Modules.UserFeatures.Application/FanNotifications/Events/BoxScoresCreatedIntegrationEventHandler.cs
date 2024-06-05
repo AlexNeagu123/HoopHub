@@ -4,18 +4,21 @@ using HoopHub.Modules.UserFeatures.Domain.Constants;
 using HoopHub.Modules.UserFeatures.Domain.FanNotifications;
 using HoopHub.Modules.UserFeatures.Domain.Follows;
 using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace HoopHub.Modules.UserFeatures.Application.FanNotifications.Events
 {
     public class BoxScoresCreatedIntegrationEventHandler(ILogger<BoxScoresCreatedIntegrationEventHandler> logger,
         IPlayerFollowEntryRepository playerFollowEntryRepository,
-        INotificationRepository notificationRepository)
+        INotificationRepository notificationRepository,
+        IConfiguration configuration)
         : IConsumer<BoxScoresCreatedIntegrationEvent>
     {
         private readonly ILogger<BoxScoresCreatedIntegrationEventHandler> _logger = logger;
         private readonly IPlayerFollowEntryRepository _playerFollowEntryRepository = playerFollowEntryRepository;
         private readonly INotificationRepository _notificationRepository = notificationRepository;
+        private readonly IConfiguration _configuration = configuration;
 
         public async Task Consume(ConsumeContext<BoxScoresCreatedIntegrationEvent> context)
         {
@@ -32,9 +35,10 @@ namespace HoopHub.Modules.UserFeatures.Application.FanNotifications.Events
                 return;
             }
 
+            var frontendUrl = _configuration["Urls:Frontend"];
             var playerFollows = playerFollowResult.Value;
             var gameLink = ClientRoutes.GetGameLink(context.Message.HomeTeamApiId,
-                context.Message.VisitorTeamApiId, context.Message.Date.ToString("yyyy-MM-dd"));
+                context.Message.VisitorTeamApiId, context.Message.Date.ToString("yyyy-MM-dd"), frontendUrl);
 
             await SendNotificationsByPlayer(playerFollows, context.Message.PlayerId, context.Message.PlayerImageUrl, gameLink, notificationMessage);
         }

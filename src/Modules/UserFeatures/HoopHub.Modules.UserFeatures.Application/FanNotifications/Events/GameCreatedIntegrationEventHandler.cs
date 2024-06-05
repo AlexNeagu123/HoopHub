@@ -4,18 +4,21 @@ using HoopHub.Modules.UserFeatures.Domain.Constants;
 using HoopHub.Modules.UserFeatures.Domain.FanNotifications;
 using HoopHub.Modules.UserFeatures.Domain.Follows;
 using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace HoopHub.Modules.UserFeatures.Application.FanNotifications.Events
 {
     public class GameCreatedIntegrationEventHandler(ILogger<GameCreatedIntegrationEventHandler> logger,
         ITeamFollowEntryRepository teamFollowEntryRepository,
-        INotificationRepository notificationRepository)
+        INotificationRepository notificationRepository,
+        IConfiguration configuration)
         : IConsumer<GameCreatedIntegrationEvent>
     {
         private readonly ILogger<GameCreatedIntegrationEventHandler> _logger = logger;
         private readonly ITeamFollowEntryRepository _teamFollowEntryRepository = teamFollowEntryRepository;
         private readonly INotificationRepository _notificationRepository = notificationRepository;
+        private readonly IConfiguration _configuration = configuration;
 
         public async Task Consume(ConsumeContext<GameCreatedIntegrationEvent> context)
         {
@@ -34,10 +37,11 @@ namespace HoopHub.Modules.UserFeatures.Application.FanNotifications.Events
                 return;
             }
 
+            var frontendUrl = _configuration["Urls:Frontend"];
             var homeTeamFollows = homeTeamFollowResult.Value;
             var visitorTeamFollows = visitorTeamFollowResult.Value;
             var gameLink = ClientRoutes.GetGameLink(context.Message.HomeTeamApiId,
-                context.Message.VisitorTeamApiId, context.Message.Date.ToString("yyyy-MM-dd"));
+                context.Message.VisitorTeamApiId, context.Message.Date.ToString("yyyy-MM-dd"), frontendUrl);
 
             await SendNotificationsByTeam(homeTeamFollows, context.Message.HomeTeamName, context.Message.HomeTeamImageUrl, gameLink);
             await SendNotificationsByTeam(visitorTeamFollows, context.Message.VisitorTeamName, context.Message.VisitorTeamImageUrl, gameLink);

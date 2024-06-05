@@ -102,6 +102,16 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+var frontendUrl = Environment.GetEnvironmentVariable("PUBLIC_FRONTEND_URL") ?? "https://localhost:5176";
+var backendUrl = Environment.GetEnvironmentVariable("PUBLIC_FRONT_END_URL") ?? "https://localhost:5001";
+
+builder.Configuration["Urls:Frontend"] = frontendUrl;
+builder.Configuration["Urls:Backend"] = backendUrl;
+
 var connectionString = builder.Configuration.GetConnectionString("HoopHubConnection");
 
 // NBAData STUFF
@@ -265,11 +275,18 @@ builder.Services.AddQuartzHostedService();
 
 var app = builder.Build();
 
+app.UseSwagger(c =>
+{
+    c.RouteTemplate = "api/swagger/{documentName}/swagger.json";
+});
 
-// Configure the HTTP request pipeline.
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "My API V1");
+    c.RoutePrefix = "api/swagger/v1";
+});
+
 app.ApplyMigrations();
 
 

@@ -73,7 +73,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
                 AddDomainEvent(new ThreadCommentRepliesCountUpdatedDomainEvent(-1, ParentId.Value));
         }
 
-        public void NotifyCommentOwner(string commentOwnerId, Fan fan, Guid parentCommentId, TeamThread? teamThread, GameThread? gameThread)
+        public void NotifyCommentOwner(string commentOwnerId, Fan fan, Guid parentCommentId, TeamThread? teamThread, GameThread? gameThread, string frontendUrl)
         {
             if (fan.Id != FanId)
                 return;
@@ -84,11 +84,11 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
                 Config.ReplyAddedNotificationTitle,
                 Config.ReplyAddedNotificationTitleContent(fan.Username, Content),
                 fan.AvatarPhotoUrl,
-                ClientRoutes.GetCommentLink(parentCommentId, teamThread, gameThread))
+                ClientRoutes.GetCommentLink(parentCommentId, teamThread, gameThread, frontendUrl))
             );
         }
 
-        public void NotifyThreadOwner(string threadOwnerId, Fan fan, Guid parentCommentId, TeamThread teamThread)
+        public void NotifyThreadOwner(string threadOwnerId, Fan fan, Guid parentCommentId, TeamThread teamThread, string frontendUrl)
         {
             if (fan.Id != FanId)
                 return;
@@ -99,7 +99,7 @@ namespace HoopHub.Modules.UserFeatures.Domain.Comments
                 Config.CommentAddedThreadNotificationTitle,
                 Config.CommentAddedThreadNotificationContent(fan.Username, Content),
                 fan.AvatarPhotoUrl,
-                ClientRoutes.GetCommentLink(parentCommentId, teamThread, null))
+                ClientRoutes.GetCommentLink(parentCommentId, teamThread, null, frontendUrl))
             );
         }
 

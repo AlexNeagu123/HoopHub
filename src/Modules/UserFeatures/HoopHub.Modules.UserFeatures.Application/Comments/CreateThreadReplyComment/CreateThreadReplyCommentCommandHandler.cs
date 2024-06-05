@@ -6,16 +6,18 @@ using HoopHub.Modules.UserFeatures.Application.Constants;
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Domain.Comments;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 
 namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyComment
 {
-    public class CreateThreadReplyCommentCommandHandler(IThreadCommentRepository threadCommentRepository, ICurrentUserService currentUserService, ITeamThreadRepository teamThreadRepository, IFanRepository fanRepository, IGameThreadRepository gameThreadRepository) : IRequestHandler<CreateThreadReplyCommentCommand, Response<ThreadCommentDto>>
+    public class CreateThreadReplyCommentCommandHandler(IThreadCommentRepository threadCommentRepository, ICurrentUserService currentUserService, ITeamThreadRepository teamThreadRepository, IFanRepository fanRepository, IGameThreadRepository gameThreadRepository, IConfiguration configuration) : IRequestHandler<CreateThreadReplyCommentCommand, Response<ThreadCommentDto>>
     {
         private readonly IThreadCommentRepository _threadCommentRepository = threadCommentRepository;
         private readonly ITeamThreadRepository _teamThreadRepository = teamThreadRepository;
         private readonly IGameThreadRepository _gameThreadRepository = gameThreadRepository;
         private readonly IFanRepository _fanRepository = fanRepository;
         private readonly ICurrentUserService _currentUserService = currentUserService;
+        private readonly IConfiguration _configuration = configuration;
         private readonly ThreadCommentMapper _threadCommentMapper = new();
         public async Task<Response<ThreadCommentDto>> Handle(CreateThreadReplyCommentCommand request, CancellationToken cancellationToken)
         {
@@ -37,20 +39,21 @@ namespace HoopHub.Modules.UserFeatures.Application.Comments.CreateThreadReplyCom
 
             var parentCommentResult = await _threadCommentRepository.FindByIdAsyncIncludingAll(request.ParentCommentId);
             var parentComment = parentCommentResult.Value;
+            var frontendUrl = _configuration["Urls:Frontend"];
 
             if (request.TeamThreadId.HasValue)
             {
                 threadComment.AttachTeamThread(request.TeamThreadId);
                 var teamThread = await _teamThreadRepository.FindByIdAsyncIncludingFan(request.TeamThreadId.Value);
-                threadComment.NotifyThreadOwner(teamThread.Value.FanId, fanResult.Value, parentComment.Id, teamThread.Value);
-                threadComment.NotifyCommentOwner(parentComment.FanId, fanResult.Value, parentComment.Id, teamThread.Value, null);
+                threadComment.NotifyThreadOwner(teamThread.Value.FanId, fanResult.Value, parentComment.Id, teamThread.Value, frontendUrl);
+                threadComment.NotifyCommentOwner(parentComment.FanId, fanResult.Value, parentComment.Id, teamThread.Value, null, frontendUrl);
             }
 
             if (request.GameThreadId.HasValue)
             {
                 threadComment.AttachGameThread(request.GameThreadId);
                 var gameThread = await _gameThreadRepository.FindByIdAsync(request.GameThreadId.Value);
-                threadComment.NotifyCommentOwner(parentComment.FanId, fanResult.Value, parentComment.Id, null, gameThread.Value);
+                threadComment.NotifyCommentOwner(parentComment.FanId, fanResult.Value, parentComment.Id, null, gameThread.Value, frontendUrl);
             }
 
 
