@@ -1,7 +1,7 @@
 ﻿using HoopHub.BuildingBlocks.Domain;
 using Microsoft.AspNetCore.Http;
 
-namespace HoopHub.Modules.UserFeatures.Application.ExternalServices.AzureBlobStorage
+namespace HoopHub.BuildingBlocks.Application.ExternalServices.AzureStorage
 {
     public interface IAzureBlobStorageService
     {

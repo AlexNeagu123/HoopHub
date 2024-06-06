@@ -4,9 +4,13 @@ using HoopHub.API.Extensions;
 using HoopHub.API.Hubs;
 using HoopHub.API.Services;
 using HoopHub.API.Utility;
+using HoopHub.BuildingBlocks.Application.ExternalServices.AzureStorage;
+using HoopHub.BuildingBlocks.Application.ExternalServices.PredictionsModel;
 using HoopHub.BuildingBlocks.Application.Persistence;
 using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.BuildingBlocks.Infrastructure;
+using HoopHub.BuildingBlocks.Infrastructure.ExternalServices.AzureStorage;
+using HoopHub.BuildingBlocks.Infrastructure.ExternalServices.PredictionsModel;
 using HoopHub.Modules.NBAData.Application.Events;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.AdvancedStatsData;
 using HoopHub.Modules.NBAData.Application.ExternalApiServices.BoxScoresData;
@@ -34,14 +38,10 @@ using HoopHub.Modules.UserAccess.Infrastructure.Services.Registration;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.ResetPassword;
 using HoopHub.Modules.UserAccess.Infrastructure.Services.UserDetails;
 using HoopHub.Modules.UserFeatures.Application.Events;
-using HoopHub.Modules.UserFeatures.Application.ExternalServices.AzureBlobStorage;
-using HoopHub.Modules.UserFeatures.Application.ExternalServices.PredictionModel;
 using HoopHub.Modules.UserFeatures.Application.FanNotifications.Events;
 using HoopHub.Modules.UserFeatures.Application.Persistence;
 using HoopHub.Modules.UserFeatures.Infrastructure;
 using HoopHub.Modules.UserFeatures.Infrastructure.BackgroundJobs;
-using HoopHub.Modules.UserFeatures.Infrastructure.ExternalServices.AzureBlobStorage;
-using HoopHub.Modules.UserFeatures.Infrastructure.ExternalServices.PredictionModel;
 using HoopHub.Modules.UserFeatures.Infrastructure.Interceptors;
 using HoopHub.Modules.UserFeatures.Infrastructure.Persistence;
 using MassTransit;
@@ -207,7 +207,6 @@ builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 builder.Services.AddSingleton<ITensorFlowModelService, TensorFlowModelService>();
 builder.Services.AddSingleton<IAzureBlobStorageService, AzureBlobStorageService>();
-//builder.Services.AddHostedService<TensorFlowModelService>();
 
 
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())

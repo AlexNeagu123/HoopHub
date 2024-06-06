@@ -10,5 +10,6 @@ namespace HoopHub.Modules.NBAData.Application.Persistence
         Task<Result<IReadOnlyList<BoxScores>>> GetByDateAsync(DateTime date);
         Task<Result<BoxScores>> FindByIdIncludingAll(Guid id);
         Task<DateTime> FindMostRecentGameDay();
+        Task<Result<IReadOnlyList<BoxScores>>> GetBoxScoresForTeamSinceStartOfSeason(DateTime seasonStartDate, DateTime gameDate, int teamApiId);
     }
 }

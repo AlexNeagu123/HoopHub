@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-
-namespace HoopHub.Modules.UserFeatures.Domain.Constants
+﻿namespace HoopHub.Modules.UserFeatures.Domain.Constants
 {
     public class Config
     {
@@ -9,7 +7,6 @@ namespace HoopHub.Modules.UserFeatures.Domain.Constants
         public const int ContentMaxLength = 500;
         public const int TitleMinLength = 5;
         public const int TitleMaxLength = 50;
-        public const string KerasBlobName = "hoophub_model.keras";
 
         public const int RookieBadgeThreshold = 10;
         public const int RegularBadgeThreshold = 100;

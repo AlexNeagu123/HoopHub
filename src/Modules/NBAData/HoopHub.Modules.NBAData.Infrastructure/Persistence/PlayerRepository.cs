@@ -16,6 +16,15 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
             return Result<IReadOnlyList<Player>>.Success(players);
         }
 
+        public async Task<Result<IReadOnlyList<Player>>> GetAllActivePlayersByTeamApiId(int teamId)
+        {
+            var players = await context.Set<Player>()
+                .Include(p => p.CurrentTeam)
+                .Where(p => p.CurrentTeam!.ApiId == teamId)
+                .ToListAsync();
+            return Result<IReadOnlyList<Player>>.Success(players);
+        }
+
         public async Task<Result<Player>> FindByApiIdAsync(int apiId)
         {
             var player = await context.Set<Player>()

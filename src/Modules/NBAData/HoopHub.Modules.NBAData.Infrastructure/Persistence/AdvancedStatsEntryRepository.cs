@@ -2,6 +2,7 @@
 using HoopHub.BuildingBlocks.Infrastructure;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Domain.AdvancedStatsEntries;
+using HoopHub.Modules.NBAData.Domain.BoxScores;
 using Microsoft.EntityFrameworkCore;
 
 namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
@@ -70,6 +71,22 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
                 .ToListAsync();
 
             return Result<IReadOnlyList<AdvancedStatsEntry>>.Success(advancedStatsEntries);
+        }
+
+        public async Task<Result<IReadOnlyList<AdvancedStatsEntry>>> GetBoxScoresForTeamSinceStartOfSeason(DateTime seasonStartDate, DateTime gameDate, int teamApiId)
+        {
+            var advancedStats = await context.Set<AdvancedStatsEntry>()
+                .Include(bs => bs.Game)
+                .Include(bs => bs.Player)
+                .Include(bs => bs.Team)
+                .Include(bs => bs.Game.Season)
+                .Include(bs => bs.Game.HomeTeam)
+                .Include(bs => bs.Game.VisitorTeam)
+                .Where(bs => bs.Team.ApiId == teamApiId && bs.Game.Date >= seasonStartDate && bs.Game.Date < gameDate)
+                .OrderByDescending(bs => bs.Game.Date)
+                .ToListAsync();
+
+            return Result<IReadOnlyList<AdvancedStatsEntry>>.Success(advancedStats);
         }
     }
 }

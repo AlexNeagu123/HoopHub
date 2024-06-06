@@ -1,7 +1,7 @@
-﻿using HoopHub.BuildingBlocks.Application.Responses;
+﻿using HoopHub.BuildingBlocks.Application.ExternalServices.AzureStorage;
+using HoopHub.BuildingBlocks.Application.Responses;
 using HoopHub.BuildingBlocks.Application.Services;
 using HoopHub.Modules.UserFeatures.Application.Constants;
-using HoopHub.Modules.UserFeatures.Application.ExternalServices.AzureBlobStorage;
 using HoopHub.Modules.UserFeatures.Application.Fans.Dtos;
 using HoopHub.Modules.UserFeatures.Application.Fans.Mappers;
 using HoopHub.Modules.UserFeatures.Application.Persistence;

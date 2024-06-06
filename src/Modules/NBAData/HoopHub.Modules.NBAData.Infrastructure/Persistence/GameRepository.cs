@@ -49,6 +49,20 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
                 : Result<Game>.Success(game);
         }
 
+        public async Task<Result<IReadOnlyList<Game>>> GetGamesForTeamSinceStartOfSeason(DateTime seasonStart, DateTime gameDate, int teamApiId)
+        {
+            var games = await context.Set<Game>()
+                .Include(g => g.BoxScores)
+                .Include(g => g.Season)
+                .Include(g => g.HomeTeam)
+                .Include(g => g.VisitorTeam)
+                .Where(g => (g.HomeTeam.ApiId == teamApiId || g.VisitorTeam.ApiId == teamApiId) && g.Date >= seasonStart && g.Date < gameDate)
+                .OrderByDescending(g => g.Date)
+                .ToListAsync();
+
+            return Result<IReadOnlyList<Game>>.Success(games);
+        }
+
         public async Task<Result<Game>> FindByIdIncludingAll(Guid id)
         {
             var game = await context.Set<Game>()

@@ -15,5 +15,6 @@
         public const string TeamLatest = "TeamLatest";
         public const string Game = "Game";
         public const string AdvancedStatsEntry = "AdvancedStatsEntry";
+        public const string Predictions = "Predictions";
     }
 }

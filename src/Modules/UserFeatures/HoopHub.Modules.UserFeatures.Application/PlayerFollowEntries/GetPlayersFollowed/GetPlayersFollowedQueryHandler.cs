@@ -16,11 +16,10 @@ namespace HoopHub.Modules.UserFeatures.Application.PlayerFollowEntries.GetPlayer
         private readonly IPlayerFollowEntryRepository _playerFollowEntryRepository = playerFollowEntryRepository;
         private readonly ICurrentUserService _userService = userService;
         private readonly PlayerFollowEntryMapper _playerFollowEntryMapper = new();
-
         public async Task<Response<IReadOnlyList<PlayerFollowEntryDto>>> Handle(GetPlayersFollowedQuery request, CancellationToken cancellationToken)
         {
             var fanId = _userService.GetUserId;
-            if(request.FanId != null)
+            if (request.FanId != null)
                 fanId = request.FanId;
 
             var playerFollowEntryResult = await _playerFollowEntryRepository.GetAllByFanIdIncludingFanAsync(fanId!);

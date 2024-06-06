@@ -1,12 +1,12 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using HoopHub.BuildingBlocks.Application.ExternalServices.AzureStorage;
 using HoopHub.BuildingBlocks.Domain;
-using HoopHub.Modules.UserFeatures.Application.ExternalServices.AzureBlobStorage;
-using HoopHub.Modules.UserFeatures.Infrastructure.Constants;
+using HoopHub.BuildingBlocks.Infrastructure.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace HoopHub.Modules.UserFeatures.Infrastructure.ExternalServices.AzureBlobStorage
+namespace HoopHub.BuildingBlocks.Infrastructure.ExternalServices.AzureStorage
 {
     public class AzureBlobStorageService(IConfiguration configuration) : IAzureBlobStorageService
     {
@@ -31,9 +31,7 @@ namespace HoopHub.Modules.UserFeatures.Infrastructure.ExternalServices.AzureBlob
                 {
                     var deleteResult = await blobClient.DeleteAsync();
                     if (deleteResult.IsError)
-                    {
                         return Result<string>.Failure("Failed to delete the existing image.");
-                    }
                 }
 
                 await blobClient.UploadAsync(file.OpenReadStream(), new BlobUploadOptions
