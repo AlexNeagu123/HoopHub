@@ -2,7 +2,6 @@
 using HoopHub.BuildingBlocks.Infrastructure;
 using HoopHub.Modules.NBAData.Application.Persistence;
 using HoopHub.Modules.NBAData.Domain.AdvancedStatsEntries;
-using HoopHub.Modules.NBAData.Domain.BoxScores;
 using Microsoft.EntityFrameworkCore;
 
 namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
@@ -58,19 +57,19 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
                 : Result<AdvancedStatsEntry>.Success(advancedStatsEntry);
         }
 
-        public async Task<Result<IReadOnlyList<AdvancedStatsEntry>>> GetByGameAsync(Guid gameId)
+        public async Task<Result<IReadOnlyList<AdvancedStatsEntry>>> GetAdvancedStatsByGameAsync(DateTime gameDate, int homeTeamApiId, int visitorTeamApiId)
         {
-            var advancedStatsEntries = await context.Set<AdvancedStatsEntry>()
-                .Include(ase => ase.Game)
-                .Include(ase => ase.Player)
-                .Include(ase => ase.Team)
-                .Include(ase => ase.Game.Season)
-                .Include(ase => ase.Game.HomeTeam)
-                .Include(ase => ase.Game.VisitorTeam)
-                .Where(ase => ase.GameId == gameId)
+            var advancedStats = await context.Set<AdvancedStatsEntry>()
+                .Include(bs => bs.Game)
+                .Include(bs => bs.Player)
+                .Include(bs => bs.Team)
+                .Include(bs => bs.Game.Season)
+                .Include(bs => bs.Game.HomeTeam)
+                .Include(bs => bs.Game.VisitorTeam)
+                .Where(bs => bs.Game.Date == gameDate && bs.Game.HomeTeam.ApiId == homeTeamApiId && bs.Game.VisitorTeam.ApiId == visitorTeamApiId)
                 .ToListAsync();
 
-            return Result<IReadOnlyList<AdvancedStatsEntry>>.Success(advancedStatsEntries);
+            return Result<IReadOnlyList<AdvancedStatsEntry>>.Success(advancedStats);
         }
 
         public async Task<Result<IReadOnlyList<AdvancedStatsEntry>>> GetBoxScoresForTeamSinceStartOfSeason(DateTime seasonStartDate, DateTime gameDate, int teamApiId)

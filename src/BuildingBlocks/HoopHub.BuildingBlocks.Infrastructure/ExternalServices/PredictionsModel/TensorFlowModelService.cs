@@ -16,9 +16,8 @@ namespace HoopHub.BuildingBlocks.Infrastructure.ExternalServices.PredictionsMode
         private readonly ILogger<TensorFlowModelService> _logger;
         private readonly Lazy<Task> _initializeTask;
 
-        private readonly RunOptions _runOptions = new();
-        private InferenceSession? _inferenceSession = null;
-        private NormalizationParams? _normalizationParams = null;
+        private InferenceSession? _inferenceSession;
+        private NormalizationParams? _normalizationParams;
 
         public TensorFlowModelService(IAzureBlobStorageService blobStorageService, ILogger<TensorFlowModelService> logger)
         {
@@ -95,7 +94,7 @@ namespace HoopHub.BuildingBlocks.Infrastructure.ExternalServices.PredictionsMode
             var outputData = output.GetTensorDataAsSpan<float>();
 
             var homeTeamWinProbability = (float)Math.Truncate(outputData[0] * 100) / 100;
-            var visitorTeamWinProbability = (float)Math.Truncate((1 - outputData[0]) * 100) / 100;
+            var visitorTeamWinProbability = 1.0f - homeTeamWinProbability;
 
             return Result<float[]>.Success([homeTeamWinProbability, visitorTeamWinProbability]);
         }

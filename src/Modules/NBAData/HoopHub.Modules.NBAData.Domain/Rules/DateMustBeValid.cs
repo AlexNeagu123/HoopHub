@@ -15,17 +15,12 @@ namespace HoopHub.Modules.NBAData.Domain.Rules
 
         public static bool BeAValidDate(string date)
         {
-            if (DateTime.TryParseExact(
-                    date,
-                    Config.DateFormat,
-                    CultureInfo.InvariantCulture,
-                    DateTimeStyles.None,
-                    out var parsedDate))
-            {
-                return parsedDate.Date <= DateTime.Today;
-            }
-
-            return false;
+            return DateTime.TryParseExact(
+                date,
+                Config.DateFormat,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out _);
         }
 
         public string Message => ValidationErrors.InvalidDate;

@@ -23,6 +23,6 @@ namespace HoopHub.Modules.NBAData.Application.Games.Dtos
         public int? Turnover { get; set; }
         public int? Pf { get; set; }
         public int Pts { get; set; }
-        public PlayerDto? Player { get; set; }
+        public int PlayerApiId { get; set; }
     }
 }

@@ -10,14 +10,10 @@ namespace HoopHub.Modules.NBAData.Application.AdvancedStatsEntry.GetAdvancedStat
 {
     public class GetAdvancedStatsByGameQueryHandler(
         IAdvancedStatsEntryRepository advancedStatsEntryRepository,
-        IGameRepository gameRepository,
-        ITeamRepository teamRepository,
         ICurrentUserService currentUserService)
         : IRequestHandler<GetAdvancedStatsByGameQuery, Response<IReadOnlyList<LocalStoredAdvancedStatsEntryDto>>>
     {
         private readonly IAdvancedStatsEntryRepository _advancedStatsEntryRepository = advancedStatsEntryRepository;
-        private readonly IGameRepository _gameRepository = gameRepository;
-        private readonly ITeamRepository _teamRepository = teamRepository;
         private readonly LocalAdvancedStatsMapper _localAdvancedStatsMapper = new();
         private readonly ICurrentUserService _currentUserService = currentUserService;
 
@@ -29,33 +25,14 @@ namespace HoopHub.Modules.NBAData.Application.AdvancedStatsEntry.GetAdvancedStat
             if (!validationResult.IsValid)
                 return Response<IReadOnlyList<LocalStoredAdvancedStatsEntryDto>>.ErrorResponseFromFluentResult(validationResult);
 
-            var homeTeamResult = await _teamRepository.FindByApiIdAsync(request.HomeTeamApiId);
-            if (!homeTeamResult.IsSuccess)
-                return Response<IReadOnlyList<LocalStoredAdvancedStatsEntryDto>>.ErrorResponseFromKeyMessage(
-                    homeTeamResult.ErrorMsg, ValidationKeys.TeamApiId);
+            var convertedDate = DateTime.Parse(request.Date).ToUniversalTime();
+            var advancedStatsResult = await _advancedStatsEntryRepository.GetAdvancedStatsByGameAsync(convertedDate, request.HomeTeamApiId, request.VisitorTeamApiId);
 
-            var visitorTeamResult = await _teamRepository.FindByApiIdAsync(request.VisitorTeamApiId);
-            if (!visitorTeamResult.IsSuccess)
-                return Response<IReadOnlyList<LocalStoredAdvancedStatsEntryDto>>.ErrorResponseFromKeyMessage(
-                                              visitorTeamResult.ErrorMsg, ValidationKeys.TeamApiId);
+            if (advancedStatsResult.IsSuccess == false)
+                return Response<IReadOnlyList<LocalStoredAdvancedStatsEntryDto>>.ErrorResponseFromKeyMessage(advancedStatsResult.ErrorMsg, ValidationKeys.BoxScores);
 
-            var homeTeam = homeTeamResult.Value;
-            var visitorTeam = visitorTeamResult.Value;
-            var gameResult = await
-                _gameRepository.FindGameByDateAndTeams(DateTime.Parse(request.Date).ToUniversalTime(), homeTeam.Id, visitorTeam.Id);
-
-            if (!gameResult.IsSuccess)
-                return Response<IReadOnlyList<LocalStoredAdvancedStatsEntryDto>>.ErrorResponseFromKeyMessage(
-                                       gameResult.ErrorMsg, ValidationKeys.Game);
-
-            var game = gameResult.Value;
-            var advancedStatsEntriesResult = await _advancedStatsEntryRepository.GetByGameAsync(game.Id);
-            if (!advancedStatsEntriesResult.IsSuccess)
-                return Response<IReadOnlyList<LocalStoredAdvancedStatsEntryDto>>.ErrorResponseFromKeyMessage(
-                                       advancedStatsEntriesResult.ErrorMsg, ValidationKeys.AdvancedStatsEntry);
-
-            var advancedStatsEntries = advancedStatsEntriesResult.Value;
-            var advancedStatsEntriesDtoList = advancedStatsEntries.Select(ase => _localAdvancedStatsMapper.AdvancedStatsToLocalAdvancedStatsEntryDto(ase, isLicensed)).ToList();
+            var advancedStats = advancedStatsResult.Value;
+            var advancedStatsEntriesDtoList = advancedStats.Select(bs => _localAdvancedStatsMapper.AdvancedStatsToLocalAdvancedStatsEntryDto(bs, isLicensed)).ToList();
 
             return new Response<IReadOnlyList<LocalStoredAdvancedStatsEntryDto>>
             {

@@ -37,12 +37,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.BoxScores
                     continue;
 
                 var boxScorePlayerDto = _boxScorePlayerMapper.BoxScoreApiPlayerDtoToBoxScorePlayerDto(apiPlayer);
-                var player = await _playerRepository.FindByApiIdAsync(apiPlayer.Player.Id);
-                if (player.IsSuccess == false)
-                    continue;
-
-                var playerDto = _playerMapper.PlayerToPlayerDto(player.Value, _isLicensed);
-                boxScorePlayerDto.Player = playerDto;
+                boxScorePlayerDto.PlayerApiId = apiPlayer.Player.Id;
                 boxScoreHomeTeam.Players.Add(boxScorePlayerDto);
             }
 
@@ -52,11 +47,7 @@ namespace HoopHub.Modules.NBAData.Application.Games.BoxScores
                     continue;
 
                 var boxScorePlayerDto = _boxScorePlayerMapper.BoxScoreApiPlayerDtoToBoxScorePlayerDto(apiPlayer);
-                var player = await _playerRepository.FindByApiIdAsync(apiPlayer.Player.Id);
-                if (player.IsSuccess == false)
-                    continue;
-
-                boxScorePlayerDto.Player = _playerMapper.PlayerToPlayerDto(player.Value, _isLicensed);
+                boxScorePlayerDto.PlayerApiId = apiPlayer.Player.Id;
                 boxScoreVisitorTeam.Players.Add(boxScorePlayerDto);
             }
 

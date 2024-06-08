@@ -5,25 +5,26 @@ using HoopHub.Modules.NBAData.Application.Players.Dtos;
 using HoopHub.Modules.NBAData.Application.Players.Mappers;
 using MediatR;
 
-namespace HoopHub.Modules.NBAData.Application.Players.GetAllActivePlayers
+namespace HoopHub.Modules.NBAData.Application.Players.GetAllPlayers
 {
-    public class GetAllActivePlayersQueryHandler(IPlayerRepository playerRepository, ICurrentUserService currentUserService)
-        : IRequestHandler<GetAllActivePlayersQuery, Response<IReadOnlyList<PlayerDto>>>
+    public class GetAllPlayersQueryHandler(IPlayerRepository playerRepository, ICurrentUserService currentUserService)
+        : IRequestHandler<GetAllPlayersQuery, Response<IReadOnlyList<PlayerDto>>>
     {
         private readonly IPlayerRepository _playerRepository = playerRepository;
         private readonly ICurrentUserService _currentUserService = currentUserService;
         private readonly PlayerMapper _playerMapper = new();
 
-        public async Task<Response<IReadOnlyList<PlayerDto>>> Handle(GetAllActivePlayersQuery request, CancellationToken cancellationToken)
+        public Task<Response<IReadOnlyList<PlayerDto>>> Handle(GetAllPlayersQuery request, CancellationToken cancellationToken)
         {
             var isLicensed = _currentUserService.GetUserLicense ?? false;
-            var allActivePlayersResult = await _playerRepository.GetAllActivePlayers();
+            var allActivePlayersResult = _playerRepository.GetAll();
             var playersDtoList = allActivePlayersResult.Value.Select(player => _playerMapper.PlayerToPlayerDto(player, isLicensed)).ToList();
-            return new Response<IReadOnlyList<PlayerDto>>
+
+            return Task.FromResult(new Response<IReadOnlyList<PlayerDto>>
             {
                 Success = true,
                 Data = playersDtoList
-            };
+            });
         }
     }
 }

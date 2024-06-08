@@ -77,5 +77,21 @@ namespace HoopHub.Modules.NBAData.Infrastructure.Persistence
 
             return Result<IReadOnlyList<BoxScores>>.Success(boxScores);
         }
+
+        public async Task<Result<IReadOnlyList<BoxScores>>> GetBoxScoresByGame(DateTime gameDate, int homeTeamApiId,
+            int visitorTeamApiId)
+        {
+            var boxScores = await context.Set<BoxScores>()
+                .Include(bs => bs.Game)
+                .Include(bs => bs.Player)
+                .Include(bs => bs.Team)
+                .Include(bs => bs.Game.Season)
+                .Include(bs => bs.Game.HomeTeam)
+                .Include(bs => bs.Game.VisitorTeam)
+                .Where(bs => bs.Game.HomeTeam.ApiId == homeTeamApiId && bs.Game.VisitorTeam.ApiId == visitorTeamApiId && bs.Game.Date == gameDate)
+                .ToListAsync();
+
+            return Result<IReadOnlyList<BoxScores>>.Success(boxScores);
+        }
     }
 }

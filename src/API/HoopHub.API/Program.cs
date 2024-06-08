@@ -106,7 +106,7 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-var frontendUrl = Environment.GetEnvironmentVariable("PUBLIC_FRONTEND_URL") ?? "http://localhost:5176";
+var frontendUrl = Environment.GetEnvironmentVariable("PUBLIC_FRONTEND_URL") ?? "http://localhost:5173";
 var backendUrl = Environment.GetEnvironmentVariable("PUBLIC_FRONT_END_URL") ?? "https://localhost:5001";
 
 builder.Configuration["Urls:Frontend"] = frontendUrl;
@@ -251,21 +251,21 @@ builder.Services.AddQuartz(configure =>
         .AddTrigger(trigger => trigger
             .ForJob(userFeaturesOutboxJobKey)
             .WithSimpleSchedule(schedule => schedule
-                .WithIntervalInSeconds(int.Parse(builder.Configuration["BackgroundJobTimes:OutBoxProcessor"] ?? "5"))
+                .WithIntervalInSeconds(int.Parse(builder.Configuration["BackgroundJobTimes:OutBoxProcessor"] ?? "30"))
                 .RepeatForever()));
 
     configure.AddJob<NBADataProcessOutboxMessagesJob>(nbaDataOutboxJobKey)
         .AddTrigger(trigger => trigger
             .ForJob(nbaDataOutboxJobKey)
             .WithSimpleSchedule(schedule => schedule
-                .WithIntervalInSeconds(int.Parse(builder.Configuration["BackgroundJobTimes:OutBoxProcessor"] ?? "5"))
+                .WithIntervalInSeconds(int.Parse(builder.Configuration["BackgroundJobTimes:OutBoxProcessor"] ?? "30"))
                 .RepeatForever()));
 
     configure.AddJob<LiveBoxScoreJob>(liveBoxScoresJobKey)
         .AddTrigger(trigger => trigger
             .ForJob(liveBoxScoresJobKey)
             .WithSimpleSchedule(schedule => schedule
-                .WithIntervalInSeconds(int.Parse(builder.Configuration["BackgroundJobTimes:LiveBoxScores"] ?? "10"))
+                .WithIntervalInSeconds(int.Parse(builder.Configuration["BackgroundJobTimes:LiveBoxScores"] ?? "60"))
                 .RepeatForever()));
 });
 

@@ -8,7 +8,7 @@ namespace HoopHub.Modules.NBAData.Application.Persistence
         Task<Result<IReadOnlyList<Domain.AdvancedStatsEntries.AdvancedStatsEntry>>> GetLastXAdvancedStatsByPlayerId(Guid playerId, int lastCount);
         Task<Result<IReadOnlyList<Domain.AdvancedStatsEntries.AdvancedStatsEntry>>> GetByDateAsync(DateTime date);
         Task<Result<Domain.AdvancedStatsEntries.AdvancedStatsEntry>> FindByIdIncludingAll(Guid id);
-        Task<Result<IReadOnlyList<Domain.AdvancedStatsEntries.AdvancedStatsEntry>>> GetByGameAsync(Guid gameId);
+        Task<Result<IReadOnlyList<Domain.AdvancedStatsEntries.AdvancedStatsEntry>>> GetAdvancedStatsByGameAsync(DateTime gameDate, int homeTeamApiId, int visitorTeamApiId);
         Task<Result<IReadOnlyList<Domain.AdvancedStatsEntries.AdvancedStatsEntry>>> GetBoxScoresForTeamSinceStartOfSeason(DateTime seasonStartDate, DateTime gameDate, int teamApiId);
     }
 }

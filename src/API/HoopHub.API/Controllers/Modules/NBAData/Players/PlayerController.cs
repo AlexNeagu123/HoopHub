@@ -1,6 +1,6 @@
 ﻿using HoopHub.BuildingBlocks.API;
 using HoopHub.Modules.NBAData.Application.Players.GetActivePlayersByTeam;
-using HoopHub.Modules.NBAData.Application.Players.GetAllActivePlayers;
+using HoopHub.Modules.NBAData.Application.Players.GetAllPlayers;
 using HoopHub.Modules.NBAData.Application.Players.GetBioByPlayerId;
 using HoopHub.Modules.NBAData.Application.PlayerTeamSeasons.GetPlayerTeamHistory;
 using Microsoft.AspNetCore.Mvc;
@@ -46,11 +46,11 @@ namespace HoopHub.API.Controllers.Modules.NBAData.Players
             return Ok(response);
         }
 
-        [HttpGet("active")]
+        [HttpGet("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllActivePlayers()
         {
-            var response = await Mediator.Send(new GetAllActivePlayersQuery());
+            var response = await Mediator.Send(new GetAllPlayersQuery());
             if (!response.Success)
             {
                 return BadRequest(response);
