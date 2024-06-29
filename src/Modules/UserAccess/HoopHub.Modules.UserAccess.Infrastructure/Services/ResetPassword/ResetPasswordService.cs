@@ -30,7 +30,7 @@ namespace HoopHub.Modules.UserAccess.Infrastructure.Services.ResetPassword
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = System.Net.WebUtility.UrlEncode(token);
-            var callbackUrl = _configuration["FrontendUrl"] + $"/reset-password?email={email}&token={encodedToken}";
+            var callbackUrl = _configuration["ProdUrl"] + $"/reset-password?email={email}&token={encodedToken}";
             var emailSendResult = await _emailSender.SendEmail("Reset Password", email, user.UserName!, $"Hi, {user.UserName!}. Click <a href='{callbackUrl}'>here</a> to reset your password.");
             if (emailSendResult == false)
                 return BaseResponse.ErrorResponseFromKeyMessage(ErrorMessages.EmailNotSent, ValidationKeys.Email);
